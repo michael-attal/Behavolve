@@ -1,0 +1,63 @@
+{
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
+  "openSceneRelativePaths" : [
+    "Bee\/Bee Scene.usda"
+  ],
+  "recentIdentifiers" : {
+    "855117EB-0D8F-411E-B7E3-EEA6A7AF35CD" : [
+
+    ]
+  },
+  "sceneCameraHistory" : {
+    "855117EB-0D8F-411E-B7E3-EEA6A7AF35CD" : [
+      {
+        "date" : 751886089.502941,
+        "title" : "Untitled",
+        "transform" : [
+          0.99997973,
+          -1.362069e-10,
+          0.0063660988,
+          0,
+          0.0025104946,
+          0.9189588,
+          -0.3943457,
+          0,
+          -0.0058501824,
+          0.3943537,
+          0.9189401,
+          0,
+          -0.010545487,
+          1.3110778,
+          2.0258346,
+          1
+        ]
+      },
+      {
+        "date" : 751885734.832034,
+        "title" : "Untitled",
+        "transform" : [
+          0.9999798,
+          -2.3165658e-10,
+          0.0063660988,
+          0,
+          0.002510494,
+          0.91895884,
+          -0.39434567,
+          0,
+          -0.005850182,
+          0.39435354,
+          0.9189401,
+          0,
+          -0.024744667,
+          1.6680093,
+          3.8868628,
+          1
+        ]
+      }
+    ]
+  },
+  "sceneViewportBackgroundColors" : {
+
+  },
+  "selectedSceneRelativePath" : "Bee\/Bee Scene.usda"
+}
