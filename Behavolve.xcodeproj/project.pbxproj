@@ -260,6 +260,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
 		};
@@ -286,6 +287,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
 		};
@@ -348,7 +350,7 @@
 				SDKROOT = xros;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
 		};
@@ -404,7 +406,7 @@
 				SDKROOT = xros;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
 		};
@@ -424,7 +426,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Behavolve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Behavolve";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
 		};
@@ -444,7 +446,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Behavolve.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Behavolve";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
 		};
