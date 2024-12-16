@@ -7,14 +7,21 @@
 
 import SwiftUI
 
-struct ToggleImmersiveSpaceButton: View {
+struct ToggleImmersiveSpaceButtonView: View {
     @Environment(AppModel.self) private var appModel
 
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
 
+    var immersiveView: ImmersiveViewAvailable = .none
+
+    init(forImmersiveView: ImmersiveViewAvailable) {
+        self.immersiveView = forImmersiveView
+    }
+
     var body: some View {
         Button {
+            appModel.currentImmersiveView = immersiveView
             Task { @MainActor in
                 switch appModel.immersiveSpaceState {
                     case .open:
@@ -32,6 +39,7 @@ struct ToggleImmersiveSpaceButton: View {
 
                             @unknown default:
                                 appModel.immersiveSpaceState = .closed
+                                appModel.currentImmersiveView = .none
                         }
 
                     case .inTransition:

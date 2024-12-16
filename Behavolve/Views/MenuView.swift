@@ -9,25 +9,22 @@ import RealityKit
 import RealityKitContent
 import SwiftUI
 
-struct ContentView: View {
+struct MenuView: View {
     var body: some View {
+        startMenu
+    }
+    
+    var startMenu: some View {
         VStack {
-            Model3D(named: "Models/Bee/Flying_Bee", bundle: realityKitContentBundle) { phase in
-                phase.model?.resizable()
-            }
-            .scaledToFit()
-            .frame(height: 100)
-            .padding(.bottom, 50)
-
             Text("Behavolve")
 
-            ToggleImmersiveSpaceButton()
+            ToggleImmersiveSpaceButtonView(forImmersiveView: .bee)
         }
         .padding()
     }
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView()
+    MenuView()
         .environment(AppModel())
 }

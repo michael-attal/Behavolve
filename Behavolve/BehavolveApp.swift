@@ -9,25 +9,29 @@ import SwiftUI
 
 @main
 struct BehavolveApp: App {
-
     @State private var appModel = AppModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MenuView()
                 .environment(appModel)
         }
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
-                .environment(appModel)
-                .onAppear {
-                    appModel.immersiveSpaceState = .open
-                }
-                .onDisappear {
-                    appModel.immersiveSpaceState = .closed
-                }
+            if appModel.currentImmersiveView == .bee {
+                ImmersiveBeeView()
+                    .environment(appModel)
+                    .onAppear {
+                        appModel.immersiveSpaceState = .open
+                    }
+                    .onDisappear {
+                        appModel.immersiveSpaceState = .closed
+                    }
+            } else {
+                // TODO: Other scene
+                EmptyView()
+            }
         }
         .immersionStyle(selection: .constant(.mixed), in: .mixed)
-     }
+    }
 }

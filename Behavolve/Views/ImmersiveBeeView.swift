@@ -9,7 +9,7 @@ import RealityKit
 import RealityKitContent
 import SwiftUI
 
-struct ImmersiveView: View {
+struct ImmersiveBeeView: View {
     var body: some View {
         RealityView { content in
             if let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) {
@@ -33,6 +33,6 @@ struct ImmersiveView: View {
 }
 
 #Preview(immersionStyle: .mixed) {
-    ImmersiveView()
+    ImmersiveBeeView()
         .environment(AppModel())
 }
