@@ -12,8 +12,8 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Model3D(named: "Bee/Flying_Bee", bundle: realityKitContentBundle) { model in
-                model.model?.resizable()
+            Model3D(named: "Models/Bee/Flying_Bee", bundle: realityKitContentBundle) { phase in
+                phase.model?.resizable()
             }
             .scaledToFit()
             .frame(height: 100)

@@ -12,7 +12,7 @@ def Xform "Root"
 {
     def "Flying_Bee" (
         active = true
-        prepend references = @Flying_Bee.usdz@
+        references = @../Models/Bees/Flying_Bee.usdz@
     )
     {
         float3 xformOp:scale = (0.01, 0.01, 0.01)
