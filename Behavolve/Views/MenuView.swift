@@ -12,14 +12,8 @@ import SwiftUI
 struct MenuView: View {
     @Environment(AppModel.self) private var appModel
 
-    @State var currentSunIconName = "sun.max" // "cloud.sun.rain"
     @State var currentSunIconSize = CGFloat(90)
     @State var selectedScene: ImmersiveViewAvailable = .bee
-    @State private var counter = 0
-
-    private let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
-
-    private let scaleFactorMenuUI: CGFloat = 1.5
 
     var body: some View {
         Group {
@@ -73,13 +67,9 @@ struct MenuView: View {
                 .padding()
 
                 // Sun image at the top-left corner
-                Image(systemName: currentSunIconName)
+                Image(systemName: "sun.max")
                     .resizable()
-                    // .symbolEffect(.breathe, options: .speed(1).repeating)
                     .frame(width: currentSunIconSize, height: currentSunIconSize)
-                    // .contentTransition(
-                    //     .symbolEffect(.replace.magic(fallback: .replace))
-                    // )
                     .position(x: 110, y: 110)
                     .foregroundStyle(.yellow)
 
@@ -99,16 +89,6 @@ struct MenuView: View {
                 WaveView(symbolEffect: .variableColor, symbolEffectOptions: .speed(0.2))
                     .position(x: geometry.size.width - 80, y: geometry.size.height - 80)
             }
-        }.onReceive(timer) { _ in
-            counter += 1
-
-            // withAnimation {
-            //     if counter == 2 {
-            //         currentSunIconName = "sun.min"
-            //     } else if counter == 4 {
-            //         currentSunIconName = "sun.max"
-            //     }
-            // }
         }
         .onAppear {
             withAnimation(.linear(duration: 5.0).repeatForever(autoreverses: true)) {
