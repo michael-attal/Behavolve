@@ -7,14 +7,29 @@
 
 import SwiftUI
 
-struct ToggleImmersiveSpaceButton: View {
+struct ToggleImmersiveSpaceButtonView: View {
     @Environment(AppModel.self) private var appModel
 
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
 
+    var immersiveView: ImmersiveViewAvailable = .none
+    var startText: String
+    var endText: String
+    var sizeButton: CGFloat
+    var fontButton: Font
+
+    init(forImmersiveView: ImmersiveViewAvailable, startText: String = "Begin", endText: String = "End", sizeButton: CGFloat = 200, fontButton: Font = .title) {
+        self.immersiveView = forImmersiveView
+        self.startText = startText
+        self.endText = endText
+        self.sizeButton = sizeButton
+        self.fontButton = fontButton
+    }
+
     var body: some View {
         Button {
+            appModel.currentImmersiveView = immersiveView
             Task { @MainActor in
                 switch appModel.immersiveSpaceState {
                     case .open:
@@ -32,6 +47,7 @@ struct ToggleImmersiveSpaceButton: View {
 
                             @unknown default:
                                 appModel.immersiveSpaceState = .closed
+                                appModel.currentImmersiveView = .none
                         }
 
                     case .inTransition:
@@ -39,8 +55,11 @@ struct ToggleImmersiveSpaceButton: View {
                 }
             }
         } label: {
-            Text(appModel.immersiveSpaceState == .open ? "Hide Immersive Space" : "Show Immersive Space")
+            Text(appModel.immersiveSpaceState == .open ? endText : startText)
+                .font(.title)
+                .frame(width: sizeButton)
         }
+        .controlSize(.extraLarge)
         .disabled(appModel.immersiveSpaceState == .inTransition)
         .animation(.none, value: 0)
         .fontWeight(.semibold)
