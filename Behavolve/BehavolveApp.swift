@@ -15,7 +15,8 @@ struct BehavolveApp: App {
         WindowGroup {
             MenuView()
                 .environment(appModel)
-        }
+        }.windowResizability(.contentSize)
+        
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             if appModel.currentImmersiveView == .bee {

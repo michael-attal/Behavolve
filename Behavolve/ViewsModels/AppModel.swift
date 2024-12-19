@@ -7,10 +7,14 @@
 
 import SwiftUI
 
-enum ImmersiveViewAvailable {
+enum ImmersiveViewAvailable: String {
     case none
     case bee
     case snake
+
+    static func getAllImmersiveViews() -> [ImmersiveViewAvailable] {
+        return [.bee, .snake]
+    }
 }
 
 /// Maintains app-wide state

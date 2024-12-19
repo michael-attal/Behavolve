@@ -14,9 +14,17 @@ struct ToggleImmersiveSpaceButtonView: View {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
 
     var immersiveView: ImmersiveViewAvailable = .none
+    var startText: String
+    var endText: String
+    var sizeButton: CGFloat
+    var fontButton: Font
 
-    init(forImmersiveView: ImmersiveViewAvailable) {
+    init(forImmersiveView: ImmersiveViewAvailable, startText: String = "Begin", endText: String = "End", sizeButton: CGFloat = 200, fontButton: Font = .title) {
         self.immersiveView = forImmersiveView
+        self.startText = startText
+        self.endText = endText
+        self.sizeButton = sizeButton
+        self.fontButton = fontButton
     }
 
     var body: some View {
@@ -47,8 +55,11 @@ struct ToggleImmersiveSpaceButtonView: View {
                 }
             }
         } label: {
-            Text(appModel.immersiveSpaceState == .open ? "Hide Immersive Space" : "Show Immersive Space")
+            Text(appModel.immersiveSpaceState == .open ? endText : startText)
+                .font(.title)
+                .frame(width: sizeButton)
         }
+        .controlSize(.extraLarge)
         .disabled(appModel.immersiveSpaceState == .inTransition)
         .animation(.none, value: 0)
         .fontWeight(.semibold)

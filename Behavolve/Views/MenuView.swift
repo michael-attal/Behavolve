@@ -10,17 +10,144 @@ import RealityKitContent
 import SwiftUI
 
 struct MenuView: View {
-    var body: some View {
-        startMenu
-    }
-    
-    var startMenu: some View {
-        VStack {
-            Text("Behavolve")
+    @Environment(AppModel.self) private var appModel
 
-            ToggleImmersiveSpaceButtonView(forImmersiveView: .bee)
+    @State var currentSunIconName = "sun.max" // "cloud.sun.rain"
+    @State var currentSunIconSize = CGFloat(90)
+    @State var selectedScene: ImmersiveViewAvailable = .bee
+    @State private var counter = 0
+
+    private let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
+
+    private let scaleFactorMenuUI: CGFloat = 1.5
+
+    var body: some View {
+        Group {
+            if appModel.currentImmersiveView == .none {
+                startMenu.frame(width: 800, height: 600)
+            } else {
+                // TODO: Do each menu for each scene
+                beeMenu.frame(width: 350, height: 400)
+            }
         }
-        .padding()
+        .edgesIgnoringSafeArea(.all)
+        .background(
+            LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
+        )
+    }
+
+    var startMenu: some View {
+        GeometryReader { geometry in
+            ZStack {
+                VStack {
+                    Text("Selected scene")
+                        .font(.largeTitle)
+                    VStack {
+                        Menu(content: {
+                            Picker("Selected scene", selection: $selectedScene) {
+                                ForEach(ImmersiveViewAvailable.getAllImmersiveViews(), id: \.self) { scene in
+                                    Text(scene.rawValue.capitalized)
+                                        .font(.largeTitle)
+                                }
+                            }
+                        }, label: {
+                            HStack {
+                                Spacer()
+                                Text(selectedScene.rawValue.capitalized)
+                                    .font(.title)
+                                Spacer()
+                                Image(systemName: "chevron.down.circle")
+                                    .font(.title2)
+                            }.frame(width: 200)
+                        }).controlSize(.extraLarge)
+                    }
+
+                    ToggleImmersiveSpaceButtonView(forImmersiveView: selectedScene, sizeButton: 200, fontButton: .title)
+
+                    Button(action: {}) {
+                        Text("Settings")
+                            .font(.title)
+                            .frame(width: 200)
+                    }.controlSize(.extraLarge)
+                }
+                .padding()
+
+                // Sun image at the top-left corner
+                Image(systemName: currentSunIconName)
+                    .resizable()
+                    // .symbolEffect(.breathe, options: .speed(1).repeating)
+                    .frame(width: currentSunIconSize, height: currentSunIconSize)
+                    // .contentTransition(
+                    //     .symbolEffect(.replace.magic(fallback: .replace))
+                    // )
+                    .position(x: 110, y: 110)
+                    .foregroundStyle(.yellow)
+
+                // Wave image at position top-right
+                WaveView(symbolEffect: .variableColor, symbolEffectOptions: .speed(0.2), color: .blue)
+                    .position(x: geometry.size.width - 120, y: 80)
+
+                // Wave image at position middle-left
+                WaveView(symbolEffect: .breathe, symbolEffectOptions: .speed(0.2))
+                    .position(x: 80, y: geometry.size.height / 2)
+
+                // Wave image at position bottom-left
+                WaveView(symbolEffect: .breathe, symbolEffectOptions: .speed(0.2), color: .blue)
+                    .position(x: 120, y: geometry.size.height - 120)
+
+                // Wave image at position bottom-right
+                WaveView(symbolEffect: .variableColor, symbolEffectOptions: .speed(0.2))
+                    .position(x: geometry.size.width - 80, y: geometry.size.height - 80)
+            }
+        }.onReceive(timer) { _ in
+            counter += 1
+
+            // withAnimation {
+            //     if counter == 2 {
+            //         currentSunIconName = "sun.min"
+            //     } else if counter == 4 {
+            //         currentSunIconName = "sun.max"
+            //     }
+            // }
+        }
+        .onAppear {
+            withAnimation(.linear(duration: 5.0).repeatForever(autoreverses: true)) {
+                currentSunIconSize += 40
+            }
+        }
+    }
+
+    var beeMenu: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Button(action: {
+                    appModel.currentImmersiveView = .none
+                }) {
+                    Text("Sortir")
+                }.position(x: geometry.size.width - 60, y: 40)
+                VStack {
+                    Button(action: {}) {
+                        Text("Je suis prêt")
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct WaveView<Effect: SymbolEffect & IndefiniteSymbolEffect>: View {
+    var symbolEffect: Effect
+    var symbolEffectOptions: SymbolEffectOptions = .default
+
+    var color: Color = .cyan
+
+    var body: some View {
+        Image(systemName: "water.waves")
+            .resizable()
+            .frame(width: 50, height: 50)
+            .symbolEffect(symbolEffect, options: symbolEffectOptions)
+            .padding()
+            .foregroundStyle(color)
     }
 }
 
