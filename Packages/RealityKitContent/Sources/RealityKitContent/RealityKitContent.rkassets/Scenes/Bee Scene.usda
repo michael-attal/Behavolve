@@ -10,13 +10,149 @@
 
 def Xform "Root"
 {
+    reorder nameChildren = ["Flying_Bee", "Therapist_TCC", "Therapist"]
     def "Flying_Bee" (
         active = true
         references = @../Models/Bees/Flying_Bee.usdz@
     )
     {
-        float3 xformOp:scale = (0.01, 0.01, 0.01)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "SkinnedMeshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "root"
+                {
+                    over "GLTF_SceneRootNode"
+                    {
+                        over "RootNode_0_0"
+                        {
+                            over "skeletal_1_1"
+                            {
+                                over "GLTF_created_0"
+                                {
+                                    over "GLTF_created_0_rootJoint"
+                                    {
+                                        over "root_jnt_2_2"
+                                        {
+                                            over "skin0"
+                                            {
+                                                def RealityKitComponent "GroundingShadow"
+                                                {
+                                                    uniform token info:id = "RealityKit.GroundingShadow"
+                                                }
+
+                                                def RealityKitComponent "InputTarget"
+                                                {
+                                                    uniform token info:id = "RealityKit.InputTarget"
+                                                }
+
+                                                def RealityKitComponent "Collider"
+                                                {
+                                                    uint group = 1
+                                                    uniform token info:id = "RealityKit.Collider"
+                                                    uint mask = 4294967295
+                                                    token type = "Default"
+
+                                                    def RealityKitStruct "Shape"
+                                                    {
+                                                        float3 extent = (1482.8729, 1552.1299, 1881.781)
+                                                        token shapeType = "Box"
+
+                                                        def RealityKitStruct "pose"
+                                                        {
+                                                            float3 position = (0, 774.76855, 88.006714)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def "Therapist_TCC" (
+        active = false
+        customData = {
+            float3 rotationEulerHint = (0, 1.0471976, 0)
+        }
+        prepend references = @../Models/Therapist/Therapist_TCC.usdz@
+    )
+    {
+        quatf xformOp:orient = (0.8660254, 0, 0.5, 0)
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:translate = (-0.8, 0, -0.8)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "Therapist" (
+        active = true
+        prepend references = @../Models/Therapist/Therapist.usdz@
+    )
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "SkinnedMeshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "f85782bc985f4e62bb69fd252d027cfc_fbx"
+                {
+                    over "Object_2"
+                    {
+                        over "RootNode"
+                        {
+                            over "autorig_actor_Rigify"
+                            {
+                                over "Object_5"
+                                {
+                                    over "skin0"
+                                    {
+                                        def RealityKitComponent "GroundingShadow"
+                                        {
+                                            uniform token info:id = "RealityKit.GroundingShadow"
+                                        }
+
+                                        def RealityKitComponent "InputTarget"
+                                        {
+                                            uniform token info:id = "RealityKit.InputTarget"
+                                        }
+
+                                        def RealityKitComponent "Collider"
+                                        {
+                                            uint group = 1
+                                            uniform token info:id = "RealityKit.Collider"
+                                            uint mask = 4294967295
+                                            token type = "Default"
+
+                                            def RealityKitStruct "Shape"
+                                            {
+                                                float3 extent = (98.3831, 29.8928, 183.39046)
+                                                float height = 29.8928
+                                                float radius = 81.69523
+                                                token shapeType = "Capsule"
+
+                                                def RealityKitStruct "pose"
+                                                {
+                                                    float3 position = (-0.000034332275, -3.0719275, 91.69529)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -103,11 +103,11 @@ struct MenuView: View {
                 Button(action: {
                     appModel.currentImmersiveView = .none
                 }) {
-                    Text("Sortir")
+                    Text("Exit")
                 }.position(x: geometry.size.width - 60, y: 40)
                 VStack {
                     Button(action: {}) {
-                        Text("Je suis prêt")
+                        Text("I'm ready")
                     }
                 }
             }

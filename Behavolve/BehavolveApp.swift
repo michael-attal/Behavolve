@@ -11,12 +11,16 @@ import SwiftUI
 struct BehavolveApp: App {
     @State private var appModel = AppModel()
 
+    init() {
+        LookAtTargetSystem.registerSystem()
+        LookAtTargetComponent.registerComponent()
+    }
+
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: appModel.MenuWindowID) {
             MenuView()
                 .environment(appModel)
         }.windowResizability(.contentSize)
-        
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             if appModel.currentImmersiveView == .bee {
