@@ -4,6 +4,10 @@
 <dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
+		<key>NSWorldSensingUsageDescription</key>
+		<string>Utilisé pour placer des entités dans votre propre environnement</string>
+		<key>NSHandsTrackingUsageDescription</key>
+		<string>Utilisé pour suivre vos mains dans le monde et interagir avec l&apos;environnement</string>
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
 		<string>UIWindowSceneSessionRoleApplication</string>
 		<key>UIApplicationSupportsMultipleScenes</key>

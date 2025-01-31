@@ -63,7 +63,278 @@
     "objectMetadataList" : [
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint",
+        "root_jnt_2_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify",
+        "Object_5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify",
+        "Object_5",
+        "skin0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint",
+        "root_jnt_2_2",
+        "skin0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify"
       ],
       {
         "isExpanded" : true,
@@ -75,7 +346,8 @@
     "objectMetadataList" : [
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root"
+        "Root",
+        "Sphere_Right"
       ],
       {
         "isExpanded" : true,
@@ -83,8 +355,7 @@
       },
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root",
-        "Sphere_Right"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -129,8 +400,7 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -138,7 +408,8 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,

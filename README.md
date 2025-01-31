@@ -41,6 +41,17 @@ Subsequently (if time permits):
     - Integration of haptic feedback equipment to enrich the sensory experience.
     - Enhancement of AI assistance for more personalized support.
 
+# Installation
+
+To install this app on your device, follow these steps:
+
+- Download the app:
+    - Either directly from the App Store or in the release tab of GitHub.
+    - In "Settings" from the App set your OpenAI key.
+- Alternative: Download the source project from the main branch:
+    - Then open the project with Xcode, hit build, and wait.
+    - Optional: You can set your OpenAI key either from the "Settings" in App or by adding your key into AppModel.swift.
+
 # Documentation
 
 Comprehensive documentation will be provided to:
