@@ -3,17 +3,22 @@ import OpenAI
 import RealityFoundation
 import SwiftUI
 
+enum DialogueApiMode {
+    case assistant
+    case streaming
+}
+
 struct DialogueView: View {
     @Environment(AppModel.self) private var appModel
 
-    @State private var inputText = ""
-    @State private var showButtons: Bool = false
-    @State private var audioPlayer: AVAudioPlayer?
+    /// Switch between using Assistant (threadRun) or direct streaming (waiting from https://github.com/MacPaw/OpenAI/pull/140#issuecomment-2018689505 to support assistant streaming)
+    let apiMode: DialogueApiMode = .assistant
 
-    /// We store the ID of the wizard created (to use it later).
+    @State private var inputText = ""
+    @State private var showButtons = false
     @State private var assistantId: String?
 
-    /// Create a “personal development coach” assistant
+    /// Create a “personal Cognitive Behavioral therapist” assistant
     let assistantsQuery = AssistantsQuery(
         model: .gpt3_5Turbo,
         name: "Lucie",
@@ -145,46 +150,96 @@ struct DialogueView: View {
             }
         }
         .task {
+            if appModel.isDevelopmentMode {
+                // Don't consume OpenAI during development
+                await animatePromptText(welcomeText)
+                return
+            }
             do {
-                let assistantCreateResult = try await appModel.openAI.assistantCreate(query: assistantsQuery)
-                self.assistantId = assistantCreateResult.id
-                
-                // TODO: Use assistant instead of ChatQuery
-                let query = ChatQuery(
-                    messages: [
-                        .init(role: .assistant, content: DialogueView.instructions)!,
-                        .init(role: .user, content: "who are you?")!
-                    ],
-                    model: .gpt3_5Turbo
-                )
+                if apiMode == .assistant {
+                    // A) Assistant
+                    let assistantCreateResult = try await appModel.openAI.assistantCreate(query: assistantsQuery)
+                    assistantId = assistantCreateResult.id
+                    guard let asstId = assistantId else { return }
 
-                appModel.openAI.chatsStream(query: query) { partialResult in
-                    showButtons = false
-                    switch partialResult {
-                    case .success(let chunk):
-                        let textChunk = chunk.choices.first?.delta.content ?? ""
-                        inputText.append(textChunk)
+                    // 1) Start query
+                    let threadsQuery = ThreadsQuery(messages: [
+                        .init(role: .user, content: "Hello, who are you?")!
+                    ])
+                    let runQuery = ThreadRunQuery(assistantId: asstId, thread: threadsQuery)
+                    let initialRunResult = try await appModel.openAI.threadRun(query: runQuery)
 
-                    case .failure(let error):
-                        print("Streaming error chunk:", error)
-                    }
-                } completion: { error in
-                    // When all the streaming is finished, we launch the audio synthesis
-                    if let error = error {
-                        print("Error in complete flow:", error)
+                    // 2) Wait until finished
+                    let finalRunResult = try await waitUntilRunComplete(
+                        threadId: initialRunResult.threadId,
+                        runId: initialRunResult.id
+                    )
+
+                    if finalRunResult.status == .completed {
+                        // 3) Get messages
+                        let messagesResult = try await appModel.openAI.threadsMessages(threadId: finalRunResult.threadId)
+                        if let assistantMsg = messagesResult.data.last(where: { $0.role == .assistant }) {
+                            let combinedText = assistantMsg.content
+                                .filter { $0.type == .text }
+                                .compactMap { $0.text?.value }
+                                .joined(separator: " ")
+
+                            finalizeResponse(combinedText.isEmpty ? "No text content." : combinedText)
+                        } else {
+                            finalizeResponse("No assistant message found.")
+                        }
                     } else {
-                        Task {
-                            await generateAndPlayAudio(from: inputText)
-                            withAnimation {
-                                showButtons = true
-                            }
+                        finalizeResponse("Run ended with status: \(finalRunResult.status)")
+                    }
+                } else {
+                    // B) Chat streaming
+                    let query = ChatQuery(
+                        messages: [
+                            .init(role: .assistant, content: "Instructions...")!,
+                            .init(role: .user, content: "Hello, who are you?")!
+                        ],
+                        model: .gpt3_5Turbo,
+                        stream: true
+                    )
+
+                    appModel.openAI.chatsStream(query: query) { partialResult in
+                        showButtons = false
+                        switch partialResult {
+                        case .success(let chunk):
+                            let textChunk = chunk.choices.first?.delta.content ?? ""
+                            inputText.append(textChunk)
+                        case .failure(let error):
+                            print("Streaming chunk error:", error)
+                        }
+                    } completion: { error in
+                        if let error = error {
+                            print("Completion error:", error)
+                        } else {
+                            Task { finalizeResponse(inputText) }
                         }
                     }
                 }
-
             } catch {
-                print("Error when creating assistant or chat:", error)
+                print("Error:", error)
             }
+        }
+    }
+
+    private func waitUntilRunComplete(threadId: String, runId: String) async throws -> RunResult {
+        var result = try await appModel.openAI.runRetrieve(threadId: threadId, runId: runId)
+
+        while result.status == .queued || result.status == .inProgress {
+            try await Task.sleep(nanoseconds: 1_000_000_000) // 1s
+            result = try await appModel.openAI.runRetrieve(threadId: threadId, runId: runId)
+        }
+        return result
+    }
+
+    private func finalizeResponse(_ text: String) {
+        inputText = text
+        Task {
+            await generateAndPlayAudio(from: text)
+            withAnimation { showButtons = true }
         }
     }
 
@@ -199,23 +254,24 @@ struct DialogueView: View {
                 speed: 1.0
             )
             let result = try await appModel.openAI.audioCreateSpeech(query: audioQuery)
+            let tempURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent("tts_temp.mp3")
+            try result.audio.write(to: tempURL)
 
-            do {
-                let tempURL = FileManager.default.temporaryDirectory
-                    .appendingPathComponent("tts_temp.mp3")
-                try result.audio.write(to: tempURL)
+            let config = AudioFileResource.Configuration(shouldLoop: false)
+            let audioResource = try AudioFileResource.load(
+                contentsOf: tempURL,
+                withName: "GeneratedAudio",
+                configuration: config
+            )
+            let audioPlaybackController = appModel.beeSceneState.therapist.playAudio(audioResource)
 
-                let config = AudioFileResource.Configuration(shouldLoop: false)
-                let audioResource = try AudioFileResource.load(contentsOf: tempURL,
-                                                               withName: "GeneratedAudio",
-                                                               configuration: config)
-
-                let playbackController = appModel.beeSceneState.therapist.playAudio(audioResource)
-            } catch {
-                print("Error writing or loading MP3 file:", error)
+            audioPlaybackController.completionHandler = {
+                try? FileManager.default.removeItem(at: tempURL)
+                // showButtons = true
             }
         } catch {
-            print("Error during audio generation/playback:", error)
+            print("Audio error:", error)
         }
     }
 
