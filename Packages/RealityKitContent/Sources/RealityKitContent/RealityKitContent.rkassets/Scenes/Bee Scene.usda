@@ -10,12 +10,13 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Flying_Bee", "Therapist_TCC", "Therapist"]
+    reorder nameChildren = ["Flying_Bee", "Therapist_TCC", "Therapist", "Flowers", "bee_mp3"]
     def "Flying_Bee" (
         active = true
         references = @../Models/Bees/Flying_Bee.usdz@
     )
     {
+        reorder nameChildren = ["Materials", "SkinnedMeshes", "SpatialAudio", "bee_mp3"]
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         over "SkinnedMeshes"
@@ -76,6 +77,12 @@ def Xform "Root"
                 }
             }
         }
+
+        def RealityKitAudioFile "bee_mp3"
+        {
+            uniform asset file = @../Audios/bee.mp3@
+            uniform bool shouldLoop = 1
+        }
     }
 
     def "Therapist_TCC" (
@@ -94,7 +101,7 @@ def Xform "Root"
 
     def "Therapist" (
         active = true
-        prepend references = @../Models/Therapist/Therapist.usdz@
+        references = @../Models/Therapist/Therapist.usdz@
     )
     {
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
@@ -153,6 +160,15 @@ def Xform "Root"
                 }
             }
         }
+    }
+
+    def "Flowers" (
+        active = true
+        references = @../Models/Flowers/Flowers.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
 

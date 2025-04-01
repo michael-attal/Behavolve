@@ -9,10 +9,10 @@ enum DialogueApiMode {
 }
 
 struct DialogueView: View {
-    @Environment(AppModel.self) private var appModel
+    @Environment(AppState.self) private var appState
 
     /// Switch between using Assistant (threadRun) or direct streaming (waiting from https://github.com/MacPaw/OpenAI/pull/140#issuecomment-2018689505 to support assistant streaming)
-    let apiMode: DialogueApiMode = .assistant
+    let apiMode: DialogueApiMode = .streaming
 
     @State private var inputText = ""
     @State private var showButtons = false
@@ -150,7 +150,7 @@ struct DialogueView: View {
             }
         }
         .task {
-            if appModel.isDevelopmentMode {
+            if appState.isDevelopmentMode {
                 // Don't consume OpenAI during development
                 await animatePromptText(welcomeText)
                 return
@@ -158,7 +158,7 @@ struct DialogueView: View {
             do {
                 if apiMode == .assistant {
                     // A) Assistant
-                    let assistantCreateResult = try await appModel.openAI.assistantCreate(query: assistantsQuery)
+                    let assistantCreateResult = try await appState.openAI.assistantCreate(query: assistantsQuery)
                     assistantId = assistantCreateResult.id
                     guard let asstId = assistantId else { return }
 
@@ -167,7 +167,7 @@ struct DialogueView: View {
                         .init(role: .user, content: "Hello, who are you?")!
                     ])
                     let runQuery = ThreadRunQuery(assistantId: asstId, thread: threadsQuery)
-                    let initialRunResult = try await appModel.openAI.threadRun(query: runQuery)
+                    let initialRunResult = try await appState.openAI.threadRun(query: runQuery)
 
                     // 2) Wait until finished
                     let finalRunResult = try await waitUntilRunComplete(
@@ -177,7 +177,7 @@ struct DialogueView: View {
 
                     if finalRunResult.status == .completed {
                         // 3) Get messages
-                        let messagesResult = try await appModel.openAI.threadsMessages(threadId: finalRunResult.threadId)
+                        let messagesResult = try await appState.openAI.threadsMessages(threadId: finalRunResult.threadId)
                         if let assistantMsg = messagesResult.data.last(where: { $0.role == .assistant }) {
                             let combinedText = assistantMsg.content
                                 .filter { $0.type == .text }
@@ -195,14 +195,14 @@ struct DialogueView: View {
                     // B) Chat streaming
                     let query = ChatQuery(
                         messages: [
-                            .init(role: .assistant, content: "Instructions...")!,
+                            .init(role: .assistant, content: DialogueView.instructions)!,
                             .init(role: .user, content: "Hello, who are you?")!
                         ],
                         model: .gpt3_5Turbo,
                         stream: true
                     )
 
-                    appModel.openAI.chatsStream(query: query) { partialResult in
+                    appState.openAI.chatsStream(query: query) { partialResult in
                         showButtons = false
                         switch partialResult {
                         case .success(let chunk):
@@ -226,11 +226,11 @@ struct DialogueView: View {
     }
 
     private func waitUntilRunComplete(threadId: String, runId: String) async throws -> RunResult {
-        var result = try await appModel.openAI.runRetrieve(threadId: threadId, runId: runId)
+        var result = try await appState.openAI.runRetrieve(threadId: threadId, runId: runId)
 
         while result.status == .queued || result.status == .inProgress {
             try await Task.sleep(nanoseconds: 1_000_000_000) // 1s
-            result = try await appModel.openAI.runRetrieve(threadId: threadId, runId: runId)
+            result = try await appState.openAI.runRetrieve(threadId: threadId, runId: runId)
         }
         return result
     }
@@ -253,7 +253,7 @@ struct DialogueView: View {
                 responseFormat: .mp3,
                 speed: 1.0
             )
-            let result = try await appModel.openAI.audioCreateSpeech(query: audioQuery)
+            let result = try await appState.openAI.audioCreateSpeech(query: audioQuery)
             let tempURL = FileManager.default.temporaryDirectory
                 .appendingPathComponent("tts_temp.mp3")
             try result.audio.write(to: tempURL)
@@ -264,7 +264,7 @@ struct DialogueView: View {
                 withName: "GeneratedAudio",
                 configuration: config
             )
-            let audioPlaybackController = appModel.beeSceneState.therapist.playAudio(audioResource)
+            let audioPlaybackController = appState.beeSceneState.therapist.playAudio(audioResource)
 
             audioPlaybackController.completionHandler = {
                 try? FileManager.default.removeItem(at: tempURL)

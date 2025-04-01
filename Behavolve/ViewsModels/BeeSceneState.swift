@@ -5,6 +5,7 @@
 //  Created by Michaël ATTAL on 31/01/2025.
 //
 
+import ARKit
 import Foundation
 import RealityFoundation
 
@@ -50,6 +51,14 @@ enum ImmersiveBeeSceneStep {
 @Observable
 class BeeSceneState {
     var bee = Entity()
+    var beeAudioPlaybackController: AudioPlaybackController!
     var therapist = Entity()
+    var flowersPotsGroup = Entity()
+    var flowersPotOneDefault = Entity()
+    var flowersPotTwoAlternativ = Entity()
+    var flowersPotTreeOriginal = Entity()
+    var daffodilFlowerPot = Entity()
+    var tableInPatientRoom: (any Anchor)?
+    var floorInPatientRoom: (any Anchor)?
     var step: ImmersiveBeeSceneStep = .neutralIdle
 }

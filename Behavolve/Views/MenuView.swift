@@ -10,14 +10,14 @@ import RealityKitContent
 import SwiftUI
 
 struct MenuView: View {
-    @Environment(AppModel.self) private var appModel
+    @Environment(AppState.self) private var appState
 
     @State var currentSunIconSize = CGFloat(90)
     @State var selectedScene: ImmersiveViewAvailable = .bee
 
     var body: some View {
         Group {
-            if appModel.currentImmersiveView == .none {
+            if appState.currentImmersiveView == .none {
                 startMenu.frame(width: 800, height: 600)
             } else {
                 // TODO: Do each menu for each scene
@@ -101,7 +101,7 @@ struct MenuView: View {
         GeometryReader { geometry in
             ZStack {
                 Button(action: {
-                    appModel.currentImmersiveView = .none
+                    appState.currentImmersiveView = .none
                 }) {
                     Text("Exit")
                 }.position(x: geometry.size.width - 60, y: 40)
@@ -133,5 +133,5 @@ struct WaveView<Effect: SymbolEffect & IndefiniteSymbolEffect>: View {
 
 #Preview(windowStyle: .automatic) {
     MenuView()
-        .environment(AppModel())
+        .environment(AppState())
 }

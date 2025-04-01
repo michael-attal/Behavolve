@@ -5,7 +5,6 @@
 //  Created by Michaël ATTAL on 30/01/2025.
 //
 
-
 import RealityKit
 
 enum HelperGestures {

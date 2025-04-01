@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B895ADAE2D4D1EC100CC79DE /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = B895ADAD2D4D1EC100CC79DE /* OpenAI */; };
+		B8828FAD2D95486C001EE69A /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = B8828FAC2D95486C001EE69A /* OpenAI */; };
 		B8ED48A92CCFFFF6004F410C /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B8ED48A82CCFFFF6004F410C /* RealityKitContent */; };
 		B8ED48E12CD0E6A7004F410C /* CREDITS.md in Resources */ = {isa = PBXBuildFile; fileRef = B8ED48E02CD0E6A1004F410C /* CREDITS.md */; };
 		B8ED48E52CD0E734004F410C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B8ED48E42CD0E730004F410C /* README.md */; };
@@ -62,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B895ADAE2D4D1EC100CC79DE /* OpenAI in Frameworks */,
+				B8828FAD2D95486C001EE69A /* OpenAI in Frameworks */,
 				B8ED48A92CCFFFF6004F410C /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,7 +127,7 @@
 			name = Behavolve;
 			packageProductDependencies = (
 				B8ED48A82CCFFFF6004F410C /* RealityKitContent */,
-				B895ADAD2D4D1EC100CC79DE /* OpenAI */,
+				B8828FAC2D95486C001EE69A /* OpenAI */,
 			);
 			productName = Behavolve;
 			productReference = B8ED48A32CCFFFF6004F410C /* Behavolve.app */;
@@ -186,7 +186,7 @@
 			mainGroup = B8ED489A2CCFFFF6004F410C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B895ADAC2D4D1EC100CC79DE /* XCRemoteSwiftPackageReference "OpenAI" */,
+				B8828FAB2D95486C001EE69A /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B8ED48A42CCFFFF6004F410C /* Products */;
@@ -492,20 +492,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B895ADAC2D4D1EC100CC79DE /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+		B8828FAB2D95486C001EE69A /* XCRemoteSwiftPackageReference "OpenAI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.2;
+				minimumVersion = 0.3.8;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B895ADAD2D4D1EC100CC79DE /* OpenAI */ = {
+		B8828FAC2D95486C001EE69A /* OpenAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B895ADAC2D4D1EC100CC79DE /* XCRemoteSwiftPackageReference "OpenAI" */;
+			package = B8828FAB2D95486C001EE69A /* XCRemoteSwiftPackageReference "OpenAI" */;
 			productName = OpenAI;
 		};
 		B8ED48A82CCFFFF6004F410C /* RealityKitContent */ = {

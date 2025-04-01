@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ToggleImmersiveSpaceButtonView: View {
-    @Environment(AppModel.self) private var appModel
+    @Environment(AppState.self) private var appState
 
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
@@ -30,25 +30,25 @@ struct ToggleImmersiveSpaceButtonView: View {
 
     var body: some View {
         Button {
-            appModel.currentImmersiveView = immersiveView
+            appState.currentImmersiveView = immersiveView
             Task { @MainActor in
-                switch appModel.immersiveSpaceState {
+                switch appState.immersiveSpaceState {
                     case .open:
-                        appModel.immersiveSpaceState = .inTransition
+                        appState.immersiveSpaceState = .inTransition
                         await dismissImmersiveSpace()
 
                     case .closed:
-                        appModel.immersiveSpaceState = .inTransition
-                        switch await openImmersiveSpace(id: appModel.immersiveSpaceID) {
+                        appState.immersiveSpaceState = .inTransition
+                        switch await openImmersiveSpace(id: appState.immersiveSpaceID) {
                             case .opened:
-                                dismissWindow(id: appModel.MenuWindowID)
+                                dismissWindow(id: appState.MenuWindowID)
 
                             case .userCancelled, .error:
                                 fallthrough
 
                             @unknown default:
-                                appModel.immersiveSpaceState = .closed
-                                appModel.currentImmersiveView = .none
+                                appState.immersiveSpaceState = .closed
+                                appState.currentImmersiveView = .none
                         }
 
                     case .inTransition:
@@ -56,12 +56,12 @@ struct ToggleImmersiveSpaceButtonView: View {
                 }
             }
         } label: {
-            Text(appModel.immersiveSpaceState == .open ? endText : startText)
+            Text(appState.immersiveSpaceState == .open ? endText : startText)
                 .font(.title)
                 .frame(width: sizeButton)
         }
         .controlSize(.extraLarge)
-        .disabled(appModel.immersiveSpaceState == .inTransition)
+        .disabled(appState.immersiveSpaceState == .inTransition)
         .animation(.none, value: 0)
         .fontWeight(.semibold)
     }

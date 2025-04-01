@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct BehavolveApp: App {
-    @State private var appModel = AppModel()
+    @State private var appState = AppState()
 
     init() {
         LookAtTargetSystem.registerSystem()
@@ -17,20 +17,20 @@ struct BehavolveApp: App {
     }
 
     var body: some Scene {
-        WindowGroup(id: appModel.MenuWindowID) {
+        WindowGroup(id: appState.MenuWindowID) {
             MenuView()
-                .environment(appModel)
+                .environment(appState)
         }.windowResizability(.contentSize)
 
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            if appModel.currentImmersiveView == .bee {
+        ImmersiveSpace(id: appState.immersiveSpaceID) {
+            if appState.currentImmersiveView == .bee {
                 ImmersiveBeeView()
-                    .environment(appModel)
+                    .environment(appState)
                     .onAppear {
-                        appModel.immersiveSpaceState = .open
+                        appState.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        appState.immersiveSpaceState = .closed
                     }
             } else {
                 // TODO: Other scene

@@ -1,0 +1,145 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "pots_and_vase_with_flowers" (
+        active = true
+        prepend references = @pots_and_vase_with_flowers.usdz@
+    )
+    {
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Meshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "allflowersspot_obj_cleaner_materialmerger_gles"
+                {
+                    over "Object_2" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_3" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_4" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_5" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_6" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_7" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_8" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_9" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_10" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_11" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_12" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_13" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_14" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_15" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_16" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                def RealityKitComponent "InputTarget"
+                {
+                    uniform token info:id = "RealityKit.InputTarget"
+                }
+
+                def RealityKitComponent "Collider"
+                {
+                    uint group = 1
+                    uniform token info:id = "RealityKit.Collider"
+                    uint mask = 4294967295
+                    token type = "Default"
+
+                    def RealityKitStruct "Shape"
+                    {
+                        float3 extent = (7.13595, 9.899162, 23.852158)
+                        token shapeType = "Box"
+
+                        def RealityKitStruct "pose"
+                        {
+                            float3 position = (1.027598, -10.757092, 11.929306)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
