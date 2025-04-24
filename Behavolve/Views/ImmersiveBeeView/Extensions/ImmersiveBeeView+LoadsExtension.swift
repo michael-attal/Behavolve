@@ -18,7 +18,7 @@ extension ImmersiveBeeView {
 
         bee.setGroundingShadow(castsShadow: true)
 
-        bee.scale = [0.001, 0.001, 0.001]
+        bee.scale = [0.00025, 0.00025, 0.00025]
         bee.position = [0, 1.5, -1.5]
 
         guard let beeAnimResource = bee.availableAnimations.first else {
@@ -32,9 +32,27 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee audio")
         }
         bee.spatialAudio = SpatialAudioComponent(gain: -50)
+
         appState.beeSceneState.beeAudioPlaybackController = bee.prepareAudio(audioResource)
 
+        bee.components.set(
+            SteeringComponent(avoidDistance: 0.15, strength: 1.0)
+        )
+
         return bee
+    }
+
+    func loadBeehive(from: Entity) async throws -> Entity {
+        guard let beehive = from.findEntity(named: "Wooden_Beehive") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Wooden_Beehive entity")
+        }
+
+        beehive.setGroundingShadow(castsShadow: true)
+        beehive.scale = [0.005, 0.005, 0.005]
+        beehive.position = [-1.5, 0.0, -1.5]
+        // TODO: Place it on a table instead of hardcoding the position later (like the flowers)
+
+        return beehive
     }
 
     func loadTherapist(from: Entity) throws -> Entity {
@@ -81,7 +99,7 @@ extension ImmersiveBeeView {
 
         flower.setGroundingShadow(castsShadow: true)
 
-        flower.scale = [0.001, 0.001, 0.001]
+        flower.scale = [0.1, 0.1, 0.1]
         flower.position = [1, 0, -1.1]
 
         // guard let flowerAnimResource = flower.availableAnimations.first else {

@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import RealityKit
 
-public extension Entity {
+extension Entity {
     func addSkybox(for named: String) async {
         do {
             let texture = try await TextureResource(named: named)
@@ -66,7 +66,7 @@ extension Entity {
     }
 }
 
-public extension Entity {
+extension Entity {
     /// If true, the entity will cast a shadow
     func setGroundingShadow(castsShadow shouldCastsShadow: Bool) {
         self.enumerateDescendants { descendant, _ in
@@ -81,7 +81,7 @@ public extension Entity {
     }
 }
 
-public extension Entity {
+extension Entity {
     /// Returns the orientation of the entity specified in the app's coordinate system. On
     /// iOS and macOS, which don't have a device native coordinate system, scene
     /// space is often referred to as "world space".
@@ -108,6 +108,65 @@ extension Entity {
     }
 }
 
-extension Double {
-    @inline(__always) var degreesToRadians: Double { return self * .pi / 180 }
+extension Entity {
+    /// Recursively searches the entity and its children for a `ModelEntity` which can have physics applied to it.
+    /// - Returns: The first `ModelEntity` discovered from descedents of an `Entity` instance.
+    func findModelEntity() -> ModelEntity? {
+        if let modelEntity = self as? ModelEntity {
+            return modelEntity
+        }
+
+        // Recursively search in the children
+        for child in self.children {
+            if let found = child.findModelEntity() {
+                return found
+            }
+        }
+
+        // Return nil if no ModelEntity with a collision component is found in the hierarchy
+        print("Could not find collisionable entity for \(self)")
+        return nil
+    }
+
+    /// Recursively searches the entity and its children for all entities with a given component type. **Don't use this in systems; instead, query the scene update context.** This is provided for convenience at the UI level.
+    /// - Parameter componentType: A component type.
+    /// - Returns: All entities which have the component.
+    func findEntitiesWithComponent<T: Component>(_ componentType: T.Type) -> [Entity] {
+        var entitiesWithComponent: [Entity] = []
+
+        // Check if the current entity has the component and add it to the array
+        if self.components[componentType] != nil {
+            entitiesWithComponent.append(self)
+        }
+
+        // Recursively search in the child entities
+        for child in self.children {
+            entitiesWithComponent.append(contentsOf: child.findEntitiesWithComponent(componentType))
+        }
+
+        return entitiesWithComponent
+    }
+}
+
+extension ModelEntity {
+    /// Ensure the entity has the required physics and collision components
+    /// to be driven by a `PhysicsMotionComponent`.
+    @MainActor
+    func ensurePhysicsSupport() {
+        // Adding force requires a collision component
+        if collision == nil {
+            collision = CollisionComponent(
+                shapes: [.generateBox(size: .init(repeating: 0.1))]
+            )
+        }
+
+        // Adding force requires a physics body
+        // https://developer.apple.com/documentation/realitykit/physicsbodycomponent
+        if physicsBody == nil {
+            var body = PhysicsBodyComponent()
+            body.isAffectedByGravity = false
+            body.massProperties.mass = 0.001
+            physicsBody = body
+        }
+    }
 }

@@ -30,10 +30,8 @@ struct DialogueView: View {
 
     static let instructions = """
     You're a personal Cognitive Behavioral therapist called Lucie. 
-    Your mission is to help you understand your feelings about your phobias and find solutions to manage them better
-    Your aim is to help users achieve their personal goals, 
-     develop their self-confidence, better manage their emotions, 
-     and guide them with kindness and clarity.
+    Your mission is to help you understand your feelings about your phobias and find solutions to manage them better.
+    Your aim is to help users achieve their personal goals,develop their self-confidence, better manage their emotions, and guide them with kindness and clarity.
 
     Here is the description of the application in which you exist:
 
@@ -122,8 +120,14 @@ struct DialogueView: View {
                     HStack {
                         Button(action: {
                             onValidationButtonClicked()
+                            if AppState.isDevelopmentMode {
+                                Task {
+                                    // Don't consume OpenAI during development, still show some fake input text data
+                                    await animatePromptText(appState.beeSceneState.step.fakeInputTextForDevelopment())
+                                }
+                            }
                         }) {
-                            Text("I'm ready to start")
+                            Text(appState.beeSceneState.step.buttonText())
                                 .font(.extraLargeTitle)
                                 .fontWeight(.regular)
                                 .padding(42)
@@ -150,7 +154,7 @@ struct DialogueView: View {
             }
         }
         .task {
-            if appState.isDevelopmentMode {
+            if AppState.isDevelopmentMode {
                 // Don't consume OpenAI during development
                 await animatePromptText(welcomeText)
                 return
@@ -250,7 +254,7 @@ struct DialogueView: View {
                 model: .tts_1,
                 input: text,
                 voice: .nova,
-                responseFormat: .mp3,
+                responseFormat: .aac,
                 speed: 1.0
             )
             let result = try await appState.openAI.audioCreateSpeech(query: audioQuery)
@@ -281,7 +285,7 @@ struct DialogueView: View {
         let words = text.split(separator: " ")
         for word in words {
             inputText.append(word + " ")
-            let milliseconds = (1 + UInt64.random(in: 0 ... 1)) * 100
+            let milliseconds = AppState.isDevelopmentMode ? 1 : (1 + UInt64.random(in: 0 ... 1)) * 100
             try? await Task.sleep(for: .milliseconds(milliseconds))
         }
 

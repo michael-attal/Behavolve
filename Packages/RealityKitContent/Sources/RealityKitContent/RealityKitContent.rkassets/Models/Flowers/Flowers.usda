@@ -41,6 +41,68 @@ def Xform "Root"
                 }
             }
         }
+
+        over "Daffodil"
+        {
+            reorder nameChildren = ["Nectar_spot_1", "Nectar_spot_2", "Nectar_spot_3", "Daffodil_geometry"]
+            def Xform "Nectar_spot_1" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                float3 xformOp:translate = (-7.9117217, 9.18505, 9.631863)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_2" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (-1.904188e-8, -1.048352e-8, -4.9486218e-8)
+                }
+            )
+            {
+                float2 ui:nodegraph:node:pos = (40, 40)
+                int ui:nodegraph:node:stackingOrder = 2
+                quatf xformOp:orient = (0.99999994, -9.52094e-9, -5.2417595e-9, -2.4743107e-8)
+                float3 xformOp:translate = (35.066628, -9.989501, 9.679539)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_3" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (60, 60)
+                int ui:nodegraph:node:stackingOrder = 3
+                float3 xformOp:translate = (-1.2898587, -11.428912, 12.208263)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_4" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (80, 80)
+                int ui:nodegraph:node:stackingOrder = 4
+                quatf xformOp:orient = (1, 1.1832861e-9, 5.9988152e-9, -4.9973465e-8)
+                float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+                float3 xformOp:translate = (-7.887302, -35.366024, 8.059332)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_5" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (100, 100)
+                int ui:nodegraph:node:stackingOrder = 5
+                quatf xformOp:orient = (1, 4.5468784e-9, 1.6558138e-10, -5.72956e-8)
+                float3 xformOp:scale = (0.9999998, 0.99999976, 0.99999976)
+                float3 xformOp:translate = (33.628304, -25.980062, 5.417892)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
     }
 }
 

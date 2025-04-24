@@ -15,6 +15,9 @@ struct MenuView: View {
     @State var currentSunIconSize = CGFloat(90)
     @State var selectedScene: ImmersiveViewAvailable = .bee
 
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissWindow) private var dismissWindow
+
     var body: some View {
         Group {
             if appState.currentImmersiveView == .none {
@@ -27,7 +30,15 @@ struct MenuView: View {
         .edgesIgnoringSafeArea(.all)
         .background(
             LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
-        )
+        ).task {
+            if AppState.isDevelopmentMode {
+                // Directly open the immersive space in development mode
+                try? await Task.sleep(for: .seconds(1))
+                appState.currentImmersiveView = .bee
+                await openImmersiveSpace(id: appState.immersiveSpaceID)
+                dismissWindow(id: appState.MenuWindowID)
+            }
+        }
     }
 
     var startMenu: some View {

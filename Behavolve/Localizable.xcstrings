@@ -32,6 +32,7 @@
       }
     },
     "I'm ready to start" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

@@ -24,7 +24,7 @@ enum ImmersiveViewAvailable: String {
 @MainActor
 @Observable
 class AppState {
-    let isDevelopmentMode = true
+    static let isDevelopmentMode = true
     let beeSceneState = BeeSceneState()
 
     var openAI = OpenAI(configuration: OpenAI.Configuration(token: YOUR_OPENAI_TOKEN_HERE, organizationIdentifier: YOUR_OPENAI_ORGANIZATION_ID_HERE, timeoutInterval: 86_400.0))
@@ -56,6 +56,7 @@ class AppState {
     var providersStoppedWithError = false
     var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     var handTrackingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
+    var sceneReconstruction = SceneReconstructionProvider()
 
     var allRequiredAuthorizationsAreGranted: Bool {
         worldSensingAuthorizationStatus == .allowed && handTrackingAuthorizationStatus == .allowed

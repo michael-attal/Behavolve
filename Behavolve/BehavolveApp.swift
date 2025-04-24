@@ -14,6 +14,23 @@ struct BehavolveApp: App {
     init() {
         LookAtTargetSystem.registerSystem()
         LookAtTargetComponent.registerComponent()
+
+        MoveToComponent.registerComponent()
+        MovementSystem.registerSystem()
+
+        OscillationComponent.registerComponent()
+        OscillationSystem.registerSystem()
+
+        SteeringComponent.registerComponent()
+        SteeringSystem.registerSystem()
+
+        PathfindingSystem.registerSystem()
+
+        NectarDepositSystem.registerSystem()
+        NectarDepositComponent.registerComponent()
+
+        NectarGatheringSystem.registerSystem()
+        NectarGatheringComponent.registerComponent()
     }
 
     var body: some Scene {

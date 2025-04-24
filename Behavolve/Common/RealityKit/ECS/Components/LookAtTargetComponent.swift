@@ -7,8 +7,8 @@
 
 import RealityKit
 
-public struct LookAtTargetComponent: Component {
-    public enum Target {
+struct LookAtTargetComponent: Component {
+    enum Target {
         case device
         case world(SIMD3<Float>)
     }
@@ -16,7 +16,7 @@ public struct LookAtTargetComponent: Component {
     let target: Target
     let targetCorrection: ((SIMD3<Float>, SIMD3<Float>) -> SIMD3<Float>)?
 
-    public init(target: Target, targetCorrection: ((_ entityPosition: SIMD3<Float>, _ actualTargetPosition: SIMD3<Float>) -> SIMD3<Float>)? = nil) {
+    init(target: Target, targetCorrection: ((_ entityPosition: SIMD3<Float>, _ actualTargetPosition: SIMD3<Float>) -> SIMD3<Float>)? = nil) {
         self.target = target
         self.targetCorrection = targetCorrection
     }

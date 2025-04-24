@@ -45,12 +45,42 @@ enum ImmersiveBeeSceneStep {
             self = .interactionInOwnEnvironment
         }
     }
+
+    func buttonText() -> String {
+        switch self {
+        case .neutralIdle:
+            return "I'm ready to start"
+        case .neutralExplanation:
+            return "Ok let's continu"
+        default:
+            return "Next"
+        }
+    }
+
+    func buttonCancelText() -> String {
+        switch self {
+        case .neutralIdle:
+            return "Cancel"
+        default:
+            return "Cancel"
+        }
+    }
+
+    func fakeInputTextForDevelopment() -> String {
+        switch self {
+        case .neutralIdle:
+            return "..."
+        default:
+            return "Blabla \(self)"
+        }
+    }
 }
 
 @MainActor
 @Observable
 class BeeSceneState {
     var bee = Entity()
+    var beehive = Entity()
     var beeAudioPlaybackController: AudioPlaybackController!
     var therapist = Entity()
     var flowersPotsGroup = Entity()
@@ -60,5 +90,5 @@ class BeeSceneState {
     var daffodilFlowerPot = Entity()
     var tableInPatientRoom: (any Anchor)?
     var floorInPatientRoom: (any Anchor)?
-    var step: ImmersiveBeeSceneStep = .neutralIdle
+    var step: ImmersiveBeeSceneStep = AppState.isDevelopmentMode ? .neutralBeeGatheringNectarFromFlowers : .neutralIdle
 }

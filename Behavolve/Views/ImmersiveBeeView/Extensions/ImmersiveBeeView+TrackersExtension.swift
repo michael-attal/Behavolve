@@ -16,6 +16,16 @@ extension ImmersiveBeeView {
             }
         }
     }
+    
+    @MainActor func trackSceneReconstruction() {
+        Task {
+            try await appState.arkitSession.run([appState.sceneReconstruction])
+
+            for await update in appState.sceneReconstruction.anchorUpdates {
+                print(update.anchor.description)
+            }
+        }
+    }
 
     @MainActor func trackPlaneDetection() {
         #if targetEnvironment(simulator)
@@ -30,7 +40,7 @@ extension ImmersiveBeeView {
                 } else if update.anchor.classification == .floor {
                     appState.beeSceneState.floorInPatientRoom = update.anchor
                 }
-                placeBee()
+                placeFlower()
             }
         }
         #endif

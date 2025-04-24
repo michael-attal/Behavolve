@@ -8,7 +8,7 @@
 import RealityFoundation
 
 extension ImmersiveBeeView {
-    func placeBee() {
+    func placeFlower() {
         if let table = appState.beeSceneState.tableInPatientRoom {
             // appState.beeSceneState.daffodilFlowerPot.position = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: [0.2, 0.2])).position
             appState.beeSceneState.daffodilFlowerPot.transform = Transform(matrix: table.originFromAnchorTransform)

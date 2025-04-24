@@ -9,7 +9,7 @@ import ARKit
 import RealityKit
 import SwiftUI
 
-@MainActor public struct LookAtTargetSystem: System {
+@MainActor struct LookAtTargetSystem: System {
     @MainActor class DevicePoseShared {
         let devicePoseSafe: IsolatedValue<Transform>
 
@@ -37,7 +37,7 @@ import SwiftUI
     private let arkitSession = ARKitSession()
     private let worldTrackingProvider = WorldTrackingProvider()
 
-    public init(scene: RealityKit.Scene) {
+    init(scene: RealityKit.Scene) {
         setUpSession()
     }
 
@@ -56,7 +56,7 @@ import SwiftUI
         }
     }
 
-    public func update(context: SceneUpdateContext) {
+    func update(context: SceneUpdateContext) {
         let devicePosition = LookAtTargetSystem.shared.devicePoseSafe.value.translation
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard let lookAtTargetComponent = entity.components[LookAtTargetComponent.self] else {

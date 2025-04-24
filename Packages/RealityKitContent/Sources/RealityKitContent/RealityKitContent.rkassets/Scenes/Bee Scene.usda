@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Flying_Bee", "Therapist_TCC", "Therapist", "Flowers", "bee_mp3"]
+    reorder nameChildren = ["Flying_Bee", "Therapist_TCC", "Therapist", "Flowers", "Wooden_Beehive"]
     def "Flying_Bee" (
         active = true
         references = @../Models/Bees/Flying_Bee.usdz@
@@ -168,6 +168,15 @@ def Xform "Root"
     )
     {
         float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "Wooden_Beehive" (
+        active = true
+        references = @../Models/Beehives/wooden_beehive.usdz@
+    )
+    {
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }

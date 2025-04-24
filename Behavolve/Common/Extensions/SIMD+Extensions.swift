@@ -7,7 +7,7 @@
 
 import simd
 
-public extension SIMD3 where Scalar: ExpressibleByIntegerLiteral {
+extension SIMD3 where Scalar: ExpressibleByIntegerLiteral {
     static func dx(_ value: Scalar = 1) -> SIMD3<Scalar> {
         return SIMD3<Scalar>(value, 0, 0)
     }
@@ -27,7 +27,7 @@ public extension SIMD3 where Scalar: ExpressibleByIntegerLiteral {
     }
 }
 
-public extension simd_float4x4 {
+extension simd_float4x4 {
     static let identity: simd_float4x4 = matrix_identity_float4x4
 
     func translated(by translation: SIMD3<Float>) -> simd_float4x4 {
@@ -57,4 +57,18 @@ public extension simd_float4x4 {
             targetBaseInWorld*originBaseInWorld.inverse*self
         }
     }
+}
+
+extension Double {
+    @inline(__always) var degreesToRadians: Double { return self * .pi / 180 }
+}
+
+// matrix_float4x4 -> SIMD3 translation
+extension simd_float4x4 {
+    @inline(__always)
+    var position: SIMD3<Float> { [columns.3.x, columns.3.y, columns.3.z] }
+}
+
+extension SIMD4 where Scalar == Float {
+    var xyz: SIMD3<Float> { SIMD3(x, y, z) }
 }

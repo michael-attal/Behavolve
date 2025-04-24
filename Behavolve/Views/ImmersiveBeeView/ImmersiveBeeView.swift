@@ -22,8 +22,9 @@ struct ImmersiveBeeView: View {
         RealityView { content, attachments in
             do {
                 if let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) {
-                    let bee = try await loadBee(from: immersiveContentEntity)
                     let flower = try loadFlower(from: immersiveContentEntity, withName: "Flowers", animatedEntityNamed: "Daffodil")
+                    let bee = try await loadBee(from: immersiveContentEntity)
+                    let beehive = try await loadBeehive(from: immersiveContentEntity)
                     let therapist = try loadTherapist(from: immersiveContentEntity)
                     let dialogue = try loadDialogue(from: attachments)
 
@@ -36,6 +37,7 @@ struct ImmersiveBeeView: View {
 
                     appState.beeSceneState.daffodilFlowerPot = flower
                     appState.beeSceneState.therapist = therapist
+                    appState.beeSceneState.beehive = beehive
                     appState.beeSceneState.bee = bee
                 }
             } catch {
@@ -50,9 +52,20 @@ struct ImmersiveBeeView: View {
         } update: { content, attachments in
             do {
                 print(appState.beeSceneState.step)
-                if appState.beeSceneState.step == .neutralBeeGatheringNectarFromFlowers {
-                    appState.beeSceneState.beeAudioPlaybackController.play()
+
+                switch appState.beeSceneState.step {
+                case .neutralExplanation:
+                    performNeutralExplanationStep()
+                case .neutralBeeGatheringNectarFromFlowers:
+                    performNeutralBeeGatheringNectarFromFlowersStep()
+                case .interactionInOwnEnvironment:
+                    performInteractionInOwnEnvironmentStep()
+                case .interactionInForrestFullSpace:
+                    performInteractionInForrestFullSpaceStep()
+                case .neutralIdle:
+                    print("Restart experience?")
                 }
+
             } catch {
                 let formattedErrorMessage = "Error in ImmersiveBeeView RealityView's update func: " + String(describing: error)
                 print(formattedErrorMessage)
