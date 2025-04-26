@@ -18,7 +18,7 @@ extension ImmersiveBeeView {
 
         bee.setGroundingShadow(castsShadow: true)
 
-        bee.scale = [0.00025, 0.00025, 0.00025]
+        bee.scale = [0.00015, 0.00015, 0.00015]
         bee.position = [0, 1.5, -1.5]
 
         guard let beeAnimResource = bee.availableAnimations.first else {

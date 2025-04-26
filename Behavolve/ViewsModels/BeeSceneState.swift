@@ -83,6 +83,7 @@ class BeeSceneState {
     var beehive = Entity()
     var beeAudioPlaybackController: AudioPlaybackController!
     var therapist = Entity()
+    var isFlowersPlaced: Bool = false
     var flowersPotsGroup = Entity()
     var flowersPotOneDefault = Entity()
     var flowersPotTwoAlternativ = Entity()

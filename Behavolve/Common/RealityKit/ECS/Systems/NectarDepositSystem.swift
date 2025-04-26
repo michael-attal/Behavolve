@@ -66,7 +66,8 @@ final class NectarDepositSystem: @preconcurrency System {
                     #if targetEnvironment(simulator)
                     let strategy: MoveStrategy = .direct
                     #else
-                    let strategy: MoveStrategy = .pathfinding
+                    // let strategy: MoveStrategy = .pathfinding // Not working atm
+                    let strategy: MoveStrategy = .direct
                     #endif
                     parent.components.set(
                         MoveToComponent(destination: deposit.depotPosition,

@@ -38,13 +38,16 @@ extension ImmersiveBeeView {
         Task {
             try await appState.arkitSession.run([appState.planeDetection])
 
+            // TODO: Later, when all anchors have been placed (isFlowersPlaced, ...), put a condition to cancel the for await loop.
             for await update in appState.planeDetection.anchorUpdates {
                 if update.anchor.classification == .table {
                     appState.beeSceneState.tableInPatientRoom = update.anchor
                 } else if update.anchor.classification == .floor {
                     appState.beeSceneState.floorInPatientRoom = update.anchor
                 }
-                placeFlower()
+                if appState.beeSceneState.isFlowersPlaced == false {
+                    placeFlower()
+                }
             }
         }
         #endif

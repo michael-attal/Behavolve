@@ -2,12 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>Behavolve utilise le suivi de vos mains pour vous permettre d&apos;interagir naturellement avec les éléments de la scène.</string>
+	<key>NSWorldSensingUsageDescription</key>
+	<string>Behavolve utilise la détection du monde pour permettre aux éléments virtuels de se déplacer et d&apos;interagir dans votre environnement réel.</string>
+	<key>NSEnterpriseMCAMUsageDescription</key>
+	<string>Behavolve utilise des technologies avancées de réalité augmentée pour synchroniser avec précision les éléments virtuels à votre environnement.</string>
+	<key>NSSceneReconstructionUsageDescription</key>
+	<string>Behavolve analyse votre environnement afin que les éléments virtuels puissent détecter, éviter ou utiliser les surfaces physiques autour de vous.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
-		<key>NSWorldSensingUsageDescription</key>
-		<string>Utilisé pour placer des entités dans votre propre environnement</string>
-		<key>NSHandsTrackingUsageDescription</key>
-		<string>Utilisé pour suivre vos mains dans le monde et interagir avec l&apos;environnement</string>
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
 		<string>UIWindowSceneSessionRoleApplication</string>
 		<key>UIApplicationSupportsMultipleScenes</key>

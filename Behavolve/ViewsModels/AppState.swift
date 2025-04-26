@@ -24,7 +24,7 @@ enum ImmersiveViewAvailable: String {
 @MainActor
 @Observable
 class AppState {
-    static let isDevelopmentMode = true
+    static let isDevelopmentMode = false
     let beeSceneState = BeeSceneState()
 
     var openAI = OpenAI(configuration: OpenAI.Configuration(token: YOUR_OPENAI_TOKEN_HERE, organizationIdentifier: YOUR_OPENAI_ORGANIZATION_ID_HERE, timeoutInterval: 86_400.0))

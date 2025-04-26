@@ -143,7 +143,8 @@ final class NectarGatheringSystem: @preconcurrency System {
                 #if targetEnvironment(simulator)
                 let strategy: MoveStrategy = .direct
                 #else
-                let strategy: MoveStrategy = .pathfinding
+                // let strategy: MoveStrategy = .pathfinding // not working atm
+                let strategy: MoveStrategy = .direct
                 #endif
 
                 let distance = simd_distance(here, target.position)
