@@ -24,7 +24,7 @@ extension ImmersiveBeeView {
             NectarSource(
                 position: position,
                 stock: 100,
-                reloadDuration: TimeInterval(Int.random(in: 20...40))
+                reloadDuration: TimeInterval(Int.random(in: 20 ... 40))
             )
         }
 

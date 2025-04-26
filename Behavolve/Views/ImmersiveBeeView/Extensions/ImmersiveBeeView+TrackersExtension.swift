@@ -16,8 +16,11 @@ extension ImmersiveBeeView {
             }
         }
     }
-    
+
     @MainActor func trackSceneReconstruction() {
+        #if targetEnvironment(simulator)
+        print("In simulator, scene reconstruction is disabled!")
+        #else
         Task {
             try await appState.arkitSession.run([appState.sceneReconstruction])
 
@@ -25,6 +28,7 @@ extension ImmersiveBeeView {
                 print(update.anchor.description)
             }
         }
+        #endif
     }
 
     @MainActor func trackPlaneDetection() {
