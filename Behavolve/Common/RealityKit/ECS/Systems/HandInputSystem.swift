@@ -5,40 +5,6 @@
 //  Created by Michaël ATTAL on 29/04/2025.
 //
 
-// MARK: - Pose cache ----------------------------------------------------------
-
-/// Thread-safe cache storing one frame of hand data (pose & fist state).
-// @MainActor
-// class HandPoseCache {
-//     static let shared = HandPoseCache()
-//
-//     private var fistClosed: [UUID: Bool] = [:]
-//
-//     func setFistClosed(_ closed: Bool, for handID: UUID) {
-//         fistClosed[handID] = closed
-//     }
-//
-//     func isFistClosed(for entity: Entity) -> Bool {
-//         guard let h = entity.components[HandComponent.self] else { return false }
-//         return fistClosed[h.handID] ?? false
-//     }
-// }
-
-// MARK: - HandInputSystem -----------------------------------------------------
-
-//
-//  HandInputSystem.swift
-//  Behavolve
-//
-//  Created by Michaël ATTAL on 29 / 04 / 2025.
-//
-//
-//  HandInputSystem.swift
-//  Behavolve
-//
-//  Created by Michaël ATTAL on 29/04/2025.
-//
-
 import ARKit
 import QuartzCore
 import RealityKit
@@ -72,7 +38,7 @@ final class HandInputSystem: System {
     func update(context: SceneUpdateContext) {
         guard case .running = provider.state else { return }
 
-        // Poll the most recent anchors (left + right) – API stable depuis v1
+        // Poll the most recent anchors (left + right)
         let (left, right) = provider.latestAnchors
         let anchors = [left, right].compactMap { $0 }
 
@@ -81,25 +47,25 @@ final class HandInputSystem: System {
         for anchor in anchors {
             visible.insert(anchor.id)
 
-            // a) map anchor → entity
-            let ent = hands[anchor.id] ?? {
-                let a = AnchorEntity()
-                a.components.set(HandComponent(handID: anchor.id))
-                a.components.set(ExitGestureComponent())
-                // context.scene.anchors.append(a) // FIXME
-                hands[anchor.id] = a
-                return a
+            // Create or reuse an AnchorEntity
+            let anchorEntity = hands[anchor.id] ?? {
+                let newAnchor = AnchorEntity(world: anchor.originFromAnchorTransform)
+                newAnchor.components.set(HandComponent(handID: anchor.id))
+                newAnchor.components.set(ExitGestureComponent())
+                // context.scene.addAnchor(newAnchor) // FIXME
+                hands[anchor.id] = newAnchor
+                return newAnchor
             }()
 
-            // b) update transform
-            ent.transform.translation = anchor.originFromAnchorTransform.columns.3.xyz
+            // Update transform
+            anchorEntity.transform.matrix = anchor.originFromAnchorTransform
 
-            // c) detect fist
+            // Detect fist
             let fistClosed = isFistClosed(anchor)
             Task { await HandPoseCache.shared.setFistClosed(fistClosed, for: anchor.id) }
         }
 
-        // d) remove lost hands
+        // Remove lost hands
         for (id, e) in hands where !visible.contains(id) {
             e.removeFromParent()
             hands.removeValue(forKey: id)
@@ -119,18 +85,24 @@ final class HandInputSystem: System {
         guard
             let thumb = pos(.thumbTip),
             let index = pos(.indexFingerTip),
+            let indexIntermediate = pos(.indexFingerIntermediateTip),
+            let indexIntermediateBase = pos(.indexFingerIntermediateBase),
+            let indexFingerKnuckle = pos(.indexFingerKnuckle),
             let wrist = pos(.wrist)
         else { return false }
 
-        let pinch = simd_distance(thumb, index) < 0.03
+        // let pinch = simd_distance(thumb, index) < 0.03
+        let pinch = (simd_distance(thumb, indexIntermediate) < 0.03) || (simd_distance(thumb, indexIntermediateBase) < 0.03) || (simd_distance(thumb, indexFingerKnuckle) < 0.03)
 
-        let folded = [
-            HandSkeleton.JointName.indexFingerTip,
+        let foldedFingers: [HandSkeleton.JointName] = [
+            .indexFingerTip,
             .middleFingerTip,
             .ringFingerTip,
             .littleFingerTip
-        ].allSatisfy { n in
-            if let p = pos(n) { return simd_distance(p, wrist) < 0.04 }
+        ]
+
+        let folded = foldedFingers.allSatisfy { n in
+            if let p = pos(n) { return simd_distance(p, wrist) < 0.10 }
             return false
         }
 
