@@ -20,8 +20,7 @@ struct MoveToComponent: Component, Sendable {
     var epsilon: Float
     var strategy: MoveStrategy
     var path: [SIMD3<Float>] = [] // way-points (set by PathfindingSystem)
-    var lastKnownPosition: SIMD3<Float>? // Used to couple with oscilliation component if any
-    
+
     init(destination: SIMD3<Float>,
          speed: Float,
          epsilon: Float = 0.05,

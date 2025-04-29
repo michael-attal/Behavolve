@@ -49,8 +49,7 @@ final class NectarGatheringSystem: @preconcurrency System {
 
                 // End of foraging: everything is put away, the stock is credited
                 entity.components.remove(NectarGatheringCooldownComponent.self)
-                entity.components.remove(OscillationComponent.self)
-
+                entity.components.set(OscillationComponent(amplitude: 0.01, frequency: 4)) // Back to default oscilliation
                 if let idx = gather.lastVisitedIndex {
                     let taken = min(harvestAmount, gather.nectarSources[idx].stock)
                     gather.nectarStock += taken
@@ -104,7 +103,7 @@ final class NectarGatheringSystem: @preconcurrency System {
 
                 // Visible vibration while gathering
                 entity.components.set(
-                    OscillationComponent(amplitude: 50, frequency: 4) // Larger oscillation upon collecting
+                    OscillationComponent(amplitude: 0.03, frequency: 4) // Larger oscillation upon collecting
                 )
 
                 // Start gathering cooldown

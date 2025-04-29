@@ -19,7 +19,7 @@ extension ImmersiveBeeView {
         bee.setGroundingShadow(castsShadow: true)
 
         bee.scale = [0.00015, 0.00015, 0.00015]
-        bee.position = [0, 1.5, -1.5]
+        bee.position = [-1.5, 0.1, -1.5] // Same as the beehive
 
         guard let beeAnimResource = bee.availableAnimations.first else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee animation")
@@ -32,23 +32,17 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee audio")
         }
         bee.spatialAudio = SpatialAudioComponent(gain: -50)
-
         appState.beeSceneState.beeAudioPlaybackController = bee.prepareAudio(audioResource)
 
-        bee.components.set(
-            SteeringComponent(avoidDistance: 0.15, strength: 1.0)
-        )
+        bee.components.set(SteeringComponent(avoidDistance: 0.15, strength: 1.0))
 
         #if !targetEnvironment(simulator)
         bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
         bee.components.set(HandCollisionComponent(collisionDistance: 0.1, impulseStrength: 1.0, recoverDuration: 3))
         #endif
 
-        bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
-        
-        // bee.components.set(
-        //     OscillationComponent(amplitude: 25, frequency: 4)
-        // )
+        // bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
+        bee.components.set(OscillationComponent(amplitude: 0.01, frequency: 4)) // idle oscillation
 
         return bee
     }
@@ -103,6 +97,7 @@ extension ImmersiveBeeView {
         return dialogue
     }
 
+    // TODO: Place the flower on a table inside the user's environment. If none is found, create a table and put the flower on top of it.
     func loadFlower(from: Entity, withName name: String, playScalingAnimation: Bool = true, animatedEntityNamed: String? = nil) throws -> Entity {
         guard let flower = from.findEntity(named: name) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find \(name) entity")

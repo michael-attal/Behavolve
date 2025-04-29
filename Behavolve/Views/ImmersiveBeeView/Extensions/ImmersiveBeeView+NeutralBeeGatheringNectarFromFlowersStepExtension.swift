@@ -11,6 +11,8 @@ import Foundation
 extension ImmersiveBeeView {
     func performNeutralBeeGatheringNectarFromFlowersStep() {
         appState.beeSceneState.beeAudioPlaybackController.play()
+        appState.beeSceneState.bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
+
         let daffodilFlowerPot = appState.beeSceneState.daffodilFlowerPot
 
         var nectarSourcesPositions: [SIMD3<Float>] = []
@@ -35,7 +37,7 @@ extension ImmersiveBeeView {
             NectarGatheringComponent(
                 nectarDepotSitePosition: depotSitePosition,
                 nectarSources: nectarSources,
-                speed: 0.6,
+                speed: 0.3,
             )
         )
     }

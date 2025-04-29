@@ -7,5 +7,13 @@
 
 // Extension for the NeutralExplanation step
 extension ImmersiveBeeView {
-    func performNeutralExplanationStep() {}
+    func performNeutralExplanationStep() {
+        // TODO: Put the bee in a cube to make the user feel safer.
+        appState.beeSceneState.bee.components.set(
+            MoveToComponent(destination: [0, 1.5, -1.5],
+                            speed: 0.5,
+                            epsilon: 0.01,
+                            strategy: .direct)
+        )
+    }
 }

@@ -32,6 +32,40 @@ struct ImmersiveBeeView: View {
                     therapist.addChild(dialogue)
                     immersiveContentEntity.addChild(flower)
 
+                    // Uncomment to have some nightmares
+                    // for i in 1 ... 100 {
+                    //     let clonedBee = bee.clone(recursive: true)
+                    //     clonedBee.position.x += Float(i) / 100.0
+                    //     let daffodilFlowerPot = flower
+                   
+                    //     var nectarSourcesPositions: [SIMD3<Float>] = []
+                    //     for i in 1 ... 5 {
+                    //         if let entity = daffodilFlowerPot.findEntity(named: "Nectar_spot_\(i)") {
+                    //             nectarSourcesPositions.append(entity.position(relativeTo: nil))
+                    //         }
+                    //     }
+                   
+                    //     let nectarSources = nectarSourcesPositions.enumerated().map { index, position in
+                    //         NectarSource(
+                    //             position: position,
+                    //             stock: 100,
+                    //             reloadDuration: TimeInterval(Int.random(in: 20 ... 40))
+                    //         )
+                    //     }
+                   
+                    //     var depotSitePosition = beehive.position(relativeTo: nil)
+                    //     depotSitePosition.y += 0.1
+                   
+                    //     clonedBee.components.set(
+                    //         NectarGatheringComponent(
+                    //             nectarDepotSitePosition: depotSitePosition,
+                    //             nectarSources: nectarSources,
+                    //             speed: Float(Int.random(in: 1 ... 100)) / 100.0
+                    //         )
+                    //     )
+                   
+                    //     immersiveContentEntity.addChild(clonedBee)
+                    // }
                     content.add(immersiveContentEntity)
 
                     trackPlaneDetection()

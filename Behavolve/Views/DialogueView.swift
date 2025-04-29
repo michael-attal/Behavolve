@@ -100,11 +100,6 @@ struct DialogueView: View {
     Behavolve represents a fusion of cutting-edge technology and a modern therapeutic approach, opening up new perspectives in the treatment of phobias. Thanks to its open-source nature, the community of developers and healthcare professionals can use the application free of charge and contribute to its ongoing enhancement, guaranteeing maximum effectiveness for patients.
     """
 
-    let welcomeText = """
-    Hello and welcome to Behavolve. Our mission is to help you understand your feelings about your phobias and find solutions to manage them better. 
-    To begin with, could you tell me how you're feeling right now?
-    """
-
     var onConfirmationButtonClicked: (() -> ()) = {}
     var onNextStepButtonClicked: (() -> ()) = {}
     var onCancelButtonClicked: (() -> ()) = {}
@@ -185,7 +180,7 @@ struct DialogueView: View {
         .task {
             if AppState.isDevelopmentMode || DialogueView.ChatGptEnabled == false {
                 // Don't consume OpenAI during development
-                await animatePromptText(welcomeText)
+                await animatePromptText(appState.beeSceneState.step.offlineStepPresentationText())
                 return
             }
             do {

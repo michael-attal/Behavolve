@@ -34,8 +34,8 @@ final class NectarDepositSystem: @preconcurrency System {
                 parent.components.set(deposit) // persist
 
                 if deposit.remainingCooldown <= 0 {
-                    // Drop finished -> stop oscillation & switch to gathering
-                    parent.components.remove(OscillationComponent.self)
+                    // Drop finished -> switch to gathering
+                    parent.components.set(OscillationComponent(amplitude: 0.01, frequency: 4)) // Back to default oscilliation
                     parent.components.remove(NectarDepositComponent.self)
                     parent.components.set(
                         NectarGatheringComponent(
@@ -82,7 +82,7 @@ final class NectarDepositSystem: @preconcurrency System {
             // Arrival: oscillation + countdown
             parent.components.remove(LookAtTargetComponent.self)
             parent.components.remove(MoveToComponent.self) // ensure stopped
-            parent.components.set(OscillationComponent(amplitude: 50, frequency: 4) // Larger oscillation upon deposition
+            parent.components.set(OscillationComponent(amplitude: 0.03, frequency: 4) // Larger oscillation upon deposition
             )
 
             deposit.remainingCooldown = deposit.depositDuration

@@ -126,6 +126,8 @@ enum ImmersiveBeeSceneStep {
             This application uses mixed reality to gradually expose you to bee encounters while teaching you practical coping strategies. Remember, you're always in control - you can exit at any time by making a fist gesture or simply saying "EXIT".
 
             Throughout this experience, the bee will naturally move away if you get too close, just like in nature. This ensures you'll always maintain a comfortable distance. Are you ready to begin this journey towards understanding and managing your fear better?
+            
+            In the next step, the bee will fly to the middle of the room in a protective cube. If you want, you can inspect it or even remove the cube with your hand if you want.
             """
 
         case .neutralExplanation:
