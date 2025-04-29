@@ -36,6 +36,19 @@ struct ImmersiveBeeView: View {
 
                     trackPlaneDetection()
 
+                    // TODO: Create load hands
+                    if appState.handAnchorEntities.isEmpty {
+                        for _ in 0 ..< 2 { // left + right
+                            let anchor = AnchorEntity(world: .zero)
+                            anchor.components.set(HandComponent()) // handID == nil for now
+                            appState.handAnchorEntities.append(anchor)
+                            content.add(anchor)
+                        }
+                    }
+                    for handAnchorEntity in appState.handAnchorEntities {
+                        handAnchorEntity.components.set(ExitGestureComponent())
+                    }
+
                     appState.beeSceneState.daffodilFlowerPot = flower
                     appState.beeSceneState.therapist = therapist
                     appState.beeSceneState.beehive = beehive
@@ -118,15 +131,16 @@ struct ImmersiveBeeView: View {
                 .glassBackgroundEffect()
             }
         }
-        .spatialTapGestureToEntity(appState.beeSceneState.therapist, onSpatialTapRelease: { spatialTagGesture in
-            print("Hello!")
-        })
-        .spatialTapGestureToEntity(appState.beeSceneState.bee, onSpatialTapRelease: { spatialTagGesture in
-            print("Bzzzzzz!")
-        })
-        .spatialTapGestureToEntity(appState.beeSceneState.daffodilFlowerPot, onSpatialTapRelease: { spatialTagGesture in
-            print("Touch daffodilFlowerPot")
-        })
+        // .spatialTapGestureToEntity(appState.beeSceneState.therapist, onSpatialTapRelease: { spatialTagGesture in
+        //     print("Hello!")
+        // })
+        // .spatialTapGestureToEntity(appState.beeSceneState.bee, onSpatialTapRelease: { spatialTagGesture in
+        //     // not used and conflicting with hand collision system
+        //     print("Bzzzzzz!")
+        // })
+        // .spatialTapGestureToEntity(appState.beeSceneState.daffodilFlowerPot, onSpatialTapRelease: { spatialTagGesture in
+        //     print("Touch daffodilFlowerPot")
+        // })
         .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
             Task { @MainActor in await dismissImmersiveSpace() }
         }

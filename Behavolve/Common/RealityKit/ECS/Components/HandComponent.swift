@@ -10,5 +10,5 @@ import RealityKit
 
 /// Links a RealityKit entity to an ARKit HandAnchor (by UUID).
 struct HandComponent: Component, Sendable {
-    let handID: UUID
+    var handID: UUID?
 }

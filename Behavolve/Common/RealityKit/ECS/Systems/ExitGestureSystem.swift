@@ -26,6 +26,7 @@ final class ExitGestureSystem: System {
             comp.holdTime = closed ? comp.holdTime + context.deltaTime : .zero
 
             if comp.holdTime >= comp.requiredDuration {
+                print("Exit Gesture Detected! Sending notification now!")
                 NotificationCenter.default.post(name: .exitGestureDetected, object: nil)
                 comp.holdTime = 0 // prevent re-trigger spam
             }

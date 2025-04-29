@@ -6,30 +6,38 @@
 //
 
 import ARKit
-import QuartzCore
 import RealityKit
 import simd
 
 @MainActor
-class HandPoseCache {
+final class HandPoseCache: Sendable {
     static let shared = HandPoseCache()
     private var fistClosed: [UUID: Bool] = [:]
 
     func setFistClosed(_ v: Bool, for id: UUID) { fistClosed[id] = v }
+    func isFistClosed(for id: UUID) -> Bool { fistClosed[id] ?? false }
+
     func isFistClosed(for entity: Entity) -> Bool {
-        guard let c = entity.components[HandComponent.self] else { return false }
-        return fistClosed[c.handID] ?? false
+        guard
+            let comp = entity.components[HandComponent.self],
+            let id = comp.handID
+        else { return false }
+
+        return isFistClosed(for: id)
     }
 }
 
 @MainActor
 final class HandInputSystem: System {
+    // ARKit
     private let session = ARKitSession()
     private let provider = HandTrackingProvider()
-    private var hands: [UUID: AnchorEntity] = [:]
+
+    // Query all entities that own a HandComponent
+    private static let handsQuery = EntityQuery(where: .has(HandComponent.self))
 
     required init(scene: Scene) {
-        Task {
+        Task.detached { [provider, session] in
             guard HandTrackingProvider.isSupported else { return }
             try? await session.run([provider])
         }
@@ -38,38 +46,56 @@ final class HandInputSystem: System {
     func update(context: SceneUpdateContext) {
         guard case .running = provider.state else { return }
 
-        // Poll the most recent anchors (left + right)
-        let (left, right) = provider.latestAnchors
-        let anchors = [left, right].compactMap { $0 }
+        // Latest anchors (max two: left & right)
+        let anchors = [provider.latestAnchors.0, provider.latestAnchors.1]
+            .compactMap { $0 }
+
+        // Hand placeholders already in the scene
+        let entities = context.scene.performQuery(Self.handsQuery)
 
         var visible: Set<UUID> = []
 
+        // ------------------------------------------------------------------ A —
+        // Bind / update every visible hand
+        // ----------------------------------------------------------------------
         for anchor in anchors {
             visible.insert(anchor.id)
 
-            // Create or reuse an AnchorEntity
-            let anchorEntity = hands[anchor.id] ?? {
-                let newAnchor = AnchorEntity(world: anchor.originFromAnchorTransform)
-                newAnchor.components.set(HandComponent(handID: anchor.id))
-                newAnchor.components.set(ExitGestureComponent())
-                // context.scene.addAnchor(newAnchor) // FIXME
-                hands[anchor.id] = newAnchor
-                return newAnchor
-            }()
+            // Find entity already bound to this UUID or grab a free placeholder
+            let entity = entities.first(where: {
+                $0.components[HandComponent.self]?.handID == anchor.id
+            }) ?? entities.first(where: {
+                $0.components[HandComponent.self]?.handID == nil
+            })
 
-            // Update transform
-            anchorEntity.transform.matrix = anchor.originFromAnchorTransform
+            guard let handEntity = entity else { continue }
 
-            // Detect fist
-            let fistClosed = isFistClosed(anchor)
-            Task { await HandPoseCache.shared.setFistClosed(fistClosed, for: anchor.id) }
+            // 1. (bind) update component
+            var comp = handEntity.components[HandComponent.self]!
+            comp.handID = anchor.id
+            handEntity.components.set(comp)
+
+            // 2. (update) push transform
+            handEntity.transform.matrix = anchor.originFromAnchorTransform
+
+            // 3. (gesture) update cache
+            let closed = isFistClosed(anchor)
+            Task { await HandPoseCache.shared.setFistClosed(closed, for: anchor.id) }
         }
 
-        // Remove lost hands
-        for (id, e) in hands where !visible.contains(id) {
-            e.removeFromParent()
-            hands.removeValue(forKey: id)
-            Task { await HandPoseCache.shared.setFistClosed(false, for: id) }
+        // ------------------------------------------------------------------ B —
+        // Release placeholders whose hand disappeared
+        // ----------------------------------------------------------------------
+        for e in entities {
+            if let id = e.components[HandComponent.self]?.handID,
+               !visible.contains(id)
+            {
+                var comp = e.components[HandComponent.self]!
+                comp.handID = nil // back to “free” state
+                e.components.set(comp)
+
+                Task { await HandPoseCache.shared.setFistClosed(false, for: id) }
+            }
         }
     }
 

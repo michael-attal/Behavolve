@@ -42,6 +42,7 @@ class AppState {
 
     var currentImmersiveView: ImmersiveViewAvailable = .none
 
+    var handAnchorEntities: [AnchorEntity] = []
     var handTracking = HandTrackingProvider()
     var planeDetection = PlaneDetectionProvider(alignments: [.horizontal]) // Used to detect ceil
     var wolrdTracking = WorldTrackingProvider()

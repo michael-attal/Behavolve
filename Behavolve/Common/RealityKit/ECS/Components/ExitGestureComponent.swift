@@ -11,6 +11,6 @@ import RealityKit
 /// Tracks how long a fist has been held.
 /// `requiredDuration` – seconds needed to trigger the exit gesture.
 struct ExitGestureComponent: Component, Sendable {
-    var requiredDuration: TimeInterval = 3.0
+    var requiredDuration: TimeInterval = 2.0
     var holdTime: TimeInterval = 0.0
 }

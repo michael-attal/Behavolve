@@ -10,7 +10,7 @@ import RealityKit
 
 /// Immediate impulse when a hand collides with the entity.
 struct HandCollisionComponent: Component, Sendable {
-    var collisionDistance: Float = 0.10 // m
+    var collisionDistance: Float = 0.20 // m
     var impulseStrength: Float = 1.00 // linear-impulse magnitude
     var recoverDuration: TimeInterval = 3.0 // panic time
 }

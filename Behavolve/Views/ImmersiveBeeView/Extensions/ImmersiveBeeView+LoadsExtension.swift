@@ -38,7 +38,7 @@ extension ImmersiveBeeView {
 
         #if !targetEnvironment(simulator)
         bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
-        bee.components.set(HandCollisionComponent(collisionDistance: 0.1, impulseStrength: 1.0, recoverDuration: 3))
+        bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))
         #endif
 
         // bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
