@@ -31,6 +31,23 @@ struct BehavolveApp: App {
 
         NectarGatheringSystem.registerSystem()
         NectarGatheringComponent.registerComponent()
+
+        #if !targetEnvironment(simulator)
+        ExitGestureComponent.registerComponent()
+        HandComponent.registerComponent()
+        HandProximityComponent.registerComponent()
+        HandCollisionComponent.registerComponent()
+
+        ExitGestureSystem.registerSystem()
+        HandInputSystem.registerSystem()
+        HandProximitySystem.registerSystem()
+        HandCollisionSystem.registerSystem()
+        #endif
+
+        UserProximityComponent.registerComponent()
+        FleeStateComponent.registerComponent()
+
+        UserProximitySystem.registerSystem()
     }
 
     var body: some Scene {

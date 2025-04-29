@@ -40,6 +40,8 @@ final class MovementSystem: System {
                 // Arrived
                 model.components.set(PhysicsMotionComponent())
 
+                snapParentToModel(entity, to: model)
+
                 switch move.strategy {
                 case .direct:
                     // Path completed -> component removed
@@ -60,6 +62,7 @@ final class MovementSystem: System {
                 model.components.set(
                     PhysicsMotionComponent(linearVelocity: dir * move.speed)
                 )
+                snapParentToModel(entity, to: model)
             }
             entity.components.set(move) // persist any path edits
         }
@@ -82,5 +85,17 @@ final class MovementSystem: System {
             }
             return move.path.first ?? nil
         }
+    }
+
+    func snapParentToModel(_ entity: Entity, to model: Entity) {
+        // Snap parent so we don’t teleport on next flight
+        entity.transform.translation = model.position(relativeTo: nil) // copy position
+        entity.transform.rotation = model.orientation(relativeTo: nil)
+
+        // Reset model local transform (keep scale so the bee size is constant)
+        let scale = model.transform.scale
+        model.transform = Transform(scale: scale,
+                                    rotation: .init(),
+                                    translation: .zero)
     }
 }

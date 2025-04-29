@@ -13,6 +13,7 @@ import SwiftUI
 final class OscillationSystem: System {
     private static let query =
         EntityQuery(where: .has(OscillationComponent.self))
+    // static var dependencies: [SystemDependency] { [.after(MovementSystem.self)] }
 
     required init(scene: RealityKit.Scene) {}
 

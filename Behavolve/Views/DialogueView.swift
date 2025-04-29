@@ -9,6 +9,8 @@ enum DialogueApiMode {
 }
 
 struct DialogueView: View {
+    static let ChatGptEnabled = false
+
     @Environment(AppState.self) private var appState
 
     /// Switch between using Assistant (threadRun) or direct streaming (waiting from https://github.com/MacPaw/OpenAI/pull/140#issuecomment-2018689505 to support assistant streaming)
@@ -103,13 +105,14 @@ struct DialogueView: View {
     To begin with, could you tell me how you're feeling right now?
     """
 
-    var onValidationButtonClicked: (() -> ()) = {}
+    var onConfirmationButtonClicked: (() -> ()) = {}
+    var onNextStepButtonClicked: (() -> ()) = {}
     var onCancelButtonClicked: (() -> ()) = {}
 
     var body: some View {
         VStack {
             Text(inputText)
-                .frame(maxWidth: 600, alignment: .leading)
+                .frame(maxWidth: 950, alignment: .leading)
                 .font(.extraLargeTitle2)
                 .fontWeight(.regular)
                 .padding(40)
@@ -118,29 +121,55 @@ struct DialogueView: View {
             if showButtons {
                 VStack(spacing: 20) {
                     HStack {
-                        Button(action: {
-                            onValidationButtonClicked()
-                            if AppState.isDevelopmentMode {
-                                Task {
-                                    // Don't consume OpenAI during development, still show some fake input text data
-                                    await animatePromptText(appState.beeSceneState.step.fakeInputTextForDevelopment())
+                        // Don't show already confirmed button
+                        if appState.beeSceneState.isCurrentStepConfirmed == false {
+                            if let confirm = appState.beeSceneState.step.buttonConfirmStepText(), let instructions = appState.beeSceneState.step.offlineStepInstructionText() {
+                                Button(action: {
+                                    onConfirmationButtonClicked()
+                                    if AppState.isDevelopmentMode || DialogueView.ChatGptEnabled == false {
+                                        Task {
+                                            // Don't use OpenAI during development or when offline.
+                                            await animatePromptText(instructions)
+                                        }
+                                    }
+                                }) {
+                                    Text(confirm)
+                                        .font(.extraLargeTitle)
+                                        .fontWeight(.regular)
+                                        .padding(42)
+                                        .cornerRadius(8)
+                                        .glassBackgroundEffect()
                                 }
+                                .padding(0)
+                                .buttonStyle(.plain)
                             }
-                        }) {
-                            Text(appState.beeSceneState.step.buttonText())
-                                .font(.extraLargeTitle)
-                                .fontWeight(.regular)
-                                .padding(42)
-                                .cornerRadius(8)
-                                .glassBackgroundEffect()
                         }
-                        .padding(0)
-                        .buttonStyle(.plain)
+
+                        if appState.beeSceneState.isCurrentStepConfirmed == true {
+                            Button(action: {
+                                onNextStepButtonClicked()
+                                if AppState.isDevelopmentMode || DialogueView.ChatGptEnabled == false {
+                                    Task {
+                                        // Don't use OpenAI during development or when offline.
+                                        await animatePromptText(appState.beeSceneState.step.offlineStepPresentationText())
+                                    }
+                                }
+                            }) {
+                                Text(appState.beeSceneState.step.buttonNextStepText())
+                                    .font(.extraLargeTitle)
+                                    .fontWeight(.regular)
+                                    .padding(42)
+                                    .cornerRadius(8)
+                                    .glassBackgroundEffect()
+                            }
+                            .padding(0)
+                            .buttonStyle(.plain)
+                        }
 
                         Button(action: {
                             onCancelButtonClicked()
                         }) {
-                            Text("I'd like to know more")
+                            Text(appState.beeSceneState.step.buttonCancelText())
                                 .font(.extraLargeTitle)
                                 .fontWeight(.regular)
                                 .padding(42)
@@ -154,7 +183,7 @@ struct DialogueView: View {
             }
         }
         .task {
-            if AppState.isDevelopmentMode {
+            if AppState.isDevelopmentMode || DialogueView.ChatGptEnabled == false {
                 // Don't consume OpenAI during development
                 await animatePromptText(welcomeText)
                 return
@@ -285,7 +314,7 @@ struct DialogueView: View {
         let words = text.split(separator: " ")
         for word in words {
             inputText.append(word + " ")
-            let milliseconds = AppState.isDevelopmentMode ? 1 : (1 + UInt64.random(in: 0 ... 1)) * 100
+            let milliseconds = AppState.isDevelopmentMode || DialogueView.ChatGptEnabled == false ? 1 : (1 + UInt64.random(in: 0 ... 1)) * 100
             try? await Task.sleep(for: .milliseconds(milliseconds))
         }
 

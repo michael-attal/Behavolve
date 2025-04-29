@@ -39,6 +39,17 @@ extension ImmersiveBeeView {
             SteeringComponent(avoidDistance: 0.15, strength: 1.0)
         )
 
+        #if !targetEnvironment(simulator)
+        bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
+        bee.components.set(HandCollisionComponent(collisionDistance: 0.1, impulseStrength: 1.0, recoverDuration: 3))
+        #endif
+
+        bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
+        
+        // bee.components.set(
+        //     OscillationComponent(amplitude: 25, frequency: 4)
+        // )
+
         return bee
     }
 
@@ -63,7 +74,7 @@ extension ImmersiveBeeView {
         guard let therapistAnimResource = therapist.availableAnimations.first, let therapistAnim = try? AnimationResource.generate(with: therapistAnimResource.repeat().definition) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Therapist animation")
         }
-        therapist.scale = [0.01, 0.01, 0.01]
+        therapist.scale = [0.0095, 0.0095, 0.0095]
         therapist.position = [-0.8, 0, -2]
         let therapistControllerAnimation = therapist.playAnimation(
             therapistAnim,
@@ -83,7 +94,7 @@ extension ImmersiveBeeView {
     func loadDialogue(from: RealityViewAttachments) throws -> Entity {
         guard let dialogue = from.entity(for: "dialogue_box") else { throw ImmersiveBeeViewError.entityError(message: "Can't find dialogue_box") }
         dialogue.scale = SIMD3(100, 100, 100)
-        dialogue.position = SIMD3<Float>(-10, 220, 0)
+        dialogue.position = SIMD3<Float>(-10, 230, 0)
 
         dialogue.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in
             actualTargetPosition.with(\.y, entityPosition.y)

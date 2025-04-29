@@ -28,9 +28,7 @@ final class NectarDepositSystem: @preconcurrency System {
                   let model = parent.findModelEntity()
             else { continue }
 
-            // ──────────────────────────────────────────────────────────
-            // 1️⃣ Cool‑down (bee already on the hive)
-            // ──────────────────────────────────────────────────────────
+            // Cool‑down (bee already on the hive)
             if deposit.remainingCooldown > 0 {
                 deposit.remainingCooldown -= dt
                 parent.components.set(deposit) // persist
@@ -51,9 +49,7 @@ final class NectarDepositSystem: @preconcurrency System {
                 continue
             }
 
-            // ──────────────────────────────────────────────────────────
-            // 2️⃣ Move to the beehive position
-            // ──────────────────────────────────────────────────────────
+            // Move to the beehive position
             let here = model.position(relativeTo: nil)
             let distance = simd_distance(here, deposit.depotPosition)
 
@@ -83,23 +79,10 @@ final class NectarDepositSystem: @preconcurrency System {
                 continue
             }
 
-            // ──────────────────────────────────────────────────────────
-            // 3️⃣ Arrival: snap + oscillation + countdown
-            // ──────────────────────────────────────────────────────────
-            // Replace parent at the model world transform (translation & rotation only)
-            //  Snap parent so we don’t teleport on next flight
-            parent.transform.translation = here // copy position
-            parent.transform.rotation = model.orientation(relativeTo: nil)
-
-            // Reset model local transform (keep scale so the bee size is constant)
-            let scale = model.transform.scale
-            model.transform = Transform(scale: scale,
-                                        rotation: .init(),
-                                        translation: .zero)
-
+            // Arrival: oscillation + countdown
             parent.components.remove(LookAtTargetComponent.self)
             parent.components.remove(MoveToComponent.self) // ensure stopped
-            parent.components.set(OscillationComponent(amplitude: 50, frequency: 4)
+            parent.components.set(OscillationComponent(amplitude: 50, frequency: 4) // Larger oscillation upon deposition
             )
 
             deposit.remainingCooldown = deposit.depositDuration

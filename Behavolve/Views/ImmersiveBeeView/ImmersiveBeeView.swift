@@ -15,6 +15,7 @@ enum ImmersiveBeeViewError: Error {
 
 struct ImmersiveBeeView: View {
     @Environment(AppState.self) var appState
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State private var errorMessage: String?
 
@@ -59,9 +60,17 @@ struct ImmersiveBeeView: View {
                 case .neutralBeeGatheringNectarFromFlowers:
                     performNeutralBeeGatheringNectarFromFlowersStep()
                 case .interactionInOwnEnvironment:
-                    performInteractionInOwnEnvironmentStep()
+                    if appState.beeSceneState.isCurrentStepConfirmed == true {
+                        performInteractionInOwnEnvironmentStep()
+                    } else {
+                        print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                    }
                 case .interactionInForrestFullSpace:
-                    performInteractionInForrestFullSpaceStep()
+                    if appState.beeSceneState.isCurrentStepConfirmed == true {
+                        performInteractionInForrestFullSpaceStep()
+                    } else {
+                        print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                    }
                 case .neutralIdle:
                     print("Restart experience?")
                 }
@@ -80,11 +89,24 @@ struct ImmersiveBeeView: View {
         }
         attachments: {
             Attachment(id: "dialogue_box") {
-                DialogueView {
-                    appState.beeSceneState.step.next()
-                } onCancelButtonClicked: {
-                    appState.beeSceneState.step.previous()
-                }
+                DialogueView(
+                    onConfirmationButtonClicked: {
+                        appState.beeSceneState.isCurrentStepConfirmed = true
+                    },
+                    onNextStepButtonClicked: {
+                        appState.beeSceneState.step.next()
+
+                        if appState.beeSceneState.step.isConfirmationRequiredWithThisStep(), AppState.isDevelopmentMode == false {
+                            // If it require a confirmation, reset to false and wait for the confirmation button in dialogue view - Refactor later
+                            appState.beeSceneState.isCurrentStepConfirmed = false
+                        } else {
+                            appState.beeSceneState.isCurrentStepConfirmed = true
+                        }
+                    },
+                    onCancelButtonClicked: {
+                        appState.beeSceneState.step.previous()
+                    }
+                )
             }
 
             Attachment(id: "error_view") {
@@ -105,6 +127,9 @@ struct ImmersiveBeeView: View {
         .spatialTapGestureToEntity(appState.beeSceneState.daffodilFlowerPot, onSpatialTapRelease: { spatialTagGesture in
             print("Touch daffodilFlowerPot")
         })
+        .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
+            Task { @MainActor in await dismissImmersiveSpace() }
+        }
     }
 }
 

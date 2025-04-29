@@ -12,6 +12,7 @@
       }
     },
     "I'd like to know more" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

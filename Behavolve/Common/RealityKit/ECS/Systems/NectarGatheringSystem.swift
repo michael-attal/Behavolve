@@ -32,16 +32,12 @@ final class NectarGatheringSystem: @preconcurrency System {
                   let model = entity.findModelEntity()
             else { continue }
 
-            // ──────────────────────────────────────────────────────────────
-            // 1️⃣ Updated cooldowns for all flowers
-            // ──────────────────────────────────────────────────────────────
+            // Updated cooldowns for all flowers
             for i in gather.nectarSources.indices {
                 gather.nectarSources[i].updateCooldown(dt: dt)
             }
 
-            // ──────────────────────────────────────────────────────────────
-            // 2️⃣ Is the bee still foraging?
-            // ──────────────────────────────────────────────────────────────
+            // Is the bee still foraging?
             if var cd = entity.components[NectarGatheringCooldownComponent.self] {
                 cd.remainingCooldown -= dt
                 entity.components.set(cd) // always persist!
@@ -68,9 +64,7 @@ final class NectarGatheringSystem: @preconcurrency System {
                 }
             }
 
-            // ──────────────────────────────────────────────────────────────
-            // 3️⃣ Full bag? -> go to the depot
-            // ──────────────────────────────────────────────────────────────
+            // Full bag? -> go to the depot
             if gather.nectarStock >= goToDepositAmount {
                 entity.components.remove(NectarGatheringComponent.self)
                 entity.components.set(
@@ -84,9 +78,8 @@ final class NectarGatheringSystem: @preconcurrency System {
                 )
                 continue
             }
-            // ──────────────────────────────────────────────────────────────
-            // 4️⃣ Choice of target flower (from the available ones and different of the last visited)
-            // ──────────────────────────────────────────────────────────────
+
+            // Choice of target flower (from the available ones and different of the last visited)
             let here = model.position(relativeTo: nil)
             let available = gather.nectarSources.enumerated().filter { idx, src in
                 src.isAvailable && idx != gather.lastVisitedIndex
@@ -101,32 +94,20 @@ final class NectarGatheringSystem: @preconcurrency System {
                 continue
             }
 
-            // ──────────────────────────────────────────────────────────────
-            // 5️⃣ Arriving on the flower?
-            // ──────────────────────────────────────────────────────────────
+            // Arriving on the flower?
             let arrived = entity.components[MoveToComponent.self] == nil &&
                 simd_distance(here, target.position) <= epsilon
 
             if arrived {
-                // 5.a Snap parent so we don’t teleport on next flight
-                entity.transform.translation = here // copy position
-                entity.transform.rotation = model.orientation(relativeTo: nil)
-
-                // 5.b Reset model local transform (keep scale so the bee size is constant)
-                let scale = model.transform.scale
-                model.transform = Transform(scale: scale,
-                                            rotation: .init(),
-                                            translation: .zero)
-
-                // 5.c Stop looking at the flower
+                // Stop looking at the flower
                 entity.components.remove(LookAtTargetComponent.self)
 
-                // 5.d Visible vibration while gathering
+                // Visible vibration while gathering
                 entity.components.set(
-                    OscillationComponent(amplitude: 50, frequency: 4)
+                    OscillationComponent(amplitude: 50, frequency: 4) // Larger oscillation upon collecting
                 )
 
-                // 5.e Start gathering cooldown
+                // Start gathering cooldown
                 entity.components.set(
                     NectarGatheringCooldownComponent(remainingCooldown: gather.gatheringCooldown)
                 )
@@ -136,9 +117,7 @@ final class NectarGatheringSystem: @preconcurrency System {
                 continue // next frame
             }
 
-            // ──────────────────────────────────────────────────────────────
-            // 6️⃣ If the bee is not already moving ➜ MoveTo + LookAt
-            // ──────────────────────────────────────────────────────────────
+            // If the bee is not already moving ➜ MoveTo + LookAt
             if entity.components[MoveToComponent.self] == nil {
                 #if targetEnvironment(simulator)
                 let strategy: MoveStrategy = .direct
