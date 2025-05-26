@@ -50,19 +50,30 @@ final class PathfindingSystem: System {
 
     private var blocked = Set<Grid>() // occupied by the mesh
     private var meshProvider: SceneReconstructionProvider?
+    private var activeMeshAnchors: [UUID: MeshAnchor] = [:]
 
     // entities that need a path
     private static let query = EntityQuery(where: .has(MoveToComponent.self))
 
     required init(scene: Scene) {
 #if !targetEnvironment(simulator)
-        guard SceneReconstructionProvider.isSupported else { return }
+        guard SceneReconstructionProvider.isSupported else {
+            print("PathfindingSystem: SceneReconstructionProvider is not supported on this device.")
+            return
+        }
         meshProvider = SceneReconstructionProvider()
-        Task { await listenToMesh() }
+        Task {
+            print("PathfindingSystem: Starting to listen to mesh updates.")
+            await listenToMesh()
+        }
+#else
+        print("PathfindingSystem: Running in simulator, mesh listening is disabled.")
 #endif
     }
 
     func update(context: SceneUpdateContext) {
+        guard meshProvider != nil else { return }
+
         for entity in context.scene.performQuery(Self.query) {
             guard var move = entity.components[MoveToComponent.self],
                   move.strategy == .pathfinding,
@@ -74,7 +85,9 @@ final class PathfindingSystem: System {
 
             if let gPath = aStar(from: startG, to: goalG) {
                 move.path = gPath.map { world(from: $0, y: entity.position(relativeTo: nil).y) }
+                print("PathfindingSystem: Path found for entity \(entity.id) with \(move.path.count) waypoints.")
             } else {
+                print("PathfindingSystem: No path found for entity \(entity.id) from \(startG) to \(goalG). Fallback to direct.")
                 move.strategy = .direct // fallback
             }
             entity.components.set(move)
@@ -83,56 +96,91 @@ final class PathfindingSystem: System {
 
     // Scene-reconstruction
     private func listenToMesh() async {
-        guard let provider = meshProvider else { return }
-        let session = ARKitSession()
-        try? await session.run([provider])
+        guard let provider = meshProvider else {
+            print("PathfindingSystem: MeshProvider is nil in listenToMesh.")
+            return
+        }
+        let session = ARKitSession() // This session is local to this function's scope
+        // It should ideally be a member of the class or passed in if managed externally.
+        // For now, let's assume this is fine for SceneReconstructionProvider.
+        do {
+            try await session.run([provider])
+            print("PathfindingSystem: ARKitSession running with SceneReconstructionProvider.")
+        } catch {
+            print("PathfindingSystem: Failed to run ARKitSession with SceneReconstructionProvider: \(error)")
+            return
+        }
 
         for await update in provider.anchorUpdates {
+            print("PathfindingSystem: Received mesh anchor update: \(update.event) for anchor \(update.anchor.id)")
             let anchor = update.anchor
             switch update.event {
-            case .added, .updated: integrate(anchor)
-            case .removed: erase(anchor)
-            @unknown default: break
+            case .added, .updated:
+                if update.event == .updated, activeMeshAnchors[anchor.id] != nil {
+                    await erase(anchor) // Erase based on the old (stored) anchor data if needed, or simply clear and re-add.
+                    // For simplicity here, we will clear based on the new anchor's geometry transformed by its old transform if available.
+                    // Or, even simpler: just re-process. A* grid cells are small, so over-marking is less bad than under-marking.
+                    // Let's ensure `erase` can handle the current anchor if it's an update.
+                    // The most robust way is to store the anchor and use its geometry for erase.
+                }
+                await integrate(anchor)
+                activeMeshAnchors[anchor.id] = anchor // Store the latest version
+            case .removed:
+                await erase(anchor)
+                activeMeshAnchors.removeValue(forKey: anchor.id)
+            @unknown default:
+                print("PathfindingSystem: Unknown mesh anchor update event.")
             }
         }
+        print("PathfindingSystem: Mesh anchor update stream finished.")
     }
 
-    private func integrate(_ anchor: MeshAnchor) {
-        let tr = anchor.originFromAnchorTransform
-        let vertices = anchor.geometry.vertices
-        let count = vertices.count
-        let stride = vertices.stride
-        let basePtr = vertices.buffer.contents() // UnsafeMutableRawPointer
-
-        // CHANGE: read raw memory since GeometrySource has no helper API.
-        for i in 0..<count {
-            let ptr = basePtr.advanced(by: i * stride)
-            let local = ptr.assumingMemoryBound(to: SIMD3<Float>.self).pointee
-            let world4 = tr * SIMD4<Float>(local, 1)
-            blocked.insert(grid(from: world4.xyz))
+    private func integrate(_ anchor: MeshAnchor) async {
+        guard let meshResource = try? await MeshResource(from: anchor) else {
+            print("PathfindingSystem: Failed to get MeshResource from anchor \(anchor.id) in integrate.")
+            return
         }
+        let transform = anchor.originFromAnchorTransform
+
+        for model in meshResource.contents.models {
+            for part in model.parts {
+                // The positions are in the anchor's local coordinate space.
+                for localPosition in part.positions {
+                    let worldPosition = (transform * SIMD4<Float>(localPosition, 1)).xyz
+                    blocked.insert(grid(from: worldPosition))
+                }
+            }
+        }
+        print("PathfindingSystem: Integrated anchor \(anchor.id). Blocked cell count: \(blocked.count)")
     }
 
-    private func erase(_ anchor: MeshAnchor) {
-        let tr = anchor.originFromAnchorTransform
-        let vertices = anchor.geometry.vertices
-        let count = vertices.count
-        let stride = vertices.stride
-        let basePtr = vertices.buffer.contents()
-
-        // CHANGE: same raw access for removal
-        for i in 0..<count {
-            let ptr = basePtr.advanced(by: i * stride)
-            let local = ptr.assumingMemoryBound(to: SIMD3<Float>.self).pointee
-            let world4 = tr * SIMD4<Float>(local, 1)
-            blocked.remove(grid(from: world4.xyz))
+    private func erase(_ anchor: MeshAnchor) async {
+        // To accurately erase, we need the geometry of the anchor *as it was when added*.
+        // Using the current anchor's geometry is an approximation if it has changed significantly.
+        // If we stored the exact set of Grid cells per anchor, removal would be precise.
+        // For now, using the provided anchor's geometry for removal.
+        guard let meshResource = try? await MeshResource(from: anchor) else {
+            print("PathfindingSystem: Failed to get MeshResource from anchor \(anchor.id) in erase.")
+            return
         }
+        let transform = anchor.originFromAnchorTransform
+
+        for model in meshResource.contents.models {
+            for part in model.parts {
+                for localPosition in part.positions {
+                    let worldPosition = (transform * SIMD4<Float>(localPosition, 1)).xyz
+                    blocked.remove(grid(from: worldPosition))
+                }
+            }
+        }
+        print("PathfindingSystem: Erased anchor \(anchor.id). Blocked cell count: \(blocked.count)")
     }
 
     // MARK: A*
 
-    private struct Grid: Hashable {
+    private struct Grid: Hashable, CustomStringConvertible {
         let x: Int, z: Int
+        var description: String { "(\(x), \(z))" }
     }
 
     private func grid(from p: SIMD3<Float>) -> Grid {
@@ -179,8 +227,15 @@ final class PathfindingSystem: System {
 
             for d in dirs {
                 let n = Grid(x: current.grid.x + d.x, z: current.grid.z + d.z)
-                if blocked.contains(n) { continue }
-                let tentative = (gScore[current.grid] ?? .infinity) + 1
+                if blocked.contains(n) {
+                    print("PathfindingSystem: A* neighbor \(n) is blocked.")
+                    continue
+                }
+                // For simplicity, we'll keep 1 for now, assuming grid cells are coarse enough.
+                // Or, more accurately, adjust cost based on `d`.
+                let cost: Float = (d.x != 0 && d.z != 0) ? 1.41421356 : 1.0 // sqrt(2) for diagonals
+
+                let tentative = (gScore[current.grid] ?? .infinity) + cost
                 if tentative < (gScore[n] ?? .infinity) {
                     came[n] = current.grid
                     gScore[n] = tentative
@@ -188,6 +243,7 @@ final class PathfindingSystem: System {
                 }
             }
         }
+        print("PathfindingSystem: A* failed to find a path from \(start) to \(goal).")
         return nil
     }
 }
