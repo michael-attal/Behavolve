@@ -127,6 +127,23 @@ extension ImmersiveBeeView {
 
         return flower
     }
+    
+    func loadWaterBottle(from: Entity) throws -> Entity {
+        guard let waterBottle = from.findEntity(named: "Water_Bottle") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Water_Bottle entity")
+        }
+        waterBottle.setGroundingShadow(castsShadow: true)
+       
+        //waterBottle.scale = [0.0095, 0.0095, 0.0095]
+        waterBottle.position = [1, 0, -1.1]
+
+        waterBottle.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in
+            actualTargetPosition.with(\.y, entityPosition.y)
+        })
+        
+        waterBottle.isEnabled = false // Enabled at performInteractionInForrestFullSpaceStep
+        return waterBottle
+    }
 
     func loadCatchError(from: RealityViewAttachments) -> Entity? {
         guard let errorView = from.entity(for: "error_view") else {

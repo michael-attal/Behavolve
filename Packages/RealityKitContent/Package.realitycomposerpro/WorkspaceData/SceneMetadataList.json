@@ -52,17 +52,10 @@
       [
         "723C769A-5513-418D-AD95-41A92CE8B749",
         "Root",
-        "pots_and_vase_with_flowers"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "723C769A-5513-418D-AD95-41A92CE8B749",
-        "Root",
         "pots_and_vase_with_flowers",
-        "Meshes"
+        "Meshes",
+        "Sketchfab_model",
+        "allflowersspot_obj_cleaner_materialmerger_gles"
       ],
       {
         "isExpanded" : true,
@@ -74,6 +67,15 @@
         "pots_and_vase_with_flowers",
         "Meshes",
         "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "723C769A-5513-418D-AD95-41A92CE8B749",
+        "Root",
+        "pots_and_vase_with_flowers"
       ],
       {
         "isExpanded" : true,
@@ -96,9 +98,7 @@
         "723C769A-5513-418D-AD95-41A92CE8B749",
         "Root",
         "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model",
-        "allflowersspot_obj_cleaner_materialmerger_gles"
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -118,7 +118,8 @@
     "objectMetadataList" : [
       [
         "771A3A30-AA78-4615-B686-B7BAE19E7A71",
-        "Root"
+        "Root",
+        "Daffodil_flower_pot"
       ],
       {
         "isExpanded" : true,
@@ -126,8 +127,7 @@
       },
       [
         "771A3A30-AA78-4615-B686-B7BAE19E7A71",
-        "Root",
-        "Daffodil_flower_pot"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -164,9 +164,20 @@
       [
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root",
-        "pots_and_vase_with_flowers",
+        "flower_with_vase",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "flower_with_vase",
         "Meshes",
-        "Sketchfab_model"
+        "Sketchfab_model",
+        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles"
       ],
       {
         "isExpanded" : true,
@@ -187,29 +198,7 @@
       [
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root",
-        "pots_and_vase_with_flowers"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "flower_with_vase",
-        "Meshes",
-        "Sketchfab_model",
-        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles",
-        "Object_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "flower_with_vase",
+        "pots_and_vase_with_flowers",
         "Meshes"
       ],
       {
@@ -219,16 +208,6 @@
       [
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -252,6 +231,19 @@
         "Root",
         "flower_with_vase",
         "Meshes",
+        "Sketchfab_model",
+        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles",
+        "Object_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
         "Sketchfab_model"
       ],
       {
@@ -263,8 +255,16 @@
         "Root",
         "flower_with_vase",
         "Meshes",
-        "Sketchfab_model",
-        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles"
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "pots_and_vase_with_flowers"
       ],
       {
         "isExpanded" : true,
@@ -278,20 +278,7 @@
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
         "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model",
-        "allflowersspot_obj_cleaner_materialmerger_gles"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model"
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -321,7 +308,20 @@
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
         "pots_and_vase_with_flowers",
-        "Meshes"
+        "Meshes",
+        "Sketchfab_model",
+        "allflowersspot_obj_cleaner_materialmerger_gles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -333,8 +333,7 @@
     "objectMetadataList" : [
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root",
-        "Sphere_Left"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -342,7 +341,8 @@
       },
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root"
+        "Root",
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -361,16 +361,6 @@
   },
   "B40D299B-8783-45D0-9264-D7E768275298" : {
     "objectMetadataList" : [
-      [
-        "B40D299B-8783-45D0-9264-D7E768275298",
-        "Root",
-        "Daffodil_flower_pot",
-        "Daffodil"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "B40D299B-8783-45D0-9264-D7E768275298",
         "Root",
@@ -394,6 +384,16 @@
         "B40D299B-8783-45D0-9264-D7E768275298",
         "Root",
         "Daffodil_flower_pot"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "B40D299B-8783-45D0-9264-D7E768275298",
+        "Root",
+        "Daffodil_flower_pot",
+        "Daffodil"
       ],
       {
         "isExpanded" : true,
@@ -429,8 +429,7 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -438,7 +437,8 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -455,7 +455,9 @@
     "objectMetadataList" : [
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root"
+        "Root",
+        "GridMaterial",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -463,9 +465,94 @@
       },
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "F5DD40D3-F5C1-4B32-8D81-ED09747AC285" : {
+    "objectMetadataList" : [
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
         "Root",
-        "GridMaterial",
-        "GridMaterial"
+        "water_bottle_2",
+        "water",
+        "Cube"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Capsule",
+        "Cylinder"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
       ],
       {
         "isExpanded" : true,

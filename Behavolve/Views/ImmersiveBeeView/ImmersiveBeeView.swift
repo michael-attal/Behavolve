@@ -27,6 +27,7 @@ struct ImmersiveBeeView: View {
                     let bee = try await loadBee(from: immersiveContentEntity)
                     let beehive = try await loadBeehive(from: immersiveContentEntity)
                     let therapist = try loadTherapist(from: immersiveContentEntity)
+                    let waterBottle = try loadWaterBottle(from: immersiveContentEntity)
                     let dialogue = try loadDialogue(from: attachments)
 
                     therapist.addChild(dialogue)
@@ -51,6 +52,7 @@ struct ImmersiveBeeView: View {
 
                     appState.beeSceneState.daffodilFlowerPot = flower
                     appState.beeSceneState.therapist = therapist
+                    appState.beeSceneState.waterBottle = waterBottle
                     appState.beeSceneState.beehive = beehive
                     appState.beeSceneState.bee = bee
                 }
@@ -140,6 +142,9 @@ struct ImmersiveBeeView: View {
         // })
         // .spatialTapGestureToEntity(appState.beeSceneState.daffodilFlowerPot, onSpatialTapRelease: { spatialTagGesture in
         //     print("Touch daffodilFlowerPot")
+        // })
+        // .spatialTapGestureToEntity(appState.beeSceneState.waterBottle, onSpatialTapRelease: { spatialTagGesture in
+        //     print("Touch Water_Bottle")
         // })
         .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
             Task { @MainActor in await dismissImmersiveSpace() }

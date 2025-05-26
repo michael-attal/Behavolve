@@ -85,20 +85,6 @@ def Xform "Root"
         }
     }
 
-    def "Therapist_TCC" (
-        active = false
-        customData = {
-            float3 rotationEulerHint = (0, 1.0471976, 0)
-        }
-        prepend references = @../Models/Therapist/Therapist_TCC.usdz@
-    )
-    {
-        quatf xformOp:orient = (0.8660254, 0, 0.5, 0)
-        float3 xformOp:scale = (0.01, 0.01, 0.01)
-        float3 xformOp:translate = (-0.8, 0, -0.8)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
     def "Therapist" (
         active = true
         references = @../Models/Therapist/Therapist.usdz@
@@ -177,6 +163,15 @@ def Xform "Root"
     )
     {
         float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "Water_Bottle" (
+        active = true
+        prepend references = @../Models/Water Bottles/Water Bottle.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
