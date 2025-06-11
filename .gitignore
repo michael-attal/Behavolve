@@ -62,3 +62,5 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 /Behavolve/Private/*
+
+.DS_Store

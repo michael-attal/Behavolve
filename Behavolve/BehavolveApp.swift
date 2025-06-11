@@ -24,7 +24,7 @@ struct BehavolveApp: App {
         SteeringComponent.registerComponent()
         SteeringSystem.registerSystem()
 
-        PathfindingSystem.registerSystem()
+        // PathfindingSystem.registerSystem() // Not working atm
 
         NectarDepositSystem.registerSystem()
         NectarDepositComponent.registerComponent()

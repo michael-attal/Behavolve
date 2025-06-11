@@ -1,8 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Scenes\/Bee Scene.usda",
-    "Models\/Water Bottles\/Untitled Scene.usda"
+    "Scenes\/Bee Scene.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -1392,5 +1391,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Models\/Water Bottles\/Water Bottle.usda"
+  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
 }

@@ -5,7 +5,7 @@
 //  Created by Michaël ATTAL on 01/04/2025.
 //
 
-import RealityFoundation
+import RealityKit
 
 extension ImmersiveBeeView {
     func placeFlower() {

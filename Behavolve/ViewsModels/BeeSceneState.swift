@@ -7,7 +7,7 @@
 
 import ARKit
 import Foundation
-import RealityFoundation
+import RealityKit
 
 @MainActor
 @Observable

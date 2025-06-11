@@ -1,6 +1,6 @@
 import AVFoundation
 import OpenAI
-import RealityFoundation
+import RealityKit
 import SwiftUI
 
 enum DialogueApiMode {

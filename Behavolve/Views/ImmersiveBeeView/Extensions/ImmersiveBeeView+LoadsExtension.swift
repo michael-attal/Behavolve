@@ -6,7 +6,7 @@
 //
 
 import _RealityKit_SwiftUI
-import RealityFoundation
+import RealityKit
 import RealityKitContent
 
 // Extension for loading asseets in RealityView
@@ -134,7 +134,7 @@ extension ImmersiveBeeView {
         }
         waterBottle.setGroundingShadow(castsShadow: true)
        
-        //waterBottle.scale = [0.0095, 0.0095, 0.0095]
+        waterBottle.scale = [0.5, 0.5, 0.5]
         waterBottle.position = [1, 0, -1.1]
 
         waterBottle.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in

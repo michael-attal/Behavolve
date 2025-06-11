@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RealityFoundation
+import RealityKit
 
 extension RealityKitHelper {
     static func fromToByAnimation(
