@@ -18,16 +18,30 @@ struct ImmersiveBeeView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State private var errorMessage: String?
+    @State var spatialTrackingSession = SpatialTrackingSession()
 
     var body: some View {
         RealityView { content, attachments in
             do {
+                let configuration = SpatialTrackingSession.Configuration(
+                    tracking: [.plane],
+                    sceneUnderstanding: [.collision, .physics]
+                )
+
+                if let unavailableCapabilities = await spatialTrackingSession.run(configuration) {
+                    // TODO: Handle errors
+                }
+
+                let planeAnchor = AnchorEntity(.plane(.horizontal,
+                                                      classification: .table,
+                                                      minimumBounds: [0.15, 0.15]))
+
                 if let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) {
                     let flower = try loadFlower(from: immersiveContentEntity, withName: "Flowers", animatedEntityNamed: "Daffodil")
                     let bee = try await loadBee(from: immersiveContentEntity)
                     let beehive = try await loadBeehive(from: immersiveContentEntity)
                     let therapist = try loadTherapist(from: immersiveContentEntity)
-                    let waterBottle = try loadWaterBottle(from: immersiveContentEntity)
+                    let waterBottle = try loadWaterBottle(from: immersiveContentEntity, content: &content)
                     let dialogue = try loadDialogue(from: attachments)
 
                     therapist.addChild(dialogue)

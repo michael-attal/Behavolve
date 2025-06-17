@@ -64,3 +64,4 @@ fastlane/test_output
 /Behavolve/Private/*
 
 .DS_Store
+Enterprise.license

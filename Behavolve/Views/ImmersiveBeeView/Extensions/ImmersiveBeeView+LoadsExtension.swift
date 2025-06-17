@@ -44,6 +44,8 @@ extension ImmersiveBeeView {
         // bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
         bee.components.set(OscillationComponent(amplitude: 0.01, frequency: 4)) // idle oscillation
 
+        bee.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
         return bee
     }
 
@@ -82,6 +84,9 @@ extension ImmersiveBeeView {
         therapist.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in
             actualTargetPosition.with(\.y, entityPosition.y)
         })
+
+        therapist.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
         return therapist
     }
 
@@ -125,23 +130,48 @@ extension ImmersiveBeeView {
             RealityKitHelper.fromToByAnimationScaling(fromScale: animatedEntity.scale, toScale: animatedEntity.scale * 1.05, toEntity: animatedEntity, timing: .linear, duration: 2.0, loop: true, isAdditive: false, playAutomatically: true)
         }
 
+        flower.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
         return flower
     }
-    
-    func loadWaterBottle(from: Entity) throws -> Entity {
+
+    func loadWaterBottle(from: Entity, content: inout RealityViewContent) throws -> Entity {
         guard let waterBottle = from.findEntity(named: "Water_Bottle") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Water_Bottle entity")
         }
         waterBottle.setGroundingShadow(castsShadow: true)
-       
+
         waterBottle.scale = [0.5, 0.5, 0.5]
         waterBottle.position = [1, 0, -1.1]
 
         waterBottle.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in
             actualTargetPosition.with(\.y, entityPosition.y)
         })
-        
+
         waterBottle.isEnabled = false // Enabled at performInteractionInForrestFullSpaceStep
+
+        waterBottle.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+        // ManipulationComponent.configureEntity(waterBottle)
+        var manipulationComponent = ManipulationComponent()
+        manipulationComponent.releaseBehavior = .stay
+        waterBottle.components.set(manipulationComponent)
+
+        var willBegin = content.subscribe(to: ManipulationEvents.WillBegin.self) { event in
+            print("Will begin manipulation")
+            if var physicsBody = event.entity.components[PhysicsBodyComponent.self] {
+                physicsBody.mode = .kinematic
+                event.entity.components.set(physicsBody)
+            }
+        }
+
+        var willEnd = content.subscribe(to: ManipulationEvents.WillEnd.self) { event in
+            print("Will end manipulation")
+            if var physicsBody = event.entity.components[PhysicsBodyComponent.self] {
+                physicsBody.mode = .dynamic
+                event.entity.components.set(physicsBody)
+            }
+        }
+
         return waterBottle
     }
 
