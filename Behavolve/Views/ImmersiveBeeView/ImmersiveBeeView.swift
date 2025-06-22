@@ -23,53 +23,46 @@ struct ImmersiveBeeView: View {
     var body: some View {
         RealityView { content, attachments in
             do {
-                let configuration = SpatialTrackingSession.Configuration(
-                    tracking: [.plane],
-                    sceneUnderstanding: [.collision, .physics]
-                )
+                // let configuration = SpatialTrackingSession.Configuration(
+                //     tracking: [.plane],
+                //     sceneUnderstanding: [.collision, .physics]
+                // ) // <- New way of tracking plane detection
+                // if let unavailableCapabilities = await spatialTrackingSession.run(configuration) {
+                //     throw ImmersiveBeeViewError.entityError(message: "Unavailable spatial tracking capabilities: \(unavailableCapabilities)")
 
-                if let unavailableCapabilities = await spatialTrackingSession.run(configuration) {
-                    // TODO: Handle errors
+                // }
+                // let planeAnchor = AnchorEntity(.plane(.horizontal,
+                //                                       classification: .table,
+                //                                       minimumBounds: [0.15, 0.15]))
+                // trackPlaneDetection() // <- Old way to track plane detection
+                loadUserHands(content: &content)
+
+                guard let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) else {
+                    throw ImmersiveBeeViewError.entityError(message: "Could not load Bee Scene (where all content will be placed)")
                 }
 
-                let planeAnchor = AnchorEntity(.plane(.horizontal,
-                                                      classification: .table,
-                                                      minimumBounds: [0.15, 0.15]))
+                let therapist = try await loadTherapist()
+                let dialogue = try loadDialogue(from: attachments)
+                therapist.addChild(dialogue)
+                immersiveContentEntity.addChild(therapist)
 
-                if let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) {
-                    let flower = try loadFlower(from: immersiveContentEntity, withName: "Flowers", animatedEntityNamed: "Daffodil")
-                    let bee = try await loadBee(from: immersiveContentEntity)
-                    let beehive = try await loadBeehive(from: immersiveContentEntity)
-                    let therapist = try loadTherapist(from: immersiveContentEntity)
-                    let waterBottle = try loadWaterBottle(from: immersiveContentEntity, content: &content)
-                    let dialogue = try loadDialogue(from: attachments)
+                let beehive = try await loadBeehive()
+                immersiveContentEntity.addChild(beehive)
 
-                    therapist.addChild(dialogue)
-                    immersiveContentEntity.addChild(flower)
+                let bee = try await loadBee()
+                immersiveContentEntity.addChild(bee)
 
-                    content.add(immersiveContentEntity)
+                let flower = try await loadFlower()
+                immersiveContentEntity.addChild(flower)
 
-                    trackPlaneDetection()
+                content.add(immersiveContentEntity)
 
-                    // TODO: Create load hands
-                    if appState.handAnchorEntities.isEmpty {
-                        for _ in 0 ..< 2 { // left + right
-                            let anchor = AnchorEntity(world: .zero)
-                            anchor.components.set(HandComponent()) // handID == nil for now
-                            appState.handAnchorEntities.append(anchor)
-                            content.add(anchor)
-                        }
-                    }
-                    for handAnchorEntity in appState.handAnchorEntities {
-                        handAnchorEntity.components.set(ExitGestureComponent())
-                    }
+                appState.beeSceneState.daffodilFlowerPot = flower
+                appState.beeSceneState.therapist = therapist
+                appState.beeSceneState.beehive = beehive
+                appState.beeSceneState.bee = bee
+                appState.beeSceneState.beeImmersiveContentSceneEntity = immersiveContentEntity
 
-                    appState.beeSceneState.daffodilFlowerPot = flower
-                    appState.beeSceneState.therapist = therapist
-                    appState.beeSceneState.waterBottle = waterBottle
-                    appState.beeSceneState.beehive = beehive
-                    appState.beeSceneState.bee = bee
-                }
             } catch {
                 let formattedErrorMessage = "Error in ImmersiveBeeView RealityView's make func: " + String(describing: error)
                 print(formattedErrorMessage)
@@ -93,6 +86,16 @@ struct ImmersiveBeeView: View {
                         performInteractionInOwnEnvironmentStep()
                     } else {
                         print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                        // Load the Water bottles in advances
+                        Task { @MainActor in
+                            // guard let waterBottleSceneEntity = try? await Entity(named: "Models/Water Bottles/Water Bottle", in: realityKitContentBundle)
+                            // else {
+                            //     throw ImmersiveBeeViewError.entityError(message: "Could not load Bee")
+                            // }
+                            // let waterBottle = try loadWaterBottle(from: waterBottleSceneEntity, content: &content)
+                            // appState.beeSceneState.waterBottle = waterBottle
+                            // appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
+                        }
                     }
                 case .interactionInForrestFullSpace:
                     if appState.beeSceneState.isCurrentStepConfirmed == true {
@@ -147,9 +150,6 @@ struct ImmersiveBeeView: View {
                 .glassBackgroundEffect()
             }
         }
-        // .spatialTapGestureToEntity(appState.beeSceneState.therapist, onSpatialTapRelease: { spatialTagGesture in
-        //     print("Hello!")
-        // })
         // .spatialTapGestureToEntity(appState.beeSceneState.bee, onSpatialTapRelease: { spatialTagGesture in
         //     // not used and conflicting with hand collision system
         //     print("Bzzzzzz!")

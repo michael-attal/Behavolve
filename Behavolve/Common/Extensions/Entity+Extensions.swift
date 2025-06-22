@@ -146,6 +146,14 @@ extension Entity {
 
         return entitiesWithComponent
     }
+    
+    func findFirstCollisionComponent() -> CollisionComponent? {
+        return RealityKitHelper.findFirstCollisionComponent(in: self)
+    }
+    
+    func findFirstEntityWithCollisionComponent() -> Entity? {
+        return RealityKitHelper.findFirstEntityWithCollisionComponent(in: self)
+    }
 }
 
 extension ModelEntity {

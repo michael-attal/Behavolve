@@ -15,32 +15,8 @@ def Xform "Root"
         prepend references = @Daffodil_flower_pot.usdz@
     )
     {
-        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def RealityKitComponent "InputTarget"
-        {
-            uniform token info:id = "RealityKit.InputTarget"
-        }
-
-        def RealityKitComponent "Collider"
-        {
-            uint group = 1
-            uniform token info:id = "RealityKit.Collider"
-            uint mask = 4294967295
-            token type = "Default"
-
-            def RealityKitStruct "Shape"
-            {
-                float3 extent = (661.88837, 1014.9705, 682.1615)
-                token shapeType = "Box"
-
-                def RealityKitStruct "pose"
-                {
-                    float3 position = (37.670197, 498.92935, -26.064178)
-                }
-            }
-        }
 
         over "Daffodil"
         {
@@ -51,7 +27,7 @@ def Xform "Root"
             {
                 float2 ui:nodegraph:node:pos = (20, 20)
                 int ui:nodegraph:node:stackingOrder = 1
-                float3 xformOp:translate = (-7.9117217, 9.18505, 9.631863)
+                float3 xformOp:translate = (-7.911732, 9.185143, 8.72422)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
             }
 
@@ -65,7 +41,7 @@ def Xform "Root"
                 float2 ui:nodegraph:node:pos = (40, 40)
                 int ui:nodegraph:node:stackingOrder = 2
                 quatf xformOp:orient = (0.99999994, -9.52094e-9, -5.2417595e-9, -2.4743107e-8)
-                float3 xformOp:translate = (35.066628, -9.989501, 9.679539)
+                float3 xformOp:translate = (31.755436, -8.456195, 8.68647)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
             }
 
@@ -75,7 +51,7 @@ def Xform "Root"
             {
                 float2 ui:nodegraph:node:pos = (60, 60)
                 int ui:nodegraph:node:stackingOrder = 3
-                float3 xformOp:translate = (-1.2898587, -11.428912, 12.208263)
+                float3 xformOp:translate = (-1.3800428, -10.915952, 11.105)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
             }
 
@@ -87,7 +63,7 @@ def Xform "Root"
                 int ui:nodegraph:node:stackingOrder = 4
                 quatf xformOp:orient = (1, 1.1832861e-9, 5.9988152e-9, -4.9973465e-8)
                 float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
-                float3 xformOp:translate = (-7.887302, -35.366024, 8.059332)
+                float3 xformOp:translate = (-7.0870233, -32.4299, 7.2604384)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
             }
 
@@ -99,9 +75,64 @@ def Xform "Root"
                 int ui:nodegraph:node:stackingOrder = 5
                 quatf xformOp:orient = (1, 4.5468784e-9, 1.6558138e-10, -5.72956e-8)
                 float3 xformOp:scale = (0.9999998, 0.99999976, 0.99999976)
-                float3 xformOp:translate = (33.628304, -25.980062, 5.417892)
+                float3 xformOp:translate = (30.68885, -23.19857, 4.879482)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
             }
+
+            over "Daffodil_geometry"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.9, 0.9, 0.9)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def RealityKitComponent "GroundingShadow"
+                {
+                    bool enableIBLShadow = 1
+                    bool enableMeshShadow = 1
+                    bool enableReceiveIBLShadow = 0
+                    bool enableReceiveMeshShadow = 0
+                    uniform token info:id = "RealityKit.GroundingShadow"
+                }
+            }
+        }
+
+        over "Flower_pot"
+        {
+            quatf xformOp:orient = (0.7071067, -0.7071068, 0, 0)
+            float3 xformOp:scale = (80.98659, 80.98659, 80.98659)
+            float3 xformOp:translate = (30.447102, 204.49261, -37.36072)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "Flower_pot_geometry"
+            {
+                def RealityKitComponent "GroundingShadow"
+                {
+                    bool enableIBLShadow = 0
+                    bool enableMeshShadow = 0
+                    bool enableReceiveIBLShadow = 1
+                    bool enableReceiveMeshShadow = 1
+                    uniform token info:id = "RealityKit.GroundingShadow"
+                }
+            }
+        }
+
+        over "Sun" (
+            active = false
+        )
+        {
+        }
+
+        over "Camera" (
+            active = false
+        )
+        {
+        }
+
+        over "Sun_001" (
+            active = false
+        )
+        {
         }
     }
 }

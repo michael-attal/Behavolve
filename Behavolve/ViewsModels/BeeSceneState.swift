@@ -12,6 +12,7 @@ import RealityKit
 @MainActor
 @Observable
 class BeeSceneState {
+    var beeImmersiveContentSceneEntity = Entity()
     var bee = Entity()
     var beehive = Entity()
     var beeAudioPlaybackController: AudioPlaybackController!

@@ -1,0 +1,91 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Flying_Bee" (
+        active = true
+        prepend references = @Flying_Bee.usdz@
+    )
+    {
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "SkinnedMeshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "root"
+                {
+                    over "GLTF_SceneRootNode"
+                    {
+                        over "RootNode_0_0"
+                        {
+                            over "skeletal_1_1"
+                            {
+                                over "GLTF_created_0"
+                                {
+                                    over "GLTF_created_0_rootJoint"
+                                    {
+                                        over "root_jnt_2_2"
+                                        {
+                                            over "skin0"
+                                            {
+                                                def RealityKitComponent "InputTarget"
+                                                {
+                                                    uniform token info:id = "RealityKit.InputTarget"
+                                                }
+
+                                                def RealityKitComponent "Collider"
+                                                {
+                                                    uint group = 1
+                                                    uniform token info:id = "RealityKit.Collider"
+                                                    uint mask = 4294967295
+                                                    token type = "Default"
+
+                                                    def RealityKitStruct "Shape"
+                                                    {
+                                                        float3 extent = (1482.8729, 1552.1299, 1881.781)
+                                                        token shapeType = "Box"
+
+                                                        def RealityKitStruct "pose"
+                                                        {
+                                                            float3 position = (0, 774.76855, 88.006714)
+                                                        }
+                                                    }
+                                                }
+
+                                                def RealityKitComponent "GroundingShadow"
+                                                {
+                                                    bool enableIBLShadow = 1
+                                                    bool enableMeshShadow = 1
+                                                    bool enableReceiveIBLShadow = 0
+                                                    bool enableReceiveMeshShadow = 0
+                                                    uniform token info:id = "RealityKit.GroundingShadow"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def RealityKitAudioFile "bee_mp3"
+    {
+        uniform asset file = @../../Audios/bee.mp3@
+        uniform bool shouldLoop = 0
+    }
+}
+

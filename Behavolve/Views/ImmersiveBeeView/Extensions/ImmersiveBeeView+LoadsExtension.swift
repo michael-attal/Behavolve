@@ -8,15 +8,19 @@
 import _RealityKit_SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftUI
 
 // Extension for loading asseets in RealityView
 extension ImmersiveBeeView {
-    func loadBee(from: Entity) async throws -> Entity {
-        guard let bee = from.findEntity(named: "Flying_Bee") else {
-            throw ImmersiveBeeViewError.entityError(message: "Could not find Flying_Bee entity")
+    func loadBee() async throws -> Entity {
+        guard let beeSceneEntity = try? await Entity(named: "Models/Bees/Bee", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Bee")
         }
 
-        bee.setGroundingShadow(castsShadow: true)
+        guard let bee = beeSceneEntity.findEntity(named: "Flying_Bee") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Flying_Bee entity")
+        }
 
         bee.scale = [0.00015, 0.00015, 0.00015]
         bee.position = [-1.5, 0.1, -1.5] // Same as the beehive
@@ -28,7 +32,7 @@ extension ImmersiveBeeView {
 
         bee.playAnimation(beeFlyingAnim)
 
-        guard let audioResource = try? await AudioFileResource(named: "/Root/Flying_Bee/bee_mp3", from: "Scenes/Bee Scene.usda", in: realityKitContentBundle) else {
+        guard let audioResource = try? await AudioFileResource(named: "/Root/bee_mp3", from: "Models/Bees/Bee.usda", in: realityKitContentBundle) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee audio")
         }
         bee.spatialAudio = SpatialAudioComponent(gain: -50)
@@ -49,12 +53,16 @@ extension ImmersiveBeeView {
         return bee
     }
 
-    func loadBeehive(from: Entity) async throws -> Entity {
-        guard let beehive = from.findEntity(named: "Wooden_Beehive") else {
+    func loadBeehive() async throws -> Entity {
+        guard let beehiveSceneEntity = try? await Entity(named: "Models/Beehives/Beehive", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Beehive")
+        }
+
+        guard let beehive = beehiveSceneEntity.findEntity(named: "Wooden_Beehive") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Wooden_Beehive entity")
         }
 
-        beehive.setGroundingShadow(castsShadow: true)
         beehive.scale = [0.005, 0.005, 0.005]
         beehive.position = [-1.5, 0.0, -1.5]
         // TODO: Place it on a table instead of hardcoding the position later (like the flowers)
@@ -62,11 +70,15 @@ extension ImmersiveBeeView {
         return beehive
     }
 
-    func loadTherapist(from: Entity) throws -> Entity {
-        guard let therapist = from.findEntity(named: "Therapist") else {
+    func loadTherapist() async throws -> Entity {
+        guard let therapistSceneEntity = try? await Entity(named: "Models/Therapist/Therapist", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Therapist")
+        }
+
+        guard let therapist = therapistSceneEntity.findEntity(named: "Therapist_TCC") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Therapist entity")
         }
-        therapist.setGroundingShadow(castsShadow: true)
         guard let therapistAnimResource = therapist.availableAnimations.first, let therapistAnim = try? AnimationResource.generate(with: therapistAnimResource.repeat().definition) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Therapist animation")
         }
@@ -87,6 +99,13 @@ extension ImmersiveBeeView {
 
         therapist.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
 
+        // therapist.generateCollisionShapes(recursive: true)
+        // therapist.components.set(GestureComponent(
+        //     TapGesture().onEnded {
+        //         print("Therapist tapped")
+        //     }
+        // ))
+
         return therapist
     }
 
@@ -102,15 +121,17 @@ extension ImmersiveBeeView {
         return dialogue
     }
 
-    // TODO: Place the flower on a table inside the user's environment. If none is found, create a table and put the flower on top of it.
-    func loadFlower(from: Entity, withName name: String, playScalingAnimation: Bool = true, animatedEntityNamed: String? = nil) throws -> Entity {
-        guard let flower = from.findEntity(named: name) else {
-            throw ImmersiveBeeViewError.entityError(message: "Could not find \(name) entity")
+    func loadFlower(playScalingAnimation: Bool = true) async throws -> Entity {
+        guard let flowersSceneEntity = try? await Entity(named: "Models/Flowers/Flowers", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Flowers")
         }
 
-        flower.setGroundingShadow(castsShadow: true)
+        guard let flower = flowersSceneEntity.findEntity(named: "Daffodil_flower_pot") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Daffodil_flower_pot entity")
+        }
 
-        flower.scale = [0.1, 0.1, 0.1]
+        flower.scale = [0.001, 0.001, 0.001]
         flower.position = [1, 0, -1.1]
 
         // guard let flowerAnimResource = flower.availableAnimations.first else {
@@ -118,19 +139,22 @@ extension ImmersiveBeeView {
         // }
         // let flowerAnim = try! AnimationResource.generate(with: flowerAnimResource.repeat().definition)
         // flower.playAnimation(flowerAnim)
-
+       
         if playScalingAnimation {
-            var animatedEntity = flower
-            if let animatedEntityNamed {
-                guard let animatedEntityFromName = flower.findEntity(named: animatedEntityNamed) else {
-                    throw ImmersiveBeeViewError.entityError(message: "Could not find \(animatedEntityNamed) entity for the animation of \(name)")
-                }
-                animatedEntity = animatedEntityFromName
+            guard let animatedEntity = flower.findEntity(named: "Daffodil") else {
+                throw ImmersiveBeeViewError.entityError(message: "Could not find Daffodil entity for the animation of Flowers")
             }
-            RealityKitHelper.fromToByAnimationScaling(fromScale: animatedEntity.scale, toScale: animatedEntity.scale * 1.05, toEntity: animatedEntity, timing: .linear, duration: 2.0, loop: true, isAdditive: false, playAutomatically: true)
+            RealityKitHelper.fromToByAnimationScaling(fromScale: animatedEntity.scale, toScale: animatedEntity.scale * 1.01, toEntity: animatedEntity, timing: .linear, duration: 2.0, loop: true, isAdditive: false, playAutomatically: true)
         }
-
+       
         flower.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
+        // New api for gesture, directly with a gesture component.
+        // flower.components.set(GestureComponent(
+        //     TapGesture().onEnded {
+        //         print("Flower tapped")
+        //     }
+        // ))
 
         return flower
     }
@@ -139,8 +163,6 @@ extension ImmersiveBeeView {
         guard let waterBottle = from.findEntity(named: "Water_Bottle") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Water_Bottle entity")
         }
-        waterBottle.setGroundingShadow(castsShadow: true)
-
         waterBottle.scale = [0.5, 0.5, 0.5]
         waterBottle.position = [1, 0, -1.1]
 
@@ -148,11 +170,27 @@ extension ImmersiveBeeView {
             actualTargetPosition.with(\.y, entityPosition.y)
         })
 
-        waterBottle.isEnabled = false // Enabled at performInteractionInForrestFullSpaceStep
+        waterBottle.isEnabled = true // Enabled at performInteractionInForrestFullSpaceStep
 
         waterBottle.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
+        waterBottle.position = [0.3, 1, -0.1]
+
         // ManipulationComponent.configureEntity(waterBottle)
-        var manipulationComponent = ManipulationComponent()
+
+        waterBottle.generateCollisionShapes(recursive: true)
+        guard let collisionComponent = waterBottle.findModelEntity()?.findFirstCollisionComponent() else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not get Water_Bottle collision shapes")
+        }
+        ManipulationComponent.configureEntity(
+            waterBottle,
+            hoverEffect: .spotlight(.init(color: .white)),
+            allowedInputTypes: .direct,
+            collisionShapes: collisionComponent.shapes
+        )
+
+        var manipulationComponent = waterBottle.components[ManipulationComponent.self]!
+        manipulationComponent.dynamics.scalingBehavior = .none
         manipulationComponent.releaseBehavior = .stay
         waterBottle.components.set(manipulationComponent)
 
@@ -173,6 +211,22 @@ extension ImmersiveBeeView {
         }
 
         return waterBottle
+    }
+
+    func loadUserHands(content: inout RealityViewContent) {
+        #if !targetEnvironment(simulator)
+        if appState.handAnchorEntities.isEmpty {
+            for _ in 0 ..< 2 { // left + right
+                let anchor = AnchorEntity(world: .zero)
+                anchor.components.set(HandComponent()) // handID == nil for now
+                appState.handAnchorEntities.append(anchor)
+                content.add(anchor)
+            }
+        }
+        for handAnchorEntity in appState.handAnchorEntities {
+            handAnchorEntity.components.set(ExitGestureComponent())
+        }
+        #endif
     }
 
     func loadCatchError(from: RealityViewAttachments) -> Entity? {

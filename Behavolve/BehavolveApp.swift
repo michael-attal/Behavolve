@@ -12,8 +12,8 @@ struct BehavolveApp: App {
     @State private var appState = AppState()
 
     init() {
-        LookAtTargetSystem.registerSystem()
         LookAtTargetComponent.registerComponent()
+        LookAtTargetSystem.registerSystem()
 
         MoveToComponent.registerComponent()
         MovementSystem.registerSystem()
@@ -26,28 +26,30 @@ struct BehavolveApp: App {
 
         // PathfindingSystem.registerSystem() // Not working atm
 
-        NectarDepositSystem.registerSystem()
         NectarDepositComponent.registerComponent()
+        NectarDepositSystem.registerSystem()
 
         NectarGatheringSystem.registerSystem()
         NectarGatheringComponent.registerComponent()
 
         #if !targetEnvironment(simulator)
         ExitGestureComponent.registerComponent()
-        HandComponent.registerComponent()
-        HandProximityComponent.registerComponent()
-        HandCollisionComponent.registerComponent()
-
         ExitGestureSystem.registerSystem()
+
+        HandComponent.registerComponent()
         HandInputSystem.registerSystem()
+
+        HandProximityComponent.registerComponent()
         HandProximitySystem.registerSystem()
+
+        HandCollisionComponent.registerComponent()
         HandCollisionSystem.registerSystem()
         #endif
 
         UserProximityComponent.registerComponent()
-        FleeStateComponent.registerComponent()
-
         UserProximitySystem.registerSystem()
+
+        FleeStateComponent.registerComponent()
     }
 
     var body: some Scene {

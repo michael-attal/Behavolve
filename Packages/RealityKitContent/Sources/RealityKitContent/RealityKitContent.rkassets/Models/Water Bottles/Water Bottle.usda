@@ -352,6 +352,7 @@ def Xform "Root"
             def RealityKitComponent "RigidBody"
             {
                 uniform token info:id = "RealityKit.RigidBody"
+                bool isCCDEnabled = 1
 
                 def RealityKitStruct "massFrame"
                 {
@@ -363,6 +364,36 @@ def Xform "Root"
                 def RealityKitStruct "material"
                 {
                 }
+            }
+
+            over "Sketchfab_model"
+            {
+                over "root"
+                {
+                    over "GLTF_SceneRootNode"
+                    {
+                        over "Bottle_3"
+                        {
+                            over "Object_11"
+                            {
+                                over "Object_4"
+                                {
+                                    def RealityKitComponent "GroundingShadow"
+                                    {
+                                        bool enableIBLShadow = 1
+                                        bool enableMeshShadow = 1
+                                        uniform token info:id = "RealityKit.GroundingShadow"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            def RealityKitComponent "MotionState"
+            {
+                uniform token info:id = "RealityKit.MotionState"
             }
         }
     }
