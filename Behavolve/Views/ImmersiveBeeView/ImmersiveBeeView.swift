@@ -36,6 +36,7 @@ struct ImmersiveBeeView: View {
                 //                                       minimumBounds: [0.15, 0.15]))
                 // trackPlaneDetection() // <- Old way to track plane detection
                 loadUserHands(content: &content)
+                loadSubscribtionToManipulationEvents(content: &content)
 
                 guard let immersiveContentEntity = try? await Entity(named: "Scenes/Bee Scene", in: realityKitContentBundle) else {
                     throw ImmersiveBeeViewError.entityError(message: "Could not load Bee Scene (where all content will be placed)")
@@ -87,14 +88,17 @@ struct ImmersiveBeeView: View {
                     } else {
                         print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
                         // Load the Water bottles in advances
-                        Task { @MainActor in
-                            // guard let waterBottleSceneEntity = try? await Entity(named: "Models/Water Bottles/Water Bottle", in: realityKitContentBundle)
-                            // else {
-                            //     throw ImmersiveBeeViewError.entityError(message: "Could not load Bee")
-                            // }
-                            // let waterBottle = try loadWaterBottle(from: waterBottleSceneEntity, content: &content)
-                            // appState.beeSceneState.waterBottle = waterBottle
-                            // appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
+                        if appState.beeSceneState.waterBottle.name != "Water_Bottle" { // Avoid loading multiple times the water bottle (not the best way to handle concurrency)
+                            Task { @MainActor in
+                                do {
+                                    let waterBottle = try await loadWaterBottle()
+                                    appState.beeSceneState.waterBottle = waterBottle
+                                    appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
+                                } catch {
+                                    print(error)
+                                    throw error
+                                }
+                            }
                         }
                     }
                 case .interactionInForrestFullSpace:

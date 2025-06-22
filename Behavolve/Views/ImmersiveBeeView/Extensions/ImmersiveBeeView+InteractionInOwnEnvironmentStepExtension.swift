@@ -9,8 +9,10 @@
 extension ImmersiveBeeView {
     // TODO: Put the bottle next to the flower
     func performInteractionInOwnEnvironmentStep() {
-        appState.beeSceneState.waterBottle.position = appState.beeSceneState.daffodilFlowerPot.position + SIMD3<Float>(x: 0.5, y: 0, z: 0)
-        appState.beeSceneState.waterBottle.position.y = 0.15
+        let flowersPosition = appState.beeSceneState.daffodilFlowerPot.position
+        appState.beeSceneState.waterBottle.position.x = flowersPosition.x + 0.5
+        appState.beeSceneState.waterBottle.position.z = flowersPosition.z
+        // TODO: Fix y position
         appState.beeSceneState.waterBottle.isEnabled = true
     }
 }
