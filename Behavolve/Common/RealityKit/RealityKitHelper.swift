@@ -26,7 +26,7 @@ class RealityKitHelper {
         let scale = model.transform.scale
         model.transform = Transform(scale: scale, rotation: .init(), translation: .zero)
     }
-    
+
     static func findFirstCollisionComponent(in entity: Entity) -> CollisionComponent? {
         if let collision = entity.components[CollisionComponent.self] {
             return collision
@@ -38,7 +38,7 @@ class RealityKitHelper {
         }
         return nil
     }
-    
+
     /// Recursively search for the first entity that contains a CollisionComponent.
     static func findFirstEntityWithCollisionComponent(in entity: Entity) -> Entity? {
         if entity.components.has(CollisionComponent.self) {

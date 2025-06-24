@@ -1,7 +1,8 @@
 {
-  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
+  "advancedEditorSelectedIdentifier" : "ShaderGraphEditorPluginID",
   "openSceneRelativePaths" : [
-    "Scenes\/Bee Scene.usda"
+    "Scenes\/Bee Scene.usda",
+    "Models\/Halos\/Untitled Scene.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -11,6 +12,9 @@
 
     ],
     "434575FC-30CB-4612-B251-B198793B53CC" : [
+
+    ],
+    "58FBE6B4-BEAD-4A36-9D0C-FBBFE3077599" : [
 
     ],
     "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D" : [
@@ -334,6 +338,118 @@
           0.06779407,
           0.25433296,
           0.63115126,
+          1
+        ]
+      }
+    ],
+    "58FBE6B4-BEAD-4A36-9D0C-FBBFE3077599" : [
+      {
+        "date" : 772482041.318757,
+        "title" : "Untitled",
+        "transform" : [
+          0.99966455,
+          7.148816e-10,
+          0.02589602,
+          0,
+          0.02580349,
+          0.0844607,
+          -0.9960926,
+          0,
+          -0.0021871976,
+          0.99642676,
+          0.08443239,
+          0,
+          -0.000895726,
+          0.40806845,
+          0.034577787,
+          1
+        ]
+      },
+      {
+        "date" : 772478616.292592,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          1.3969839e-09,
+          0.28958264,
+          0.28958276,
+          1
+        ]
+      },
+      {
+        "date" : 772477793.510688,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          1.3969839e-09,
+          0.28958264,
+          0.28958273,
+          1
+        ]
+      },
+      {
+        "date" : 772477769.693447,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          1.3969839e-09,
+          0.2895826,
+          0.28958273,
+          1
+        ]
+      },
+      {
+        "date" : 772476392.988691,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          1.1920929e-07,
+          0.14479113,
+          0.14479113,
           1
         ]
       }
@@ -1970,5 +2086,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
+  "selectedSceneRelativePath" : "Models\/Halos\/Untitled Scene.usda"
 }

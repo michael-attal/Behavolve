@@ -1,0 +1,172 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def Material "Halo_Material_1"
+    {
+        color3f inputs:ConstantColor3 = (0.016804177, 0.198351, 1) (
+            colorSpace = "srgb_texture"
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (282.46484, -181.80078)
+                    int stackingOrderInSubgraph = 124
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/Halo_Material_1/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (827.51953, 79.30859)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 51
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            color3f inputs:diffuseColor.connect = </Root/Halo_Material_1/Multiply_2.outputs:out>
+            float inputs:metallic
+            float3 inputs:normal
+            float inputs:opacity.connect = </Root/Halo_Material_1/Multiply.outputs:out>
+            float inputs:roughness
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (569.2383, 63.19922)
+            int ui:nodegraph:node:stackingOrder = 86
+        }
+
+        def Shader "TextureCoordinates"
+        {
+            uniform token info:id = "ND_texcoord_vector2"
+            float2 outputs:out
+            float2 ui:nodegraph:node:pos = (-575.7539, -52.277344)
+            int ui:nodegraph:node:stackingOrder = 112
+        }
+
+        def Shader "Subtract"
+        {
+            uniform token info:id = "ND_subtract_vector2"
+            float2 inputs:in1.connect = </Root/Halo_Material_1/TextureCoordinates.outputs:out>
+            float2 inputs:in2 = (0.5, 0.5)
+            float2 outputs:out
+            float2 ui:nodegraph:node:pos = (-363.63672, -20.933594)
+            int ui:nodegraph:node:stackingOrder = 57
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in2"]
+        }
+
+        def Shader "Magnitude"
+        {
+            uniform token info:id = "ND_magnitude_vector2"
+            float2 inputs:in.connect = </Root/Halo_Material_1/Subtract.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-228.25781, -23.945312)
+            int ui:nodegraph:node:stackingOrder = 45
+        }
+
+        def Shader "SmoothStep"
+        {
+            uniform token info:id = "ND_smoothstep_float"
+            float inputs:high = 0.5
+            float inputs:in.connect = </Root/Halo_Material_1/Magnitude.outputs:out>
+            float inputs:low = 0.2
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-54.08203, 32.83203)
+            int ui:nodegraph:node:stackingOrder = 60
+        }
+
+        def Shader "Oneminus"
+        {
+            uniform token info:id = "ND_realitykit_oneminus_float"
+            float inputs:in.connect = </Root/Halo_Material_1/SmoothStep.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (59.816406, 77.265625)
+            int ui:nodegraph:node:stackingOrder = 61
+        }
+
+        def Shader "Time"
+        {
+            uniform token info:id = "ND_time_float"
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (152.23047, -83.95703)
+            int ui:nodegraph:node:stackingOrder = 72
+        }
+
+        def Shader "Sin"
+        {
+            uniform token info:id = "ND_sin_float"
+            float inputs:in.connect = </Root/Halo_Material_1/Time.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (149.0039, -22.714844)
+            int ui:nodegraph:node:stackingOrder = 70
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/Halo_Material_1/Sin.outputs:out>
+            float inputs:in2.connect = </Root/Halo_Material_1/Oneminus.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (304.30078, -5.0078125)
+            int ui:nodegraph:node:stackingOrder = 130
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_color3FA"
+            color3f inputs:in1.connect = </Root/Halo_Material_1.inputs:ConstantColor3>
+            float inputs:in2.connect = </Root/Halo_Material_1/Multiply.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (398.29688, -56.210938)
+            int ui:nodegraph:node:stackingOrder = 117
+        }
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion = 1
+            color3f inputs:baseColor.connect = </Root/Halo_Material_1/Multiply_2.outputs:out>
+            color3f inputs:emissiveColor.connect = </Root/Halo_Material_1/Multiply_2.outputs:out>
+            float inputs:metallic
+            float3 inputs:normal
+            float inputs:opacity = 1
+            float inputs:opacity.connect = </Root/Halo_Material_1/Multiply.outputs:out>
+            float inputs:opacityThreshold
+            float inputs:roughness
+            float inputs:specular
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (552.41406, 353.66016)
+            int ui:nodegraph:node:stackingOrder = 129
+        }
+    }
+
+    def Cylinder "Cylinder" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Halo_Material_1> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        float3 xformOp:scale = (1, 0.1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Cube "Cube" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Halo_Material_1> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 0.2
+    }
+}
+

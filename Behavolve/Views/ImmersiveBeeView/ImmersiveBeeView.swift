@@ -94,6 +94,15 @@ struct ImmersiveBeeView: View {
                                     let waterBottle = try await loadWaterBottle()
                                     appState.beeSceneState.waterBottle = waterBottle
                                     appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
+                                    // TODO: Refactor Halo: enabled it in performInteractionInOwnEnvironmentStep(-
+                                    var halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1)
+                                    //halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
+                                    halo.position.z = -1.6
+                                    halo.position.y = 0.7
+                                    halo.name = "Halo"
+                                    if appState.beeSceneState.beeImmersiveContentSceneEntity.findEntity(named: "Halo") == nil {
+                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
+                                    }
                                 } catch {
                                     print(error)
                                     throw error
