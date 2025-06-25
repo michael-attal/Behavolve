@@ -38,9 +38,37 @@ def Xform "Root"
                                         {
                                             over "skin0"
                                             {
+                                                def RealityKitComponent "GroundingShadow"
+                                                {
+                                                    bool enableIBLShadow = 1
+                                                    bool enableMeshShadow = 1
+                                                    bool enableReceiveIBLShadow = 0
+                                                    bool enableReceiveMeshShadow = 0
+                                                    uniform token info:id = "RealityKit.GroundingShadow"
+                                                }
+
                                                 def RealityKitComponent "InputTarget"
                                                 {
                                                     uniform token info:id = "RealityKit.InputTarget"
+                                                }
+
+                                                def RealityKitComponent "RigidBody"
+                                                {
+                                                    bool gravityEnabled = 0
+                                                    uniform token info:id = "RealityKit.RigidBody"
+
+                                                    def RealityKitStruct "massFrame"
+                                                    {
+                                                        float m_mass = 0.001
+
+                                                        def RealityKitStruct "m_pose"
+                                                        {
+                                                        }
+                                                    }
+
+                                                    def RealityKitStruct "material"
+                                                    {
+                                                    }
                                                 }
 
                                                 def RealityKitComponent "Collider"
@@ -60,15 +88,6 @@ def Xform "Root"
                                                             float3 position = (0, 774.76855, 88.006714)
                                                         }
                                                     }
-                                                }
-
-                                                def RealityKitComponent "GroundingShadow"
-                                                {
-                                                    bool enableIBLShadow = 1
-                                                    bool enableMeshShadow = 1
-                                                    bool enableReceiveIBLShadow = 0
-                                                    bool enableReceiveMeshShadow = 0
-                                                    uniform token info:id = "RealityKit.GroundingShadow"
                                                 }
                                             }
                                         }

@@ -42,6 +42,12 @@ struct ImmersiveBeeView: View {
                     throw ImmersiveBeeViewError.entityError(message: "Could not load Bee Scene (where all content will be placed)")
                 }
 
+                #if targetEnvironment(simulator)
+                // Add a plane ground to not let the watter bottle go beyond the scene in simulator
+                let planeForGroundCollision = loadPlaneForGroundCollision()
+                immersiveContentEntity.addChild(planeForGroundCollision)
+                #endif
+
                 let therapist = try await loadTherapist()
                 let dialogue = try loadDialogue(from: attachments)
                 therapist.addChild(dialogue)
@@ -95,14 +101,14 @@ struct ImmersiveBeeView: View {
                                     appState.beeSceneState.waterBottle = waterBottle
                                     appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
                                     // TODO: Refactor Halo: enabled it in performInteractionInOwnEnvironmentStep(-
-                                    var halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1)
-                                    //halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
+                                    let halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1, activateTransparency: true, minimumOpacity: 0.5, lowestPercentageEmissive: 0.1, onlyLoadHaloModelFromRealityKitContentBundle: true)
+                                    // halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
                                     halo.position.z = -1.6
                                     halo.position.y = 0.7
                                     halo.name = "Halo"
-                                    if appState.beeSceneState.beeImmersiveContentSceneEntity.findEntity(named: "Halo") == nil {
-                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
-                                    }
+                                    halo.isEnabled = false
+                                    appState.beeSceneState.halo = halo
+                                    appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
                                 } catch {
                                     print(error)
                                     throw error

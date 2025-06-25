@@ -115,6 +115,44 @@ def Xform "Root"
                     uniform token info:id = "RealityKit.GroundingShadow"
                 }
             }
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (2.8060503, 2.8060994, 5.371233)
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                        float3 position = (5.9604645e-8, -5.9604645e-8, 0.054951906)
+                    }
+                }
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    float m_mass = 5
+
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
         }
 
         over "Sun" (

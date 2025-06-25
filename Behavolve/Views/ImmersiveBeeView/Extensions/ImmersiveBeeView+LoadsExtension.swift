@@ -76,6 +76,13 @@ extension ImmersiveBeeView {
         beehive.scale = [0.005, 0.005, 0.005]
         beehive.position = [-1.5, 0.0, -1.5]
 
+        RealityKitHelper.updateCollisionFilter(
+            for: beehive,
+            groupType: .beehive,
+            maskTypes: [.all],
+            subtracting: .bee
+        )
+
         return beehive
     }
 
@@ -116,6 +123,13 @@ extension ImmersiveBeeView {
         bee.components.set(OscillationComponent(amplitude: 0.01, frequency: 4)) // idle oscillation
 
         bee.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+
+        RealityKitHelper.updateCollisionFilter(
+            for: bee.findFirstEntityWithCollisionComponent()!,
+            groupType: .bee,
+            maskTypes: [.all],
+            subtracting: .beehive
+        )
 
         return bee
     }
@@ -168,10 +182,12 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Water_Bottle entity")
         }
         waterBottle.scale = [0.006, 0.006, 0.006]
+        waterBottle.position.y = RealityKitHelper.getModelHeight(modelEntity: waterBottle.findModelEntity()!) + 0.10
+
         waterBottle.isEnabled = false // Enabled at InteractionInOwnEnvironment
 
         waterBottle.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
-       
+
         ManipulationComponent.configureEntity(waterBottle)
         waterBottle.generateCollisionShapes(recursive: true)
         guard let collisionComponent = waterBottle.findModelEntity()?.findFirstCollisionComponent() else {
@@ -183,13 +199,29 @@ extension ImmersiveBeeView {
             allowedInputTypes: .direct,
             collisionShapes: collisionComponent.shapes
         )
-       
+
         var manipulationComponent = waterBottle.components[ManipulationComponent.self]!
         manipulationComponent.dynamics.scalingBehavior = .none
         manipulationComponent.releaseBehavior = .stay
         waterBottle.components.set(manipulationComponent)
 
         return waterBottle
+    }
+
+    func loadPlaneForGroundCollision() -> Entity {
+        let planeMesh = MeshResource.generateBox(width: 100, height: 1, depth: 100)
+        var planeMaterial = PhysicallyBasedMaterial()
+        planeMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
+            tint: .white.withAlphaComponent(1)
+        )
+        planeMaterial.blending = .transparent(opacity: 0.0)
+
+        let planeModelCommponent = ModelComponent(mesh: planeMesh, materials: [planeMaterial])
+        let planeEntity = Entity(components: planeModelCommponent)
+        planeEntity.generateCollisionShapes(recursive: true)
+        planeEntity.components.set(PhysicsBodyComponent(shapes: planeEntity.findFirstCollisionComponent()!.shapes, mass: .infinity, mode: .static))
+        planeEntity.position.y = -0.5
+        return planeEntity
     }
 
     func loadUserHands(content: inout RealityViewContent) {

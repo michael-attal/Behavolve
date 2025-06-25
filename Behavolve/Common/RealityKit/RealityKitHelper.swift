@@ -51,4 +51,10 @@ class RealityKitHelper {
         }
         return nil
     }
+    
+    static func getModelHeight(modelEntity: ModelEntity) -> Float {
+        let bounds = modelEntity.visualBounds(relativeTo: nil)
+        let height = bounds.extents.y
+        return height
+    }
 }

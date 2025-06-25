@@ -17,6 +17,39 @@ def Xform "Root"
     {
         float3 xformOp:scale = (0.01, 0.01, 0.01)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "SkinnedMeshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "f85782bc985f4e62bb69fd252d027cfc_fbx"
+                {
+                    over "Object_2"
+                    {
+                        over "RootNode"
+                        {
+                            over "autorig_actor_Rigify"
+                            {
+                                over "Object_5"
+                                {
+                                    over "skin0"
+                                    {
+                                        def RealityKitComponent "GroundingShadow"
+                                        {
+                                            bool enableIBLShadow = 1
+                                            bool enableMeshShadow = 1
+                                            bool enableReceiveIBLShadow = 0
+                                            bool enableReceiveMeshShadow = 0
+                                            uniform token info:id = "RealityKit.GroundingShadow"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

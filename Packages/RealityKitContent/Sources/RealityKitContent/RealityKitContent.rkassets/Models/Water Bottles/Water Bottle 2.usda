@@ -15,8 +15,9 @@ def Xform "Root"
         references = @water_bottle_2.usdz@
     )
     {
-        float3 xformOp:scale = (0.01, 0.01, 0.01)
-        float3 xformOp:translate = (0, 0.25, 0)
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         over "Materials"
@@ -373,12 +374,37 @@ def Xform "Root"
                 float3 extent = (14.033491, 48.464466, 14.033492)
                 float height = 48.464466
                 float radius = 7.016746
-                token shapeType = "Capsule"
+                token shapeType = "Box"
 
                 def RealityKitStruct "pose"
                 {
                     float3 position = (-1.2502983, -0.7180309, -9.536743e-7)
                 }
+            }
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            float angularDamping = 0.05
+            uniform token info:id = "RealityKit.RigidBody"
+            bool isCCDEnabled = 1
+            float linearDamping = 10
+            token motionType = "Dynamic"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                    quatf orientation = (1, 0, 0, 0)
+                    float3 position = (0, 11, 0)
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+                double dynamicFriction = 0.1
+                double restitution = 0
+                double staticFriction = 0.1
             }
         }
     }
