@@ -29,6 +29,7 @@ class BeeSceneState {
     var floorInPatientRoom: (any Anchor)?
     var step: ImmersiveBeeSceneStep = AppState.isDevelopmentMode ? .neutralBeeGatheringNectarFromFlowers : .neutralIdle
     var isCurrentStepConfirmed = true
+    var isWaterBottlePlacedOnHalo = false
 }
 
 enum ImmersiveBeeSceneStep {
@@ -129,7 +130,7 @@ enum ImmersiveBeeSceneStep {
             This application uses mixed reality to gradually expose you to bee encounters while teaching you practical coping strategies. Remember, you're always in control - you can exit at any time by making a fist gesture or simply saying "EXIT".
 
             Throughout this experience, the bee will naturally move away if you get too close, just like in nature. This ensures you'll always maintain a comfortable distance. Are you ready to begin this journey towards understanding and managing your fear better?
-            
+
             In the next step, the bee will fly to the middle of the room in a protective cube. If you want, you can inspect it or even remove the cube with your hand if you want.
             """
 
@@ -168,13 +169,15 @@ enum ImmersiveBeeSceneStep {
 
         case .interactionInForrestFullSpace:
             return """
-            Welcome to the final challenge! You're now in a peaceful forest setting for a picnic. As expected in nature, a curious bee has noticed the sweet foods in your picnic basket.
+            Great job! You’ve successfully placed the water bottle on the target with calm and control. Now, it’s time for the final challenge!
 
-            Don't worry - this is a perfect opportunity to practice the calm response techniques we've been developing. The bee will maintain a safe distance, but it's interested in the sweet scents.
+            You’ll begin in a peaceful forest setting, enjoying a relaxing picnic. As often happens in nature, a curious bee will take notice of the sweet foods in your basket.
 
-            Your goal is to remain calm and use gentle hand movements to guide the bee away - just like you might in a real picnic situation. No sudden movements needed; simple, slow gestures are most effective.
+            No need to worry — this is the perfect opportunity to apply the calm response techniques you’ve practiced so far. The bee will keep a safe distance, but its attention will be drawn to the delicious scents.
 
-            Remember all you've learned about bee behavior, and that you can exit anytime by making a fist or saying "EXIT". How about we practice these calming techniques together?
+            Your goal is to remain calm. Just like in real life, you can gently guide the bee away using smooth hand movements — or simply stay still and relaxed. If you’re calm and patient, the bee will eventually fly away on its own.
+
+            Remember everything you’ve learned about bee behavior. And as always, you can exit the experience at any time by making a fist or saying “EXIT. Let's go?”
             """
         }
     }
@@ -199,18 +202,18 @@ enum ImmersiveBeeSceneStep {
 
         case .interactionInForrestFullSpace:
             return """
-            Guide to your picnic experience:
+               Guide to your picnic experience:
 
-            1. You're sitting at your picnic spot with some sweet treats nearby
-            2. A curious bee will approach, interested in the sweet scents
-            3. Practice using gentle hand movements to guide the bee away
-            4. Keep your movements slow and deliberate - no sudden gestures
-            5. Focus on your breathing to stay calm
+               1.    You’re sitting at your picnic spot with some sweet treats nearby.
+               2.    A curious bee will approach, attracted by the scents.
+               3.    Stay calm — the bee will naturally fly away after a short time.
+               4.    You can also use slow, gentle hand gestures to help guide it away a little faster.
+               5.    Avoid sudden movements, and focus on your breathing to stay relaxed.
 
-            Remember: The bee will maintain a safe distance naturally. This is a controlled environment to practice your response techniques.
-            You can exit anytime by making a fist or saying "EXIT".
+               This is a safe, controlled environment to practice your calm response techniques.
+               You can exit anytime by making a fist or saying “EXIT.”
 
-            Take a deep breath. When you're ready, we'll begin the experience.
+               Take a deep breath. The experience will begin in just a few seconds.   
             """
 
         default:

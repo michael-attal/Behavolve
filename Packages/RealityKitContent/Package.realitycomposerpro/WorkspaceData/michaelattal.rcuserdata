@@ -7,7 +7,8 @@
     "Models\/Water Bottles\/Water Bottle 2.usda",
     "Models\/Beehives\/Beehive.usda",
     "Models\/Flowers\/Flowers.usda",
-    "Models\/Bees\/Bee.usda"
+    "Models\/Bees\/Bee.usda",
+    "Models\/Particles\/Untitled Scene.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -2650,10 +2651,122 @@
           1
         ]
       }
+    ],
+    "FB6682C7-76F0-4F5B-B37A-830FF5DE9828" : [
+      {
+        "date" : 772654427.350229,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          -0.028198391,
+          0.48904794,
+          0.47296876,
+          1
+        ]
+      },
+      {
+        "date" : 772654293.315658,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          -0.007356137,
+          0.37287956,
+          0.58913714,
+          1
+        ]
+      },
+      {
+        "date" : 772654235.569327,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          0,
+          0.52372557,
+          0.4382912,
+          1
+        ]
+      },
+      {
+        "date" : 772654233.500031,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          0,
+          0.1292885,
+          0.12928855,
+          1
+        ]
+      },
+      {
+        "date" : 772654231.672479,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.70710677,
+          0,
+          0,
+          0.70710677,
+          0.7071069,
+          0,
+          0,
+          0.9035089,
+          1.518002,
+          1
+        ]
+      }
     ]
   },
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Models\/Bees\/Bee.usda"
+  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
 }

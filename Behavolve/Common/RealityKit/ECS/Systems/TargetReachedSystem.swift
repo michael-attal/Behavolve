@@ -8,36 +8,57 @@
 import Foundation
 import RealityKit
 
-// TODO: TargetReachedSystem
 @MainActor
 final class TargetReachedSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(HandInputSystem.self)] }
 
-    private static let query = EntityQuery(where: .has(ExitGestureComponent.self))
+    private static let query = EntityQuery(where: .has(TargetReachedComponent.self))
 
     required init(scene: RealityKit.Scene) {}
 
     func update(context: SceneUpdateContext) {
-        for hand in context.scene.performQuery(Self.query) {
-            guard var comp = hand.components[ExitGestureComponent.self] else { continue }
+        for entity in context.scene.performQuery(Self.query) {
+            guard var targetComponent = entity.components[TargetReachedComponent.self] else { continue }
 
-            let closed = HandPoseCache.shared.isFistClosed(for: hand)
+            let distance = distance(targetComponent.currentPosition, targetComponent.targetPosition)
 
-            // Accumulate or reset hold time.
-            comp.holdTime = closed ? comp.holdTime + context.deltaTime : .zero
+            if distance <= targetComponent.precision {
+                entity.components.remove(TargetReachedComponent.self)
 
-            if comp.holdTime >= comp.requiredDuration {
-                print("Exit Gesture Detected! Sending notification now!")
-                NotificationCenter.default.post(name: .exitGestureDetected, object: nil)
-                comp.holdTime = 0 // prevent re-trigger spam
+                // Send notification with relevant data
+                let userInfo: [String: Any] = [
+                    TargetReachedNotificationKeys.entityName: entity.name,
+                    TargetReachedNotificationKeys.targetPosition: targetComponent.targetPosition
+                ]
+                NotificationCenter.default.post(name: .targetReached, object: nil, userInfo: userInfo)
+
+            } else {
+                // Update current position
+                targetComponent.currentPosition = entity.position(relativeTo: nil)
+                entity.components[TargetReachedComponent.self] = targetComponent
             }
-            hand.components.set(comp)
         }
     }
 }
 
-// Custom notification used by ImmersiveView.
-// TODO: Add datas (entity name and target name...)
+// Notification name used when a target is reached
 extension Notification.Name {
     static let targetReached = Notification.Name("TargetReached")
+}
+
+// Keys for userInfo dictionary in targetReached notification
+enum TargetReachedNotificationKeys {
+    static let entityName = "entityName"
+    static let targetPosition = "targetPosition"
+}
+
+// Convenience accessors for notification payload
+extension Notification {
+    var targetReachedEntityName: String? {
+        userInfo?[TargetReachedNotificationKeys.entityName] as? String
+    }
+
+    var targetReachedTargetPosition: SIMD3<Float>? {
+        userInfo?[TargetReachedNotificationKeys.targetPosition] as? SIMD3<Float>
+    }
 }

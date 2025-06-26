@@ -89,29 +89,50 @@ struct ImmersiveBeeView: View {
                 case .neutralBeeGatheringNectarFromFlowers:
                     performNeutralBeeGatheringNectarFromFlowersStep()
                 case .interactionInOwnEnvironment:
-                    if appState.beeSceneState.isCurrentStepConfirmed == true {
-                        performInteractionInOwnEnvironmentStep()
-                    } else {
-                        print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
-                        // Load the Water bottles in advances
-                        if appState.beeSceneState.waterBottle.name != "Water_Bottle" { // Avoid loading multiple times the water bottle (not the best way to handle concurrency)
-                            Task { @MainActor in
+                    if appState.beeSceneState.isWaterBottlePlacedOnHalo {
+                        Task { @MainActor in
+                            // TODO: Fix concurrency problem
+                            if appState.beeSceneState.step == .interactionInOwnEnvironment {
+                                appState.beeSceneState.step.next()
+                                try? await Task.sleep(for: .milliseconds(500))
+                                var newPosition = appState.beeSceneState.halo.position(relativeTo: nil)
+                                newPosition.y += 0.1
                                 do {
-                                    let waterBottle = try await loadWaterBottle()
-                                    appState.beeSceneState.waterBottle = waterBottle
-                                    appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
-                                    // TODO: Refactor Halo: enabled it in performInteractionInOwnEnvironmentStep(-
-                                    let halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1, activateTransparency: true, minimumOpacity: 0.5, lowestPercentageEmissive: 0.1, onlyLoadHaloModelFromRealityKitContentBundle: true)
-                                    // halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
-                                    halo.position.z = -1.6
-                                    halo.position.y = 0.7
-                                    halo.name = "Halo"
-                                    halo.isEnabled = false
-                                    appState.beeSceneState.halo = halo
-                                    appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
-                                } catch {
+                                    // TODO: FIX particles not displaying
+                                    let particles = try await loadParticles()
+                                }  catch {
                                     print(error)
                                     throw error
+                                }
+                                appState.beeSceneState.waterBottle.position = newPosition
+                                print("Particule loaded and next step charged!")
+                            }
+                        }
+                    } else {
+                        if appState.beeSceneState.isCurrentStepConfirmed == true {
+                            performInteractionInOwnEnvironmentStep()
+                        } else {
+                            print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                            // Load the Water bottles in advances
+                            if appState.beeSceneState.waterBottle.name != "Water_Bottle" { // Avoid loading multiple times the water bottle (not the best way to handle concurrency)
+                                Task { @MainActor in
+                                    do {
+                                        let waterBottle = try await loadWaterBottle()
+                                        appState.beeSceneState.waterBottle = waterBottle
+                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
+                                        // TODO: Refactor Halo: enabled it in performInteractionInOwnEnvironmentStep(-
+                                        let halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1, activateTransparency: true, minimumOpacity: 0.5, lowestPercentageEmissive: 0.1, onlyLoadHaloModelFromRealityKitContentBundle: true)
+                                        // halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
+                                        halo.position.z = -1.6
+                                        halo.position.y = 0.7
+                                        halo.name = "Halo"
+                                        halo.isEnabled = false
+                                        appState.beeSceneState.halo = halo
+                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
+                                    } catch {
+                                        print(error)
+                                        throw error
+                                    }
                                 }
                             }
                         }
@@ -181,6 +202,17 @@ struct ImmersiveBeeView: View {
         // })
         .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
             Task { @MainActor in await dismissImmersiveSpace() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .targetReached)) { notification in
+            if let name = notification.targetReachedEntityName {
+                print("🎯 Target reached by entity: \(name)")
+            }
+            if let position = notification.targetReachedTargetPosition {
+                print("📍 At position: \(position)")
+            }
+
+            // TODO: trigger visual feedback "congratualition, we can now pass to the next step if you are ready..."
+            appState.beeSceneState.isWaterBottlePlacedOnHalo = true
         }
     }
 }

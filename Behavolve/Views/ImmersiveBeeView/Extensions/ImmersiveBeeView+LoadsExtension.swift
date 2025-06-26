@@ -208,6 +208,22 @@ extension ImmersiveBeeView {
         return waterBottle
     }
 
+    func loadParticles() async throws -> Entity {
+        guard let particlesSceneEntity = try? await Entity(named: "Models/Particles/Particles", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Particles")
+        }
+
+        guard let particlesEmitter = particlesSceneEntity.findEntity(named: "ParticleEmitter") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find ParticleEmitter entity")
+        }
+        
+        particlesEmitter.scale *= 10
+        particlesEmitter.position = appState.beeSceneState.halo.position(relativeTo: nil)
+
+        return particlesEmitter
+    }
+
     func loadPlaneForGroundCollision() -> Entity {
         let planeMesh = MeshResource.generateBox(width: 100, height: 1, depth: 100)
         var planeMaterial = PhysicallyBasedMaterial()

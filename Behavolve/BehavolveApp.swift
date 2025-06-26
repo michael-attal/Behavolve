@@ -29,8 +29,8 @@ struct BehavolveApp: App {
         NectarDepositComponent.registerComponent()
         NectarDepositSystem.registerSystem()
 
-        NectarGatheringSystem.registerSystem()
         NectarGatheringComponent.registerComponent()
+        NectarGatheringSystem.registerSystem()
 
         #if !targetEnvironment(simulator)
         ExitGestureComponent.registerComponent()
@@ -50,6 +50,9 @@ struct BehavolveApp: App {
         UserProximitySystem.registerSystem()
 
         FleeStateComponent.registerComponent()
+        
+        TargetReachedSystem.registerSystem()
+        TargetReachedComponent.registerComponent()
     }
 
     var body: some Scene {
