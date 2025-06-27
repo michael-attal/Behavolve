@@ -18,6 +18,9 @@ extension ImmersiveBeeView {
         }
         // TODO: Stay in mixed mode since Apple has decided to not allow UI button on .full space.
         // Instead do a dome around the user? Or use fake 3D Mesh text button with custom input
+
+        // TODO: Use the nectar system to fly around the sweet foods in this step.
+        // TODO: Do the GentleGestureVerificationSystem
     }
 
     func performFinishedInteractionInForrestFullSpaceStep() async throws {}
