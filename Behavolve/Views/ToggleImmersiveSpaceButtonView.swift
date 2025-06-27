@@ -13,6 +13,7 @@ struct ToggleImmersiveSpaceButtonView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.openWindow) private var openWindow
 
     var immersiveView: ImmersiveViewAvailable = .none
     var startText: String
@@ -42,6 +43,7 @@ struct ToggleImmersiveSpaceButtonView: View {
                         switch await openImmersiveSpace(id: appState.immersiveSpaceID) {
                             case .opened:
                                 dismissWindow(id: appState.MenuWindowID)
+                                openWindow(id: appState.ConversationWindowID)
 
                             case .userCancelled, .error:
                                 fallthrough

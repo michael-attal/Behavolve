@@ -30,6 +30,7 @@ class BeeSceneState {
     var step: ImmersiveBeeSceneStep = AppState.isDevelopmentMode ? .neutralBeeGatheringNectarFromFlowers : .neutralIdle
     var isCurrentStepConfirmed = true
     var isWaterBottlePlacedOnHalo = false
+    var hasBeeFlownAway = false
 }
 
 enum ImmersiveBeeSceneStep {
@@ -188,11 +189,11 @@ enum ImmersiveBeeSceneStep {
             return """
             Here's your first interactive challenge:
 
-            1. Locate the blue water bottle near the flower pot
-            2. Slowly reach for the bottle, keeping your movements smooth and controlled
-            3. Pick up the bottle and place it about 5 meters away from the flowers
-            4. Remember: the bee will naturally move away if you get too close
-            5. Take deep breaths if you feel anxious
+            1. Locate the blue water bottle near the flower pot.
+            2. Slowly reach for the bottle, keeping your movements smooth and controlled.
+            3. Place the bottle on the illuminated, blinking plate.
+            4. Remember, the bee will naturally move away if you get too close to her.
+            5. Take deep breaths if you feel anxious.
 
             Your goal is to complete this task while staying calm. There's no time limit - move at your own pace.
             Remember you can exit anytime by making a fist or saying "EXIT".

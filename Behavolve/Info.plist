@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Behavolve uses speech recognition to help you interact naturally with your cognitive behavioral therapist avatar.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Behavolve requires access to your microphone to record and transcribe your voice for therapy sessions.</string>
 	<key>NSHandsTrackingUsageDescription</key>
 	<string>Behavolve utilise le suivi de vos mains pour vous permettre d&apos;interagir naturellement avec les éléments de la scène.</string>
 	<key>NSWorldSensingUsageDescription</key>

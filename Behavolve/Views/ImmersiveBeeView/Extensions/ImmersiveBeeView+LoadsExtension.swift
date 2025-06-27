@@ -218,9 +218,7 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find ParticleEmitter entity")
         }
         
-        particlesEmitter.scale *= 10
         particlesEmitter.position = appState.beeSceneState.halo.position(relativeTo: nil)
-
         return particlesEmitter
     }
 

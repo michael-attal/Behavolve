@@ -26,7 +26,7 @@ def Xform "Root"
                 def RealityKitStruct "mainEmitter"
                 {
                     float3 radialGravityCenter = (0, 1, 0)
-                    float radialGravityStrength = 0.5
+                    float radialGravityStrength = 0
                     float vortexStrength = 0
                 }
 

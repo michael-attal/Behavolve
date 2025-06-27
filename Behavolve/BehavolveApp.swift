@@ -50,7 +50,7 @@ struct BehavolveApp: App {
         UserProximitySystem.registerSystem()
 
         FleeStateComponent.registerComponent()
-        
+
         TargetReachedSystem.registerSystem()
         TargetReachedComponent.registerComponent()
     }
@@ -60,6 +60,19 @@ struct BehavolveApp: App {
             MenuView()
                 .environment(appState)
         }.windowResizability(.contentSize)
+
+        WindowGroup(id: appState.ConversationWindowID) {
+            ConversationView(step: appState.beeSceneState.step)
+                .environment(appState)
+        }
+        .defaultWindowPlacement { _, context in
+            if let main = context.windows.first(where: { $0.id == appState.MenuWindowID }) {
+                WindowPlacement(.trailing(main))
+            } else {
+                WindowPlacement()
+            }
+        }
+        .windowResizability(.contentSize)
 
         ImmersiveSpace(id: appState.immersiveSpaceID) {
             if appState.currentImmersiveView == .bee {

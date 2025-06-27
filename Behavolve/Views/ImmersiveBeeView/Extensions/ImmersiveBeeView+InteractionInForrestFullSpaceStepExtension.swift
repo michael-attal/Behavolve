@@ -7,5 +7,10 @@
 
 // Extension for the InteractionInForrestFullSpace step
 extension ImmersiveBeeView {
+    // TODO: Clean up old elements and load full space.
+    func performPrepareInteractionInForrestFullSpaceStep() async throws {}
+    
     func performInteractionInForrestFullSpaceStep() {}
+    
+    func performFinishedInteractionInForrestFullSpaceStep() async throws {}
 }

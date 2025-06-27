@@ -8,7 +8,7 @@
     "Models\/Beehives\/Beehive.usda",
     "Models\/Flowers\/Flowers.usda",
     "Models\/Bees\/Bee.usda",
-    "Models\/Particles\/Untitled Scene.usda"
+    "Models\/Particles\/Particles.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -128,6 +128,30 @@
           3.208344,
           8.455956,
           4.6065764,
+          1
+        ]
+      }
+    ],
+    "21515F5B-F63B-498C-8600-BA574BA886D1" : [
+      {
+        "date" : 772721920.990239,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          -1.1920929e-07,
+          0.09891915,
+          0.09891915,
           1
         ]
       }
@@ -2768,5 +2792,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
+  "selectedSceneRelativePath" : "Models\/Particles\/Particles.usda"
 }

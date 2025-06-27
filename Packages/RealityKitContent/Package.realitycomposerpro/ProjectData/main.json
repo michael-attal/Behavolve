@@ -25,6 +25,7 @@
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Flowers\/pots_1_default.usda" : "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Flowers\/pots_2_alternativ.usda" : "723C769A-5513-418D-AD95-41A92CE8B749",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Halos\/Halo Materials.usda" : "E5E9A5D5-4D90-40FD-BFD6-78D06A7A33D8",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Particles\/Particles.usda" : "21515F5B-F63B-498C-8600-BA574BA886D1",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Therapist\/Therapist.usda" : "31189299-B7B6-428D-B268-C47B6BD3B4FC",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Water Bottles\/Water Bottle 2.usda" : "99C1246B-9150-477F-A2DC-39F589399865",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Models\/Water Bottles\/Water Bottle.usda" : "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
@@ -37,6 +38,7 @@
   "projectID" : 6395596545734638403,
   "uuidToIntID" : {
     "084BD482-E65F-429B-8135-ECD26F0294B8" : 8627004251833309530,
+    "21515F5B-F63B-498C-8600-BA574BA886D1" : -7872091780884712658,
     "31189299-B7B6-428D-B268-C47B6BD3B4FC" : 2714484668714443804,
     "377C89A5-01EC-4978-9696-BEFC030DED81" : -4923828396066649796,
     "434575FC-30CB-4612-B251-B198793B53CC" : 1733366234744294261,

@@ -91,57 +91,31 @@ struct ImmersiveBeeView: View {
                 case .interactionInOwnEnvironment:
                     if appState.beeSceneState.isWaterBottlePlacedOnHalo {
                         Task { @MainActor in
-                            // TODO: Fix concurrency problem
-                            if appState.beeSceneState.step == .interactionInOwnEnvironment {
-                                appState.beeSceneState.step.next()
-                                try? await Task.sleep(for: .milliseconds(500))
-                                var newPosition = appState.beeSceneState.halo.position(relativeTo: nil)
-                                newPosition.y += 0.1
-                                do {
-                                    // TODO: FIX particles not displaying
-                                    let particles = try await loadParticles()
-                                }  catch {
-                                    print(error)
-                                    throw error
-                                }
-                                appState.beeSceneState.waterBottle.position = newPosition
-                                print("Particule loaded and next step charged!")
-                            }
+                            try await performFinishedInteractionInOwnEnvironmentStep()
                         }
                     } else {
-                        if appState.beeSceneState.isCurrentStepConfirmed == true {
+                        if appState.beeSceneState.isCurrentStepConfirmed {
                             performInteractionInOwnEnvironmentStep()
                         } else {
-                            print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
-                            // Load the Water bottles in advances
-                            if appState.beeSceneState.waterBottle.name != "Water_Bottle" { // Avoid loading multiple times the water bottle (not the best way to handle concurrency)
-                                Task { @MainActor in
-                                    do {
-                                        let waterBottle = try await loadWaterBottle()
-                                        appState.beeSceneState.waterBottle = waterBottle
-                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(waterBottle)
-                                        // TODO: Refactor Halo: enabled it in performInteractionInOwnEnvironmentStep(-
-                                        let halo = await RealityKitHelper.createHaloEntity(radius: 0.1, depth: 0.1, activateTransparency: true, minimumOpacity: 0.5, lowestPercentageEmissive: 0.1, onlyLoadHaloModelFromRealityKitContentBundle: true)
-                                        // halo.position.x = flowersPosition.x - 0.5 // TODO: Place it on the first table detected or next to the flowers position.
-                                        halo.position.z = -1.6
-                                        halo.position.y = 0.7
-                                        halo.name = "Halo"
-                                        halo.isEnabled = false
-                                        appState.beeSceneState.halo = halo
-                                        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
-                                    } catch {
-                                        print(error)
-                                        throw error
-                                    }
-                                }
+                            Task { @MainActor in
+                                try await performPrepareInteractionInOwnEnvironmentStep()
                             }
                         }
                     }
                 case .interactionInForrestFullSpace:
-                    if appState.beeSceneState.isCurrentStepConfirmed == true {
-                        performInteractionInForrestFullSpaceStep()
+                    if appState.beeSceneState.hasBeeFlownAway {
+                        Task { @MainActor in
+                            try await performFinishedInteractionInForrestFullSpaceStep()
+                        }
                     } else {
-                        print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                        if appState.beeSceneState.isCurrentStepConfirmed {
+                            performInteractionInForrestFullSpaceStep()
+                        } else {
+                            print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
+                            Task { @MainActor in
+                                try await performPrepareInteractionInForrestFullSpaceStep()
+                            }
+                        }
                     }
                 case .neutralIdle:
                     print("Restart experience?")
@@ -162,17 +136,21 @@ struct ImmersiveBeeView: View {
         attachments: {
             Attachment(id: "dialogue_box") {
                 DialogueView(
+                    step: appState.beeSceneState.step,
                     onConfirmationButtonClicked: {
                         appState.beeSceneState.isCurrentStepConfirmed = true
                     },
                     onNextStepButtonClicked: {
                         appState.beeSceneState.step.next()
 
-                        if appState.beeSceneState.step.isConfirmationRequiredWithThisStep(), AppState.isDevelopmentMode == false {
-                            // If it require a confirmation, reset to false and wait for the confirmation button in dialogue view - Refactor later
+                        if appState.beeSceneState.step.isConfirmationRequiredWithThisStep() {
+                            // If it require a confirmation, reset to false and wait for the confirmation button in dialogue view
                             appState.beeSceneState.isCurrentStepConfirmed = false
-                        } else {
-                            appState.beeSceneState.isCurrentStepConfirmed = true
+
+                            // For fast development
+                            if AppState.byPassConfirmationStep == true {
+                                appState.beeSceneState.isCurrentStepConfirmed = true
+                            }
                         }
                     },
                     onCancelButtonClicked: {
