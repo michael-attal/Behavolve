@@ -39,3 +39,7 @@ final class ExitGestureSystem: System {
 extension Notification.Name {
     static let exitGestureDetected = Notification.Name("ExitGestureDetected")
 }
+
+extension Notification.Name {
+    static let exitWordDetected = Notification.Name("ExitWordDetected")
+}

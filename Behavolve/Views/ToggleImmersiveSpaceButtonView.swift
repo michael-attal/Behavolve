@@ -44,6 +44,7 @@ struct ToggleImmersiveSpaceButtonView: View {
                             case .opened:
                                 dismissWindow(id: appState.MenuWindowID)
                                 openWindow(id: appState.ConversationWindowID)
+                                appState.exitWordDetected = false
 
                             case .userCancelled, .error:
                                 fallthrough

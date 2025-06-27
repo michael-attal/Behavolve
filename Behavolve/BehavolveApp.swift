@@ -89,6 +89,9 @@ struct BehavolveApp: App {
                 EmptyView()
             }
         }
-        .immersionStyle(selection: .constant(.mixed), in: .mixed)
+        .immersionStyle(selection: Binding<ImmersionStyle>(
+            get: { appState.currentImmersionStyle },
+            set: { _ in }
+        ), in: .mixed, .full)
     }
 }

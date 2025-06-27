@@ -118,6 +118,9 @@ struct ImmersiveBeeView: View {
                         }
                     }
                 case .neutralIdle:
+                    if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
+                        appState.currentImmersionStyle = .mixed
+                    }
                     print("Restart experience?")
                 }
 
@@ -178,6 +181,12 @@ struct ImmersiveBeeView: View {
         // .spatialTapGestureToEntity(appState.beeSceneState.waterBottle, onSpatialTapRelease: { spatialTagGesture in
         //     print("Touch Water_Bottle")
         // })
+
+        .onReceive(NotificationCenter.default.publisher(for: .exitWordDetected)) { _ in
+            Task {
+                @MainActor in await dismissImmersiveSpace()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
             Task { @MainActor in await dismissImmersiveSpace() }
         }

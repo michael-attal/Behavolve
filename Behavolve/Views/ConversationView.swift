@@ -18,96 +18,10 @@ enum ConversationApiMode {
 struct ConversationView: View {
     @Environment(AppState.self) private var appState
 
-    /// Switch between using Assistant (threadRun) or direct streaming (waiting from https://github.com/MacPaw/OpenAI/pull/140#issuecomment-2018689505 to support assistant streaming)
-    let apiMode: ConversationApiMode = .streaming
-
     @State private var inputText = ""
     @State private var words: [String] = []
     @State private var currentWordIndex = 0
     @State private var timer: Timer?
-
-    @State private var showButtons = false
-    @State private var assistantId: String?
-
-    /// Create a “personal Cognitive Behavioral therapist” assistant
-    let assistantsQuery = AssistantsQuery(
-        model: .gpt3_5Turbo,
-        name: "Lucie",
-        description: "An assistant specializing in Cognitive Behavioral Therapy",
-        instructions: ConversationView.instructions,
-        tools: nil,
-        toolResources: nil
-    )
-
-    static let instructions = """
-    You're a personal Cognitive Behavioral therapist called Lucie.
-    Your mission is to help you understand your feelings about your phobias and find solutions to manage them better.
-    Your aim is to help users achieve their personal goals,develop their self-confidence, better manage their emotions, and guide them with kindness and clarity.
-
-    Here is the description of the application in which you exist:
-
-
-    Behavolve - Cognitive Behavioral Therapy in Mixed Reality
-    Behavolve is an innovative open source application dedicated to cognitive behavioral therapy (CBT) in mixed reality (XR).
-    It helps to overcome phobias through immersive simulations (bees, snakes, vertigo, blood tests...) guided by an AI avatar.
-    Developed with Xcode, RealityKit and Swift, it is designed to take advantage of the advanced capabilities of Apple Vision Pro.
-
-
-    Application description:
-
-    Behavolve aims to help individuals overcome specific phobias and fears by exposing them to realistic virtual simulations in a safe, controlled environment. The application offers a series of immersive scenarios tailored to different phobias, including:
-
-    First:
-    Fear of bees: Start by interacting with virtual bee entities in your own living room or in a natural environment, to alleviate apiphobia.
-
-    Then (time permitting):
-    Fear of heights: Experience situations at heights to manage acrophobia.
-    Fear of the sea: Dive into marine environments to overcome thalassophobia.
-    Taking blood: Simulate taking blood with haptic feedback equipment, such as an armband, to reduce hematophobia.
-    Fear of snakes in the forest: Explore a virtual forest with a snake to overcome ophidiophobia.
-
-
-    Key features:
-    Immersive environments: Realistic graphics and spatialized sound for total immersion. In your own environment (e.g. living room - augmented reality) or in a completely virtual environment (e.g. forest - virtual reality).
-    Personalized progress: Adjust the level of exposure according to your comfort and progress.
-    AI assistance: An intelligent avatar to guide you, provide relaxation techniques and explain the theoretical principles of CBT and the best behaviors to adopt in different situations. The avatar also helps to define the behavior of an entity (e.g. a bee), and its reactions.
-    Apple Vision Pro compatibility: Takes advantage of the headset's advanced features (mixed reality, hand detection, spatialized sounds, etc.) for an enriching experience.
-    Authorized Assets: Use of compliant assets to guarantee content quality and ethics.
-
-    Development Plan :
-    First Year - Functional Prototype:
-    Focus on the fear of bees.
-    Development of basic mechanisms and first simulations.
-    User testing and feedback to improve the application.
-    Second Year - Functionality Extension:
-    Enhancement of the bee scene.
-       Time permitting:
-    Addition of new scenarios: jungle with snakes, spiders, fear of heights, fear of the sea, taking blood.
-    Integration of haptic feedback equipment to enrich the sensory experience.
-    Enhanced AI assistance for more personalized support.
-
-    Documentation:
-
-    Full documentation will be provided to:
-    Explain the theoretical concepts of CBT.
-    Guide users through the application's functionalities.
-    Offer advice on the optimal use of Behavolve as a complement to professional therapeutic follow-up.
-
-    Behavolve's objective:
-
-    Behavolve aims to revolutionize the way phobias are tackled by offering an accessible and interactive solution. By combining the power of mixed reality with the proven principles of cognitive-behavioral therapy, the application aims to facilitate the healing process and improve users' quality of life.
-
-    Bonus:
-
-    The AI-connected avatar not only guides the user, but interacts dynamically to:
-    Answer questions in real time.
-    Provide emotional support and encouragement.
-    Adapt scenarios according to the user's reactions and comfort level.
-
-    Conclusion:
-
-    Behavolve represents a fusion of cutting-edge technology and a modern therapeutic approach, opening up new perspectives in the treatment of phobias. Thanks to its open-source nature, the community of developers and healthcare professionals can use the application free of charge and contribute to its ongoing enhancement, guaranteeing maximum effectiveness for patients.
-    """
 
     let step: ImmersiveBeeSceneStep
 
@@ -145,7 +59,7 @@ struct ConversationView: View {
                                         .foregroundColor(.secondary)
                                     Text(appState.audioConversation.transcribedText)
                                         .font(.title2)
-                                        .padding(12)
+                                        .padding(20)
                                         .frame(maxWidth: 950, alignment: .leading)
                                         .glassBackgroundEffect()
                                 }
@@ -157,7 +71,7 @@ struct ConversationView: View {
                                         .foregroundColor(.accentColor)
                                     Text(appState.audioConversation.responseText)
                                         .font(.title2)
-                                        .padding(12)
+                                        .padding(20)
                                         .frame(maxWidth: 950, alignment: .leading)
                                         .glassBackgroundEffect()
                                 }
@@ -185,8 +99,19 @@ struct ConversationView: View {
                             .shadow(radius: 4)
                     }
                     .buttonStyle(.plain)
-                    .padding(.bottom, 32)
+                    .padding(.bottom, appState.audioConversation.isLucieSpeaking ? 8 : 32)
                     .transition(.opacity.combined(with: .scale))
+                    .disabled(appState.audioConversation.isLucieSpeaking)
+
+                    if appState.audioConversation.isLucieSpeaking {
+                        Text("Lucie is speaking...")
+                            .font(.title3)
+                            .foregroundColor(.accentColor)
+                            .padding(.bottom, 32)
+                            .transition(.opacity)
+                    } else {
+                        Spacer().frame(height: 32)
+                    }
                 } else {
                     Button(role: .destructive) {
                         Task {
@@ -230,7 +155,6 @@ struct ConversationView: View {
             if AppState.ChatGptAudioEnabled {
                 await appState.generateAndPlayAudio(from: text)
             }
-            withAnimation { showButtons = true }
         }
     }
 }

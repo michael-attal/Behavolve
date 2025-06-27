@@ -11,6 +11,7 @@ import Foundation
 import OpenAI
 import RealityKit
 import Speech
+import SwiftUI
 
 enum ImmersiveViewAvailable: String {
     case none
@@ -41,13 +42,13 @@ class AppState {
     let immersiveSpaceID = "ImmersiveSpace"
 
     var audioConversation = AudioConversation()
-    private var audioEngine: AVAudioEngine?
-    private var speechRecognizer: SFSpeechRecognizer?
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    private var recognitionTask: SFSpeechRecognitionTask?
-    private var audioFile: AVAudioFile?
-    private var audioFileURL: URL?
-    private var streamingTask: Task<Void, Never>?
+    var audioEngine: AVAudioEngine?
+    var speechRecognizer: SFSpeechRecognizer?
+    var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    var recognitionTask: SFSpeechRecognitionTask?
+    var audioFile: AVAudioFile?
+    var audioFileURL: URL?
+    var streamingTask: Task<Void, Never>?
 
     enum ImmersiveSpaceState {
         case closed
@@ -55,6 +56,9 @@ class AppState {
         case open
     }
 
+    var exitWordDetected = false
+
+    var currentImmersionStyle: ImmersionStyle = .mixed
     var immersiveSpaceState = ImmersiveSpaceState.closed
 
     var currentImmersiveView: ImmersiveViewAvailable = .none
@@ -75,6 +79,7 @@ class AppState {
     var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     var handTrackingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     var sceneReconstruction = SceneReconstructionProvider()
+    var isFirstChunkReady = false
 
     var allRequiredAuthorizationsAreGranted: Bool {
         worldSensingAuthorizationStatus == .allowed && handTrackingAuthorizationStatus == .allowed
@@ -153,276 +158,102 @@ class AppState {
             }
         }
     }
-}
 
-/// OpenAI extensions
-extension AppState {
-    /// Generates audio via the OpenAI TTS API, optionally stops the mic, plays it from the therapist, then restarts listening if needed.
-    func generateAndPlayAudio(from text: String, shouldStopMicro: Bool = false) async {
-        do {
-            print("Generating audio...")
+    static let therapistInstructions = """
+    You are Lucie, an AI-powered Cognitive Behavioral therapist. Your role is to accompany the user throughout their therapeutic journey in the Behavolve mixed reality application, helping them to understand, manage, and gradually overcome their phobias (especially fear of bees, for now).
 
-            // Optionally stop the microphone capture to avoid feedback/loop
-            var resumeMicro = false
-            if shouldStopMicro, audioConversation.isStreaming {
-                print("🛑 Stopping audio conversation streaming for TTS playback...")
-                await stopAudioConversationStreaming()
-                resumeMicro = true
-            }
+    Your objectives:
+    - Guide the user step by step, adapting your guidance to their current progress (“step”) and emotional state.
+    - Respond to user questions in real time, always referencing their current context in the application.
+    - Use a kind, encouraging and pedagogical tone at all times.
+    - Provide explanations about CBT, exposure therapy, and bee behavior, as needed.
+    - Encourage relaxation and emotional regulation techniques when appropriate.
 
-            // Generate speech audio from the AI response using OpenAI TTS
-            let audioQuery = AudioSpeechQuery(
-                model: .tts_1,
-                input: text,
-                voice: .nova,
-                responseFormat: .aac,
-                speed: 1.0
-            )
-            let result = try await openAI.audioCreateSpeech(query: audioQuery)
+    Instructions:
+    - At each interaction, you will receive:
+       - The user's current **step** in the scenario.
+       - A **presentation** text describing this step.
+       - Potentially, a list of **detailed instructions** for the step (e.g., actions to perform, goals).
+       - The **runtime state** of the scene (e.g., whether the water bottle is placed, if the bee has flown away, etc.).
 
-            let outputURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent("tts_output.m4a")
-            try result.audio.write(to: outputURL)
+    - Always **adapt your answers** :
+       - Guide the user according to the current step, referencing the presentation and instructions provided.
+       - Answer questions clearly and succinctly, making sure to explain the “why” behind each recommendation.
+       - If the user seems anxious or hesitant, encourage calm and propose concrete relaxation techniques.
+       - Remind the user that they are always in control and can exit the scenario at any time.
 
-            print("🔎 Audio file written at: \(outputURL.path)")
-            try print("🔎 File size: \(FileManager.default.attributesOfItem(atPath: outputURL.path)[.size] ?? -1) bytes")
+    General information:
+    Behavolve is a mixed reality CBT app for the Apple Vision Pro. It allows users to confront their fears in a controlled, progressive and safe way, with real-time support from you, Lucie.
 
-            let config = AudioFileResource.Configuration(shouldLoop: false)
-            let audioResource = try await AudioFileResource(
-                contentsOf: outputURL,
-                withName: "GeneratedAudio",
-                configuration: config
-            )
-            let audioPlaybackController = beeSceneState.therapist.playAudio(audioResource)
-            audioPlaybackController.completionHandler = { [weak self] in
-                try? FileManager.default.removeItem(at: outputURL)
-                print("🧹 Cleaned up audio file.")
+    Never break character: always speak as a supportive therapist.  
+    If the user asks technical questions about the app, reply in simple language and relate it to therapy if possible.
+    """
 
-                // Optionally restart the microphone capture after playback
-                if resumeMicro {
-                    print("🎤 Restarting audio conversation streaming after TTS playback...")
-                    Task { [weak self] in
-                        await self?.startAudioConversationStreaming(step: beeSceneState.step)
-                    }
-                }
-            }
+    static let behavolveAppDescription = """
+    Behavolve is an innovative open-source application dedicated to Cognitive Behavioral Therapy (CBT) in mixed reality (XR), primarily designed for Apple Vision Pro.
 
-            print("Audio generated and played!")
-        } catch {
-            print("Audio error:", error)
-        }
-    }
-}
+    Mission:
+    - Behavolve helps individuals gradually overcome specific phobias and fears (initially, the fear of bees) by exposing them to realistic virtual simulations in a safe and controlled environment.
+    - The application supports users through immersive scenarios, each tailored to a particular phobia (e.g., bees, heights, sea, blood tests, snakes).
 
-@MainActor
-extension AppState {
-    enum AudioConversationStatus {
-        case idle
-        case listening
-        case stopping
-    }
+    Key Features:
+    - Immersive environments using advanced graphics and spatialized audio, allowing exposure therapy either in the user’s own space (augmented reality) or in fully virtual environments (e.g., a forest).
+    - Progressive exposure: the level of challenge is adjusted according to the user’s comfort and progress.
+    - Real-time AI assistance: an intelligent avatar (the therapist) provides guidance, reassurance, CBT psychoeducation, and feedback tailored to each scenario and the user's reactions.
+    - Advanced hand tracking and scene understanding, leveraging Apple Vision Pro capabilities for interaction and safety.
+    - All content and assets comply with ethical and therapeutic standards.
 
-    @Observable
-    final class AudioConversation: Sendable {
-        var isStreaming = false
-        var transcribedText: String = "" // What the user said (microphone)
-        var responseText: String = "" // What the AI replies
-        var audioStatus: AppState.AudioConversationStatus = .idle
-    }
+    Development Plan:
+    - Year 1: Focus on the bee scenario, basic mechanisms, first simulations, and user feedback.
+    - Year 2: Expansion to new scenarios (jungle/snakes, heights, sea, blood draws), addition of haptic feedback, and advanced AI assistance for more personalized guidance.
 
-    @MainActor
-    func startAudioConversationStreaming(step: ImmersiveBeeSceneStep) async {
-        // Configure AVAudioSession for recording and playback
-        do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-            try session.setActive(true)
-            print("Audio session configured")
-        } catch {
-            print("Audio session error: \(error)")
-            return
-        }
+    Therapeutic Goals:
+    - Demystify phobic stimuli by making them predictable and manageable.
+    - Teach users practical coping and relaxation techniques for use both in-app and in real life.
+    - Promote autonomy, self-confidence, and emotional regulation.
 
-        // Prevent duplicate streaming sessions
-        guard audioConversation.isStreaming == false else { return }
-        audioConversation.isStreaming = true
-        audioConversation.audioStatus = .listening
-        audioConversation.transcribedText = ""
+    Behavolve’s Approach:
+    - Combines mixed reality technology with evidence-based CBT principles for an accessible, interactive, and effective therapeutic process.
+    - The AI avatar adapts its support in real time, based on user actions and context, to ensure a personalized and empowering experience.
 
-        // Prepare SFSpeechRecognizer and recognition request
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+    Behavolve is open-source and intended as a complement to professional therapeutic follow-up. The app’s documentation provides educational resources on CBT and on how to use Behavolve safely and effectively.
+    """
 
-        // Create the AVAudioEngine
-        audioEngine = AVAudioEngine()
-        guard let inputNode = audioEngine?.inputNode else {
-            print("No input node")
-            return
-        }
-        let inputFormat = inputNode.inputFormat(forBus: 0)
-        print("AudioEngine inputNode format: \(inputFormat)")
-        if inputFormat.channelCount == 0 || inputFormat.sampleRate == 0 {
-            print("Microphone is not available or not authorized")
-            return
-        }
+    static let beeScenarioStepList = """
+    The scenario for the Bee module in Behavolve is structured in the following ordered steps. Each step is described with its technical name, a user-friendly label, and a summary of what the user experiences at this stage.
 
-        // Remove any existing tap before installing a new one (crash prevention)
-        inputNode.removeTap(onBus: 0)
+    1. neutralIdle
+       Label: "Welcome & Orientation"
+       Description: "The user is welcomed to Behavolve. Safety instructions are explained. The user learns they can exit the experience at any time by making a fist gesture or saying 'EXIT.' The bee will be introduced in a protective virtual cube in the room."
 
-        // Prepare file URL for temporary audio recording
-        let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("audio_streaming-\(UUID().uuidString).wav")
-        audioFileURL = tmpURL
-        var fileFormat: AVAudioFormat?
+    2. neutralExplanation
+       Label: "Bee Behavior Explanation"
+       Description: "The AI explains how bees behave in their natural environment: their peaceful routines, their lack of interest in humans, and their predictable behaviors. The user can observe without risk, and is reassured about safety and control."
 
-        // Start the speech recognition task
-        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest!) { [weak self] result, error in
-            guard let self else { return }
-            if let result = result {
-                let text = result.bestTranscription.formattedString
-                if text.uppercased().contains("EXIT") {
-                    print("🔑 EXIT keyword detected!")
-                    // TODO: Stop the app
-                }
-                self.audioConversation.transcribedText = text
-            }
-            if error != nil || (result?.isFinal ?? false) {
-                self.audioEngine?.stop()
-                inputNode.removeTap(onBus: 0)
-            }
-        }
+    3. neutralBeeGatheringNectarFromFlowers
+       Label: "Bee Gathering Nectar"
+       Description: "The user watches the bee collect nectar from flowers, following a natural routine. The bee keeps a safe distance from the user. This step demonstrates the bee's focus on flowers, not on humans."
 
-        // Install a tap on the input node with the native format
-        inputNode.installTap(onBus: 0, bufferSize: 2048, format: nil) { [weak self] buffer, _ in
-            guard let self else { return }
-            // Create the AVAudioFile on the first buffer, using the actual format
-            if self.audioFile == nil {
-                fileFormat = buffer.format
-                self.audioFile = try? AVAudioFile(forWriting: tmpURL, settings: buffer.format.settings)
-            }
-            self.recognitionRequest?.append(buffer)
-            try? self.audioFile?.write(from: buffer)
-        }
+    4. interactionInOwnEnvironment
+       Label: "Water Bottle Challenge"
+       Description: "First interactive exposure: the user is challenged to pick up a blue water bottle placed near the bee and set it on a target, all while maintaining calm, slow movements. The bee will move away if the user gets too close."
 
-        // Prepare and start the audio engine
-        do {
-            audioEngine?.prepare()
-            try audioEngine?.start()
-            print("Audio engine started")
-        } catch {
-            print("❌ Failed to start AVAudioEngine: \(error)")
-            return
-        }
+    5. interactionInForrestFullSpace
+       Label: "Picnic Challenge in the Forest"
+       Description: "The final challenge. The user experiences a virtual picnic in a peaceful forest. A bee approaches the user's food. The user must stay calm and can use gentle hand movements to guide the bee away or simply remain relaxed until the bee leaves on its own."
 
-        // Start the streaming task for audio chunks (OpenAI Whisper, etc.)
-        streamingTask = Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else { return }
-            while await self.audioConversation.isStreaming {
-                try? await Task.sleep(for: .seconds(5))
-                await self.streamAudioChunkToOpenAI(step: step)
-            }
-        }
-    }
+    After the last step, the experience can loop or return to the start.
 
-    func stopAudioConversationStreaming() async {
-        audioConversation.isStreaming = false
-        audioConversation.audioStatus = .stopping
+    During the scenario, for each step, the following context may also be given:
+    - The current step name
+    - A presentation text for the step
+    - Detailed instructions for the current challenge (if any)
+    - The following state variables:
+        - isCurrentStepConfirmed (Bool): Whether the current step has been confirmed by the user
+        - isWaterBottlePlacedOnHalo (Bool): Whether the user has successfully placed the water bottle
+        - hasBeeFlownAway (Bool): Whether the bee has left the scene
+    - You should use all this information to respond with empathy, guidance, and contextually relevant advice.
 
-        audioEngine?.stop()
-        audioEngine?.inputNode.removeTap(onBus: 0)
-        recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
-        audioFile = nil
-
-        streamingTask?.cancel()
-    }
-
-    // Send the current buffer to OpenAI, then puts the file to 0 for the next chunk
-    @MainActor
-    private func streamAudioChunkToOpenAI(step: ImmersiveBeeSceneStep) async {
-        // Secure access to Optionals
-        guard let url = audioFileURL else {
-            print("❌ audioFileURL is nil in streamAudioChunkToOpenAI")
-            return
-        }
-        guard let data = try? Data(contentsOf: url), !data.isEmpty else {
-            print("❌ audioFileURL file is empty or can't be loaded: \(url)")
-            return
-        }
-
-        // Extract file extension, not full name!
-        let ext = url.pathExtension.lowercased()
-        guard let fileType = AudioTranscriptionQuery.FileType(rawValue: ext) else {
-            print("❌ Unknown file extension for Whisper: \(ext) for url \(url)")
-            return
-        }
-        print("🔎 Streaming audio chunk (\(data.count) bytes), ext: \(ext), fileType: \(fileType.rawValue)")
-
-        // Transcribing the text with Whisper
-        let query = AudioTranscriptionQuery(
-            file: data,
-            fileType: fileType,
-            model: .whisper_1,
-            prompt: nil,
-            temperature: nil,
-            language: "en"
-        )
-        do {
-            let transcription = try await openAI.audioTranscriptions(query: query)
-            let transcript = transcription.text.trimmingCharacters(in: .whitespacesAndNewlines)
-            print("✅ Whisper transcript: '\(transcript)'")
-
-            // Add the transcript on the user side
-            await MainActor.run {
-                if !transcript.isEmpty {
-                    if !self.audioConversation.transcribedText.isEmpty {
-                        self.audioConversation.transcribedText += "\n"
-                    }
-                    self.audioConversation.transcribedText += transcript
-                }
-                // Prepare the UI for the new answer of the IA
-                self.audioConversation.responseText = ""
-            }
-
-            let messages: [ChatQuery.ChatCompletionMessageParam] = [
-                .system(.init(content: .textContent("App immersive step: \(step)"))),
-                .user(.init(content: .string(transcript)))
-            ]
-            let chatQuery = ChatQuery(messages: messages, model: .gpt4_o, stream: true)
-            print("🧠 Sending to GPT: \(transcript)")
-            for try await result in openAI.chatsStream(query: chatQuery) {
-                for choice in result.choices {
-                    if let text = choice.delta.content, !text.isEmpty {
-                        await MainActor.run {
-                            self.audioConversation.responseText += text
-                        }
-                    }
-                }
-            }
-            print("✅ GPT response finished: \(audioConversation.responseText)")
-            if AppState.ChatGptAudioEnabled, !audioConversation.responseText.isEmpty {
-                await generateAndPlayAudio(from: audioConversation.responseText, shouldStopMicro: false)
-            }
-        } catch {
-            print("Audio streaming error: \(error)")
-        }
-
-        // Empty/Reset the file for the next Chunk
-        do {
-            try FileManager.default.removeItem(at: url)
-        } catch {
-            print("❌ Failed to remove file: \(url) – \(error)")
-        }
-        guard let inputNode = audioEngine?.inputNode else {
-            print("❌ audioEngine or inputNode is nil when resetting file")
-            return
-        }
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        do {
-            audioFile = try AVAudioFile(forWriting: url, settings: recordingFormat.settings)
-            print("🔄 AVAudioFile reset for next chunk at \(url)")
-        } catch {
-            print("❌ Failed to recreate AVAudioFile for new chunk: \(error)")
-            audioFile = nil
-        }
-    }
+    Your role is to act as a cognitive-behavioral therapist, guide the user step by step, answer their questions, reassure them, and help them progress in managing their phobia of bees.
+    """
 }

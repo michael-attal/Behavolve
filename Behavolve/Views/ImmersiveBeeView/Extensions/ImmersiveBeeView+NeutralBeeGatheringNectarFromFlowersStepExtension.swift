@@ -10,6 +10,7 @@ import Foundation
 // Extension for the NeutralBeeGatheringNectarFromFlowers step
 extension ImmersiveBeeView {
     func performNeutralBeeGatheringNectarFromFlowersStep() {
+        appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
         appState.beeSceneState.beeAudioPlaybackController.play()
         appState.beeSceneState.bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
 
@@ -22,7 +23,7 @@ extension ImmersiveBeeView {
             }
         }
 
-        let nectarSources = nectarSourcesPositions.enumerated().map { index, position in
+        let nectarSources = nectarSourcesPositions.enumerated().map { _, position in
             NectarSource(
                 position: position,
                 stock: 100,
