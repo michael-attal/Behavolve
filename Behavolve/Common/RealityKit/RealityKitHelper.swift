@@ -51,10 +51,27 @@ class RealityKitHelper {
         }
         return nil
     }
-    
+
     static func getModelHeight(modelEntity: ModelEntity) -> Float {
         let bounds = modelEntity.visualBounds(relativeTo: nil)
         let height = bounds.extents.y
         return height
+    }
+
+    @MainActor
+    static func addIBLReceiverToAllModels(in parent: Entity, from light: Entity, except: String? = nil) {
+        for child in parent.children {
+            let isIBLComponent = child.components.has(ImageBasedLightComponent.self)
+
+            if let modelEntity = child as? ModelEntity, !isIBLComponent {
+                if let except = except, modelEntity.name == except || child.name == except {
+                    print("Skipping light for model: \(except)")
+                    continue
+                }
+                modelEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: light))
+            }
+
+            addIBLReceiverToAllModels(in: child, from: light)
+        }
     }
 }

@@ -217,7 +217,7 @@ extension ImmersiveBeeView {
         guard let particlesEmitter = particlesSceneEntity.findEntity(named: "ParticleEmitter") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find ParticleEmitter entity")
         }
-        
+
         particlesEmitter.position = appState.beeSceneState.halo.position(relativeTo: nil)
         return particlesEmitter
     }
@@ -236,6 +236,33 @@ extension ImmersiveBeeView {
         planeEntity.components.set(PhysicsBodyComponent(shapes: planeEntity.findFirstCollisionComponent()!.shapes, mass: .infinity, mode: .static))
         planeEntity.position.y = -0.5
         return planeEntity
+    }
+
+    func loadForest() async throws -> Entity {
+        guard let forestSceneEntity = try? await Entity(named: "Models/Forest/TheForest", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load TheForest")
+        }
+
+        guard let forest = forestSceneEntity.findEntity(named: "Forest") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Forest entity")
+        }
+
+        guard let bowlOfFruit = forestSceneEntity.findEntity(named: "bowl_of_fruit") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find bowl_of_fruit entity")
+        }
+
+        guard let lightSkySphere = forestSceneEntity.findEntity(named: "SkySphere") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find SkySphere entity")
+        }
+
+        appState.beeSceneState.bowlOfFruit = bowlOfFruit
+
+        appState.beeSceneState.lightSkySphereSourceFromForest = lightSkySphere
+
+        RealityKitHelper.addIBLReceiverToAllModels(in: forest, from: lightSkySphere, except: "Forestgroundmesh")
+
+        return forest
     }
 
     func loadUserHands(content: inout RealityViewContent) {

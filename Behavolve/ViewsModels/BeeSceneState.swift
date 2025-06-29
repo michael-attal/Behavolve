@@ -25,6 +25,9 @@ class BeeSceneState {
     var flowersPotTwoAlternativ = Entity()
     var flowersPotTreeOriginal = Entity()
     var daffodilFlowerPot = Entity()
+    var forest = Entity()
+    var bowlOfFruit = Entity()
+    var lightSkySphereSourceFromForest = Entity()
     var tableInPatientRoom: (any Anchor)?
     var floorInPatientRoom: (any Anchor)?
     var step: ImmersiveBeeSceneStep = AppState.isDevelopmentMode ? .neutralBeeGatheringNectarFromFlowers : .neutralIdle

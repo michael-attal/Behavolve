@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealityKit
 
 // Extension for the NeutralBeeGatheringNectarFromFlowers step
 extension ImmersiveBeeView {
@@ -13,12 +14,13 @@ extension ImmersiveBeeView {
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
         appState.beeSceneState.beeAudioPlaybackController.play()
         appState.beeSceneState.bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
+        addNectarGatheringToBee(nectarSpots: appState.beeSceneState.daffodilFlowerPot)
+    }
 
-        let daffodilFlowerPot = appState.beeSceneState.daffodilFlowerPot
-
+    func addNectarGatheringToBee(nectarSpots: Entity) {
         var nectarSourcesPositions: [SIMD3<Float>] = []
         for i in 1 ... 5 {
-            if let entity = daffodilFlowerPot.findEntity(named: "Nectar_spot_\(i)") {
+            if let entity = nectarSpots.findEntity(named: "Nectar_spot_\(i)") {
                 nectarSourcesPositions.append(entity.position(relativeTo: nil))
             }
         }
