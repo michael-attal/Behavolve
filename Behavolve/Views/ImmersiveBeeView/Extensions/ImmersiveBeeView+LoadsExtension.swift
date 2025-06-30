@@ -229,7 +229,8 @@ extension ImmersiveBeeView {
             tint: .white.withAlphaComponent(1)
         )
         planeMaterial.blending = .transparent(opacity: 0.0)
-
+        planeMaterial.opacityThreshold = 1.0
+        
         let planeModelCommponent = ModelComponent(mesh: planeMesh, materials: [planeMaterial])
         let planeEntity = Entity(components: planeModelCommponent)
         planeEntity.generateCollisionShapes(recursive: true)
@@ -239,16 +240,16 @@ extension ImmersiveBeeView {
     }
 
     func loadForest() async throws -> Entity {
-        guard let forestSceneEntity = try? await Entity(named: "Models/Forest/TheForest", in: realityKitContentBundle)
+        guard let forestSceneEntity = try? await Entity(named: "Models/Forest/Forest", in: realityKitContentBundle)
         else {
-            throw ImmersiveBeeViewError.entityError(message: "Could not load TheForest")
+            throw ImmersiveBeeViewError.entityError(message: "Could not load Forest")
         }
 
-        guard let forest = forestSceneEntity.findEntity(named: "Forest") else {
-            throw ImmersiveBeeViewError.entityError(message: "Could not find Forest entity")
+        guard let forestWithPicnic = forestSceneEntity.findEntity(named: "Forest_With_Picnic") else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not find Forest_With_Picnic entity")
         }
 
-        guard let bowlOfFruit = forestSceneEntity.findEntity(named: "bowl_of_fruit") else {
+        guard let bowlOfFruit = forestWithPicnic.findEntity(named: "bowl_of_fruit") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bowl_of_fruit entity")
         }
 
@@ -260,9 +261,9 @@ extension ImmersiveBeeView {
 
         appState.beeSceneState.lightSkySphereSourceFromForest = lightSkySphere
 
-        RealityKitHelper.addIBLReceiverToAllModels(in: forest, from: lightSkySphere, except: "Forestgroundmesh")
+        RealityKitHelper.addIBLReceiverToAllModels(in: forestWithPicnic, from: lightSkySphere)
 
-        return forest
+        return forestWithPicnic
     }
 
     func loadUserHands(content: inout RealityViewContent) {

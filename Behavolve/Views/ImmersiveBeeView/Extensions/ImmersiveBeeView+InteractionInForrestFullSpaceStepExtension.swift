@@ -11,11 +11,12 @@ import SwiftUI
 extension ImmersiveBeeView {
     func performPrepareInteractionInForrestFullSpaceStep() async throws {
         if appState.beeSceneState.beeImmersiveContentSceneEntity.findEntity(named: "Forest") == nil {
-            let forest = try await loadForest() // TODO: Better shader graph for Leaf with custom noise to opacity ...
-            forest.position = [15, 0, -9]
+            let forest = try await loadForest()
+            forest.position = [0, 0, -8.3]
             appState.beeSceneState.forest = forest
             RealityKitHelper.addIBLReceiverToAllModels(in: appState.beeSceneState.therapist, from: appState.beeSceneState.lightSkySphereSourceFromForest)
             RealityKitHelper.addIBLReceiverToAllModels(in: appState.beeSceneState.bee, from: appState.beeSceneState.lightSkySphereSourceFromForest)
+            RealityKitHelper.addIBLReceiverToAllModels(in: appState.beeSceneState.dialogue, from: appState.beeSceneState.lightSkySphereSourceFromForest)
         }
     }
 
@@ -30,11 +31,13 @@ extension ImmersiveBeeView {
 
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "Daffodil_flower_pot" })
 
-        appState.beeSceneState.beehive.position = [23, 10, -20]
+        appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(appState.beeSceneState.lightSkySphereSourceFromForest)
+
+        appState.beeSceneState.beehive.position = [7, 13, -26.1]
 
         addNectarGatheringToBee(nectarSpots: appState.beeSceneState.bowlOfFruit)
 
-        appState.beeSceneState.therapist.position.x -= 0.4
+        appState.beeSceneState.therapist.position.x -= 0.5
         appState.beeSceneState.therapist.position.y += 0.08
         appState.beeSceneState.therapist.position.z -= 0.9
 
@@ -43,8 +46,6 @@ extension ImmersiveBeeView {
         // TODO: use fake 3D Mesh text button with custom input
 
         // TODO: Do the GentleGestureVerificationSystem
-        
-        // TODO: Finish add grounding shadow to tress in Forest scene
     }
 
     func performFinishedInteractionInForrestFullSpaceStep() async throws {}

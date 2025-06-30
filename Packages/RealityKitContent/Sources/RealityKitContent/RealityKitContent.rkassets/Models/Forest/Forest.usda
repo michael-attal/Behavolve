@@ -1,0 +1,183 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["SkySphere", "Picnic", "Forest_With_Low_Poly_Trees", "Forest_With_Picnic"]
+    def "SkySphere" (
+        active = true
+        references = @../../SkySphere.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, -6.5955815e-17, 0, 0)
+        float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+        float3 xformOp:translate = (0, 0, 0)
+
+        over "SkySphere_mat"
+        {
+            asset inputs:SkySphere_Texture = @forest_hdri.exr@
+        }
+
+        def RealityKitComponent "ImageBasedLight"
+        {
+            asset ibl = @forest_hdri.exr@
+            uniform token info:id = "RealityKit.ImageBasedLight"
+            float intensityExponent = -1
+            bool isGlobalIBL = 0
+        }
+    }
+
+    def Xform "Forest_With_Picnic" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+    )
+    {
+        reorder nameChildren = ["Picnic", "Forest_With_Low_Poly_Trees"]
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def "Picnic" (
+            active = true
+            references = @Picnic/Picnic.usdc@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (1.9650908e-7, -4.8289742, 0.15044014)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees" (
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_1" (
+            active = false
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-46.24055, -0.000008404256, 0.000008404256)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_2" (
+            active = false
+            customData = {
+                float3 rotationEulerHint = (0, 0, 3.1415927)
+            }
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (-4.371139e-8, 0, 0, 1)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-45.1334, 45.2678, 0.000009038221)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_3" (
+            active = false
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (60, 60)
+            int ui:nodegraph:node:stackingOrder = 3
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-46.241493, -45.964767, 0.000014437168)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_4" (
+            active = false
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (2.0861627e-7, -46.187542, -4.07216e-7)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_5" (
+            active = false
+            customData = {
+                float3 rotationEulerHint = (0, 0, 1.5707964)
+            }
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (0.70710677, 0, 0, 0.70710677)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (2.831221e-7, 45.577187, 0.0000012339369)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_6" (
+            active = false
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (46.26064, -0.0000028312209, -3.5922677e-14)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_7" (
+            active = false
+            customData = {
+                float3 rotationEulerHint = (0, 0, 4.7123885)
+            }
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (0.70710677, 0, 0, -0.70710677)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (46.261036, 45.546726, 0.0000030812946)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Forest_With_Low_Poly_Trees_8" (
+            active = false
+            references = @Forest With Trees/Forest_With_Low_Poly_Trees.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (46.26106, -46.012432, 0.0000031712848)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+}
+

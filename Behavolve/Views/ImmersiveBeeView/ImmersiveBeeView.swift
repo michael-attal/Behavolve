@@ -66,6 +66,7 @@ struct ImmersiveBeeView: View {
 
                 appState.beeSceneState.daffodilFlowerPot = flower
                 appState.beeSceneState.therapist = therapist
+                appState.beeSceneState.dialogue = dialogue
                 appState.beeSceneState.beehive = beehive
                 appState.beeSceneState.bee = bee
                 appState.beeSceneState.beeImmersiveContentSceneEntity = immersiveContentEntity

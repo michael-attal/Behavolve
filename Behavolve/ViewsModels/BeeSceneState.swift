@@ -17,6 +17,7 @@ class BeeSceneState {
     var beehive = Entity()
     var beeAudioPlaybackController: AudioPlaybackController!
     var therapist = Entity()
+    var dialogue = Entity()
     var waterBottle = Entity()
     var halo = Entity()
     var isFlowersPlaced: Bool = false
