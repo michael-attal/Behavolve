@@ -9,7 +9,7 @@ import RealityKit
 import SwiftUI
 
 @MainActor
-final class OscillationSystem: System {
+final class OscillationSystem: @MainActor System {
     private static let query = EntityQuery(where: .has(OscillationComponent.self))
     static var dependencies: [SystemDependency] { [.after(MovementSystem.self)] }
 

@@ -34,8 +34,8 @@ import SwiftUI
 
     @MainActor static let query = EntityQuery(where: .has(LookAtTargetComponent.self))
 
-    private let arkitSession = ARKitSession()
-    private let worldTrackingProvider = WorldTrackingProvider()
+    private let arkitSession = AppState.arkitSession
+    private let worldTrackingProvider = AppState.worldTracking
 
     init(scene: RealityKit.Scene) {
         setUpSession()

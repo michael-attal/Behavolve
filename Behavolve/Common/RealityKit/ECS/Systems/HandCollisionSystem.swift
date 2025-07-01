@@ -9,7 +9,7 @@ import ARKit
 import RealityKit
 
 @MainActor
-final class HandCollisionSystem: System {
+final class HandCollisionSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(HandProximitySystem.self)] }
 
     private static let handQuery = EntityQuery(where: .has(HandComponent.self))

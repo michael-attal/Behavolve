@@ -37,6 +37,8 @@ class AppState {
 
     var openAI = OpenAI(configuration: OpenAI.Configuration(token: YOUR_OPENAI_TOKEN_HERE, organizationIdentifier: YOUR_OPENAI_ORGANIZATION_ID_HERE, timeoutInterval: 86400.0))
 
+    let BeeScenePreSessionAssessmentWindowID = "BeeScenePreSessionAssessmentWindow"
+    let BeeScenePostSessionAssessmentWindowID = "BeeScenePostSessionAssessmentWindow"
     let MenuWindowID = "MenuWindow"
     let ConversationWindowID = "ConversationWindow"
     let immersiveSpaceID = "ImmersiveSpace"
@@ -49,6 +51,8 @@ class AppState {
     var audioFile: AVAudioFile?
     var audioFileURL: URL?
     var streamingTask: Task<Void, Never>?
+
+    var calmMonitorEntity = Entity()
 
     enum ImmersiveSpaceState {
         case closed
@@ -64,21 +68,21 @@ class AppState {
     var currentImmersiveView: ImmersiveViewAvailable = .none
 
     var handAnchorEntities: [AnchorEntity] = []
-    var handTracking = HandTrackingProvider()
-    var planeDetection = PlaneDetectionProvider(alignments: [.horizontal]) // Used to detect ceil
-    var wolrdTracking = WorldTrackingProvider()
+    static let handTracking = HandTrackingProvider()
+    static let planeDetection = PlaneDetectionProvider(alignments: [.horizontal]) // Used to detect ceil
+    static let worldTracking = WorldTrackingProvider()
+    static let arkitSession = ARKitSession()
 
     func didLeaveImmersiveSpace() {
-        arkitSession.stop()
+        AppState.arkitSession.stop()
     }
 
     // MARK: - ARKit state
 
-    var arkitSession = ARKitSession()
     var providersStoppedWithError = false
     var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     var handTrackingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
-    var sceneReconstruction = SceneReconstructionProvider()
+    static let sceneReconstruction = SceneReconstructionProvider()
     var isFirstChunkReady = false
 
     var allRequiredAuthorizationsAreGranted: Bool {
@@ -94,22 +98,22 @@ class AppState {
     }
 
     func requestHandTrackingAuthorization() async {
-        let authorizationResult = await arkitSession.requestAuthorization(for: [.handTracking])
+        let authorizationResult = await AppState.arkitSession.requestAuthorization(for: [.handTracking])
         handTrackingAuthorizationStatus = authorizationResult[.handTracking]!
     }
 
     func queryHandTrackingAuthorization() async {
-        let authorizationResult = await arkitSession.queryAuthorization(for: [.handTracking])
+        let authorizationResult = await AppState.arkitSession.queryAuthorization(for: [.handTracking])
         handTrackingAuthorizationStatus = authorizationResult[.handTracking]!
     }
 
     func requestWorldSensingAuthorization() async {
-        let authorizationResult = await arkitSession.requestAuthorization(for: [.worldSensing])
+        let authorizationResult = await AppState.arkitSession.requestAuthorization(for: [.worldSensing])
         worldSensingAuthorizationStatus = authorizationResult[.worldSensing]!
     }
 
     func queryWorldSensingAuthorization() async {
-        let authorizationResult = await arkitSession.queryAuthorization(for: [.worldSensing])
+        let authorizationResult = await AppState.arkitSession.queryAuthorization(for: [.worldSensing])
         worldSensingAuthorizationStatus = authorizationResult[.worldSensing]!
     }
 
@@ -128,7 +132,7 @@ class AppState {
     }
 
     func monitorSessionEvents() async {
-        for await event in arkitSession.events {
+        for await event in AppState.arkitSession.events {
             switch event {
             case .dataProviderStateChanged(_, let newState, let error):
                 switch newState {

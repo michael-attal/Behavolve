@@ -41,7 +41,7 @@ extension ImmersiveBeeView {
         glassMaterial.faceCulling = .none // See inside the cube
         glassMaterial.emissiveIntensity = 0.1
         glassMaterial.emissiveColor = .init(color: .white)
-        glassMaterial.opacityThreshold = 1.0
+        // glassMaterial.opacityThreshold = 0.0
 
         // Create the cube entity
         let glassCube = ModelEntity(mesh: cubeMesh, materials: [glassMaterial])

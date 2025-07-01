@@ -5,6 +5,7 @@
 //  Created by Michaël ATTAL on 28/10/2024.
 //
 
+import ARKit
 import RealityKit
 import RealityKitContent
 import SwiftUI
@@ -15,6 +16,7 @@ enum ImmersiveBeeViewError: Error {
 
 struct ImmersiveBeeView: View {
     @Environment(AppState.self) var appState
+    @Environment(\.openWindow) var openWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State private var errorMessage: String?
@@ -35,6 +37,7 @@ struct ImmersiveBeeView: View {
                 //                                       classification: .table,
                 //                                       minimumBounds: [0.15, 0.15]))
                 // trackPlaneDetection() // <- Old way to track plane detection
+                let calmMonitorEntity = loadCalmMotionMonitorHeadset()
                 loadUserHands(content: &content)
                 loadSubscribtionToManipulationEvents(content: &content)
 
@@ -62,8 +65,11 @@ struct ImmersiveBeeView: View {
                 let flower = try await loadFlower()
                 immersiveContentEntity.addChild(flower)
 
+                immersiveContentEntity.addChild(calmMonitorEntity)
+
                 content.add(immersiveContentEntity)
 
+                appState.calmMonitorEntity = calmMonitorEntity
                 appState.beeSceneState.daffodilFlowerPot = flower
                 appState.beeSceneState.therapist = therapist
                 appState.beeSceneState.dialogue = dialogue
@@ -201,6 +207,31 @@ struct ImmersiveBeeView: View {
 
             // TODO: trigger visual feedback "congratualition, we can now pass to the next step if you are ready..."
             appState.beeSceneState.isWaterBottlePlacedOnHalo = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .abruptGestureDetected)) { _ in
+            print("🤚 Abrupt gesture detected")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .abruptHeadMotionDetected)) { _ in
+            print("😱 Abrupt head/body motion detected")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .thumbUpGestureDetected)) { notification in
+            if let position = notification.thumbUpThumbTipPosition {
+                print("👍 Thumb Up detected at position: \(position)")
+            } else {
+                print("👍 Thumb Up detected (no position available)")
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .palmOpenGestureDetected)) { notification in
+            if let position = notification.palmOpenPalmCenterPosition {
+                print("🖐️ Palm open at: \(position)")
+                // TODO: For testing, remove later:
+                appState.beeSceneState.bee.components.set(
+                    MoveToComponent(destination: position,
+                                    speed: 0.5,
+                                    epsilon: 0.01,
+                                    strategy: .direct)
+                )
+            }
         }
     }
 }

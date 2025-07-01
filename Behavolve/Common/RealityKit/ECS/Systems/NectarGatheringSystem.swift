@@ -10,7 +10,7 @@ import RealityKit
 import SwiftUI
 
 @MainActor
-final class NectarGatheringSystem: @preconcurrency System {
+final class NectarGatheringSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(MovementSystem.self)] }
 
     // Quantity withdrawn at each visit (limit: remaining stock).

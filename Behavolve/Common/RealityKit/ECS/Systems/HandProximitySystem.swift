@@ -8,7 +8,7 @@
 import RealityKit
 
 @MainActor
-final class HandProximitySystem: System {
+final class HandProximitySystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.before(UserProximitySystem.self)] }
 
     private static let entityWithHandProximityQuery = EntityQuery(where: .has(HandProximityComponent.self))

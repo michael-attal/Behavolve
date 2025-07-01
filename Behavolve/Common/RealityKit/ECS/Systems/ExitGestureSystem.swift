@@ -9,7 +9,7 @@ import Foundation
 import RealityKit
 
 @MainActor
-final class ExitGestureSystem: System {
+final class ExitGestureSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(HandInputSystem.self)] }
 
     private static let query = EntityQuery(where: .has(ExitGestureComponent.self))

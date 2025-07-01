@@ -9,9 +9,9 @@
 extension ImmersiveBeeView {
     @MainActor func trackWorldDetection() {
         Task {
-            try await appState.arkitSession.run([appState.wolrdTracking])
+            try await AppState.arkitSession.run([AppState.worldTracking])
 
-            for await update in appState.wolrdTracking.anchorUpdates {
+            for await update in AppState.worldTracking.anchorUpdates {
                 print(update.anchor.description)
             }
         }
@@ -22,9 +22,9 @@ extension ImmersiveBeeView {
         print("In simulator, scene reconstruction is disabled!")
         #else
         Task {
-            try await appState.arkitSession.run([appState.sceneReconstruction])
+            try await AppState.arkitSession.run([AppState.sceneReconstruction])
 
-            for await update in appState.sceneReconstruction.anchorUpdates {
+            for await update in AppState.sceneReconstruction.anchorUpdates {
                 print(update.anchor.description)
             }
         }
@@ -36,10 +36,10 @@ extension ImmersiveBeeView {
         print("In simulator, plane detection is disabled!")
         #else
         Task {
-            try await appState.arkitSession.run([appState.planeDetection])
+            try await AppState.arkitSession.run([AppState.planeDetection])
 
             // TODO: Later, when all anchors have been placed (isFlowersPlaced, ...), put a condition to cancel the for await loop.
-            for await update in appState.planeDetection.anchorUpdates {
+            for await update in AppState.planeDetection.anchorUpdates {
                 if update.anchor.classification == .table {
                     appState.beeSceneState.tableInPatientRoom = update.anchor
                 } else if update.anchor.classification == .floor {
@@ -58,9 +58,9 @@ extension ImmersiveBeeView {
         print("In simulator hand tracking is disabled!")
         #else
         Task {
-            try await appState.arkitSession.run([appState.handTracking])
+            try await AppState.arkitSession.run([AppState.handTracking])
 
-            for await update in appState.planeDetection.anchorUpdates {
+            for await update in AppState.planeDetection.anchorUpdates {
                 if update.anchor.classification == .ceiling {
                     print("ceiling detected!")
                 }

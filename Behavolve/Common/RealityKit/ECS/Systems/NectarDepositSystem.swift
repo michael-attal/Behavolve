@@ -10,7 +10,7 @@ import RealityKit
 import SwiftUI
 
 @MainActor
-final class NectarDepositSystem: @preconcurrency System {
+final class NectarDepositSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(MovementSystem.self), .after(NectarGatheringSystem.self)] }
 
     /// Entities currently in deposit phase (no gathering component).

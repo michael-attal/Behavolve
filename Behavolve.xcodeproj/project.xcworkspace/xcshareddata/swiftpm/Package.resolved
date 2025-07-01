@@ -1,5 +1,5 @@
 {
-  "originHash" : "499ade0bd93f79848e85adfa95aac4bb6fa642ecd5d3f9fd59694e19101cb9fa",
+  "originHash" : "d9b3973b7ff991c9e42ae785128be656be469f8c6bdfec048e265e9dba017fe6",
   "pins" : [
     {
       "identity" : "openai",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "cedec2fc80aedafa332f7395b7004f79f547c794",
         "version" : "0.4.4"
+      }
+    },
+    {
+      "identity" : "researchkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/StanfordBDHG/ResearchKit.git",
+      "state" : {
+        "revision" : "a9066441faf920671f0b64cdaebe1e61f64093d4",
+        "version" : "3.1.1"
       }
     },
     {

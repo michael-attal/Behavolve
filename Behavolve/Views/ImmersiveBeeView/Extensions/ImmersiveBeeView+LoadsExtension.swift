@@ -230,7 +230,7 @@ extension ImmersiveBeeView {
         )
         planeMaterial.blending = .transparent(opacity: 0.0)
         planeMaterial.opacityThreshold = 1.0
-        
+
         let planeModelCommponent = ModelComponent(mesh: planeMesh, materials: [planeMaterial])
         let planeEntity = Entity(components: planeModelCommponent)
         planeEntity.generateCollisionShapes(recursive: true)
@@ -278,8 +278,17 @@ extension ImmersiveBeeView {
         }
         for handAnchorEntity in appState.handAnchorEntities {
             handAnchorEntity.components.set(ExitGestureComponent())
+            handAnchorEntity.components.set(GentleGestureComponent())
+            handAnchorEntity.components.set(ThumbUpGestureComponent())
+            handAnchorEntity.components.set(PalmOpenGestureComponent())
         }
         #endif
+    }
+
+    func loadCalmMotionMonitorHeadset() -> Entity {
+        let calmMonitorEntity = Entity()
+        calmMonitorEntity.components.set(CalmMotionComponent())
+        return calmMonitorEntity
     }
 
     func loadSubscribtionToManipulationEvents(content: inout RealityViewContent) {

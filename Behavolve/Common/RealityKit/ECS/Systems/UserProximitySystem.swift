@@ -14,7 +14,7 @@ final class UserProximitySystem: System {
     required init(scene: RealityKit.Scene) {}
 
     func update(context: SceneUpdateContext) {
-        // Headset position maintained by LookAtTargetSystem. // TODO: In the future, move the shared devicePoseSafe to a proper system
+        // Headset position maintained by LookAtTargetSystem.
         let userPos = LookAtTargetSystem.shared.devicePoseSafe.value.translation
 
         for entity in context.scene.performQuery(Self.entityWithUserProximityQuery) {

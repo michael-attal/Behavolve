@@ -48,5 +48,7 @@ extension ImmersiveBeeView {
         // TODO: Do the GentleGestureVerificationSystem
     }
 
-    func performFinishedInteractionInForrestFullSpaceStep() async throws {}
+    func performFinishedInteractionInForrestFullSpaceStep() async throws {
+        openWindow(id: "PostSessionAssessmentWindow")
+    }
 }

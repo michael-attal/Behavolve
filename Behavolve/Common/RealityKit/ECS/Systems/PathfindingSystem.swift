@@ -10,7 +10,6 @@ import Foundation
 import Metal
 import RealityKit
 
-// binary heap
 private struct Heap<E: Comparable> {
     private var items: [E] = []
     mutating func push(_ v: E) { items.append(v); siftUp(from: items.count - 1) }
@@ -46,13 +45,14 @@ private struct Heap<E: Comparable> {
 
 @MainActor
 final class PathfindingSystem: System {
-    private let cell: Float = 0.10 // grid resolution (m)
+    private let cell: Float = 0.25 // grid resolution (m)
 
-    private var blocked = Set<Grid>() // occupied by the mesh
-    private var meshProvider: SceneReconstructionProvider?
-    private var activeMeshAnchors: [UUID: MeshAnchor] = [:]
+    private var blocked = Set<Grid>() // all currently occupied grid cells
+    private var perAnchorCells = [UUID: Set<Grid>]() // cache for precise removal
 
-    // entities that need a path
+    private let meshProvider = AppState.sceneReconstruction
+    private var arSession: ARKitSession? // kept alive for the whole system
+
     private static let query = EntityQuery(where: .has(MoveToComponent.self))
 
     required init(scene: Scene) {
@@ -61,73 +61,59 @@ final class PathfindingSystem: System {
             print("PathfindingSystem: SceneReconstructionProvider is not supported on this device.")
             return
         }
-        meshProvider = SceneReconstructionProvider()
-        Task {
-            print("PathfindingSystem: Starting to listen to mesh updates.")
-            await listenToMesh()
-        }
+
+        arSession = AppState.arkitSession
+        Task { await listenToMesh() }
+
 #else
         print("PathfindingSystem: Running in simulator, mesh listening is disabled.")
 #endif
     }
 
     func update(context: SceneUpdateContext) {
-        guard meshProvider != nil else { return }
+        guard arSession != nil else { return }
 
         for entity in context.scene.performQuery(Self.query) {
             guard var move = entity.components[MoveToComponent.self],
                   move.strategy == .pathfinding,
-                  move.path.isEmpty // not already calculated
+                  move.path.isEmpty
             else { continue }
 
-            let startG = grid(from: entity.position(relativeTo: nil))
-            let goalG = grid(from: move.destination)
+            guard
+                let startG = grid(from: entity.position(relativeTo: nil)),
+                let goalG = grid(from: move.destination)
+            else { continue } // skip if positions are invalid
 
             if let gPath = aStar(from: startG, to: goalG) {
                 move.path = gPath.map { world(from: $0, y: entity.position(relativeTo: nil).y) }
                 print("PathfindingSystem: Path found for entity \(entity.id) with \(move.path.count) waypoints.")
             } else {
                 print("PathfindingSystem: No path found for entity \(entity.id) from \(startG) to \(goalG). Fallback to direct.")
-                move.strategy = .direct // fallback
+                move.strategy = .direct
             }
             entity.components.set(move)
         }
     }
 
-    // Scene-reconstruction
     private func listenToMesh() async {
-        guard let provider = meshProvider else {
-            print("PathfindingSystem: MeshProvider is nil in listenToMesh.")
-            return
-        }
-        let session = ARKitSession() // This session is local to this function's scope
-        // It should ideally be a member of the class or passed in if managed externally.
-        // For now, let's assume this is fine for SceneReconstructionProvider.
         do {
-            try await session.run([provider])
+            try await arSession?.run([meshProvider])
             print("PathfindingSystem: ARKitSession running with SceneReconstructionProvider.")
         } catch {
-            print("PathfindingSystem: Failed to run ARKitSession with SceneReconstructionProvider: \(error)")
+            print("PathfindingSystem: Failed to run ARKitSession – \(error)")
             return
         }
 
-        for await update in provider.anchorUpdates {
+        for await update in meshProvider.anchorUpdates {
             print("PathfindingSystem: Received mesh anchor update: \(update.event) for anchor \(update.anchor.id)")
-            let anchor = update.anchor
             switch update.event {
-            case .added, .updated:
-                if update.event == .updated, activeMeshAnchors[anchor.id] != nil {
-                    await erase(anchor) // Erase based on the old (stored) anchor data if needed, or simply clear and re-add.
-                    // For simplicity here, we will clear based on the new anchor's geometry transformed by its old transform if available.
-                    // Or, even simpler: just re-process. A* grid cells are small, so over-marking is less bad than under-marking.
-                    // Let's ensure `erase` can handle the current anchor if it's an update.
-                    // The most robust way is to store the anchor and use its geometry for erase.
-                }
-                await integrate(anchor)
-                activeMeshAnchors[anchor.id] = anchor // Store the latest version
+            case .added:
+                await integrate(update.anchor)
+            case .updated:
+                await erase(update.anchor) // remove old footprint
+                await integrate(update.anchor)
             case .removed:
-                await erase(anchor)
-                activeMeshAnchors.removeValue(forKey: anchor.id)
+                await erase(update.anchor)
             @unknown default:
                 print("PathfindingSystem: Unknown mesh anchor update event.")
             }
@@ -135,45 +121,44 @@ final class PathfindingSystem: System {
         print("PathfindingSystem: Mesh anchor update stream finished.")
     }
 
+    /// Adds the anchor’s occupied cells to `blocked`.
     private func integrate(_ anchor: MeshAnchor) async {
-        guard let meshResource = try? await MeshResource(from: anchor) else {
-            print("PathfindingSystem: Failed to get MeshResource from anchor \(anchor.id) in integrate.")
-            return
-        }
-        let transform = anchor.originFromAnchorTransform
-
-        for model in meshResource.contents.models {
-            for part in model.parts {
-                // The positions are in the anchor's local coordinate space.
-                for localPosition in part.positions {
-                    let worldPosition = (transform * SIMD4<Float>(localPosition, 1)).xyz
-                    blocked.insert(grid(from: worldPosition))
-                }
-            }
-        }
-        print("PathfindingSystem: Integrated anchor \(anchor.id). Blocked cell count: \(blocked.count)")
+        let cells = await cells(for: anchor)
+        blocked.formUnion(cells)
+        perAnchorCells[anchor.id] = cells
+        print("PathfindingSystem: Integrated anchor \(anchor.id). Total blocked: \(blocked.count)")
     }
 
+    /// Removes the anchor’s occupied cells from `blocked`.
     private func erase(_ anchor: MeshAnchor) async {
-        // To accurately erase, we need the geometry of the anchor *as it was when added*.
-        // Using the current anchor's geometry is an approximation if it has changed significantly.
-        // If we stored the exact set of Grid cells per anchor, removal would be precise.
-        // For now, using the provided anchor's geometry for removal.
-        guard let meshResource = try? await MeshResource(from: anchor) else {
-            print("PathfindingSystem: Failed to get MeshResource from anchor \(anchor.id) in erase.")
-            return
-        }
-        let transform = anchor.originFromAnchorTransform
+        guard let cells = perAnchorCells[anchor.id] else { return }
+        blocked.subtract(cells)
+        perAnchorCells[anchor.id] = nil
+        print("PathfindingSystem: Erased anchor \(anchor.id). Total blocked: \(blocked.count)")
+    }
 
-        for model in meshResource.contents.models {
-            for part in model.parts {
-                for localPosition in part.positions {
-                    let worldPosition = (transform * SIMD4<Float>(localPosition, 1)).xyz
-                    blocked.remove(grid(from: worldPosition))
+    /// Builds the set of grid cells occupied by the given anchor.
+    private func cells(for anchor: MeshAnchor) async -> Set<Grid> {
+        await withCheckedContinuation { cont in
+            // Heavy mesh extraction off the main actor
+            Task.detached {
+                var out = Set<Grid>()
+                if let meshResource = try? await MeshResource(from: anchor) {
+                    let transform = anchor.originFromAnchorTransform
+                    for model in await meshResource.contents.models {
+                        for part in model.parts {
+                            for localPos in part.positions {
+                                let worldPos = (transform * SIMD4<Float>(localPos, 1)).xyz
+                                if let g = await self.grid(from: worldPos) { out.insert(g) }
+                            }
+                        }
+                    }
+                } else {
+                    print("PathfindingSystem: Failed to extract mesh from anchor \(anchor.id)")
                 }
+                cont.resume(returning: out)
             }
         }
-        print("PathfindingSystem: Erased anchor \(anchor.id). Blocked cell count: \(blocked.count)")
     }
 
     // MARK: A*
@@ -183,8 +168,10 @@ final class PathfindingSystem: System {
         var description: String { "(\(x), \(z))" }
     }
 
-    private func grid(from p: SIMD3<Float>) -> Grid {
-        .init(x: Int(round(p.x / cell)), z: Int(round(p.z / cell)))
+    /// Converts a world-space position to grid coordinates. Returns `nil` if the position is not finite.
+    private func grid(from p: SIMD3<Float>) -> Grid? {
+        guard p.x.isFinite, p.z.isFinite else { return nil }
+        return Grid(x: Int(round(p.x / cell)), z: Int(round(p.z / cell)))
     }
 
     private func world(from g: Grid, y: Float) -> SIMD3<Float> {
@@ -198,21 +185,22 @@ final class PathfindingSystem: System {
             static func < (lhs: Node, rhs: Node) -> Bool { lhs.f < rhs.f }
         }
 
-        func h(_ a: Grid, _ b: Grid) -> Float {
-            Float(abs(a.x - b.x) + abs(a.z - b.z)) // Manhattan
+        func heuristic(_ a: Grid, _ b: Grid) -> Float {
+            Float(abs(a.x - b.x) + abs(a.z - b.z))
         }
 
         var open = Heap<Node>()
         var came = [Grid: Grid]()
-        var gScore: [Grid: Float] = [:]
-        gScore[start] = 0
+        var gScore = [start: Float(0)]
 
-        open.push(Node(g: 0, h: h(start, goal), grid: start))
+        open.push(Node(g: 0, h: heuristic(start, goal), grid: start))
 
-        let dirs = [Grid(x: 1, z: 0), Grid(x: -1, z: 0),
-                    Grid(x: 0, z: 1), Grid(x: 0, z: -1),
-                    Grid(x: 1, z: 1), Grid(x: -1, z: -1),
-                    Grid(x: 1, z: -1), Grid(x: -1, z: 1)]
+        let dirs = [
+            Grid(x: 1, z: 0), Grid(x: -1, z: 0),
+            Grid(x: 0, z: 1), Grid(x: 0, z: -1),
+            Grid(x: 1, z: 1), Grid(x: -1, z: -1),
+            Grid(x: 1, z: -1), Grid(x: -1, z: 1)
+        ]
 
         while let current = open.pop() {
             if current.grid == goal {
@@ -231,19 +219,16 @@ final class PathfindingSystem: System {
                     print("PathfindingSystem: A* neighbor \(n) is blocked.")
                     continue
                 }
-                // For simplicity, we'll keep 1 for now, assuming grid cells are coarse enough.
-                // Or, more accurately, adjust cost based on `d`.
-                let cost: Float = (d.x != 0 && d.z != 0) ? 1.41421356 : 1.0 // sqrt(2) for diagonals
 
+                let cost: Float = (d.x != 0 && d.z != 0) ? 1.41421356 : 1.0
                 let tentative = (gScore[current.grid] ?? .infinity) + cost
                 if tentative < (gScore[n] ?? .infinity) {
                     came[n] = current.grid
                     gScore[n] = tentative
-                    open.push(Node(g: tentative, h: h(n, goal), grid: n))
+                    open.push(Node(g: tentative, h: heuristic(n, goal), grid: n))
                 }
             }
         }
-        print("PathfindingSystem: A* failed to find a path from \(start) to \(goal).")
         return nil
     }
 }
