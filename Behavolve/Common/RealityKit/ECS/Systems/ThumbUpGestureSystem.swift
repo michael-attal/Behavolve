@@ -19,7 +19,7 @@ final class ThumbUpGestureSystem: @MainActor System {
     required init(scene: RealityKit.Scene) {}
 
     func update(context: SceneUpdateContext) {
-        let provider = AppState.handTracking
+        let provider = HandTrackingProvider()
 
         for hand in context.scene.performQuery(Self.query) {
             guard var comp = hand.components[ThumbUpGestureComponent.self] else { continue }

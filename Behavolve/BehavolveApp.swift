@@ -9,67 +9,14 @@ import SwiftUI
 
 @main
 struct BehavolveApp: App {
-    @State private var appState: AppState
-
-    init() {
-        appState = AppState()
-
-        LookAtTargetComponent.registerComponent()
-        LookAtTargetSystem.registerSystem()
-
-        MoveToComponent.registerComponent()
-        MovementSystem.registerSystem()
-
-        OscillationComponent.registerComponent()
-        OscillationSystem.registerSystem()
-
-        SteeringComponent.registerComponent()
-        SteeringSystem.registerSystem()
-
-        // PathfindingSystem.registerSystem() // Not working atm
-
-        NectarDepositComponent.registerComponent()
-        NectarDepositSystem.registerSystem()
-
-        NectarGatheringComponent.registerComponent()
-        NectarGatheringSystem.registerSystem()
-
-        #if !targetEnvironment(simulator)
-        ExitGestureComponent.registerComponent()
-        ExitGestureSystem.registerSystem()
-
-        HandComponent.registerComponent()
-        HandInputSystem.registerSystem()
-
-        HandProximityComponent.registerComponent()
-        HandProximitySystem.registerSystem()
-
-        HandCollisionComponent.registerComponent()
-        HandCollisionSystem.registerSystem()
-
-        GentleGestureComponent.registerComponent()
-        GentleGestureSystem.registerSystem()
-
-        ThumbUpGestureComponent.registerComponent()
-        ThumbUpGestureSystem.registerSystem()
-
-        PalmOpenGestureComponent.registerComponent()
-        PalmOpenGestureSystem.registerSystem()
-        #endif
-
-        UserProximityComponent.registerComponent()
-        UserProximitySystem.registerSystem()
-
-        CalmMotionComponent.registerComponent()
-        CalmMotionSystem.registerSystem()
-
-        FleeStateComponent.registerComponent()
-
-        TargetReachedSystem.registerSystem()
-        TargetReachedComponent.registerComponent()
-    }
+    @State private var appState = AppState()
 
     var body: some Scene {
+        WindowGroup(id: appState.MenuWindowID) {
+            MenuView()
+                .environment(appState)
+        }.windowResizability(.contentSize)
+
         WindowGroup(id: appState.BeeScenePreSessionAssessmentWindowID) {
             BeeScenePreSessionAssessmentView()
                 .environment(appState)
@@ -77,11 +24,6 @@ struct BehavolveApp: App {
 
         WindowGroup(id: appState.BeeScenePostSessionAssessmentWindowID) {
             BeeScenePostSessionAssessmentView()
-                .environment(appState)
-        }.windowResizability(.contentSize)
-
-        WindowGroup(id: appState.MenuWindowID) {
-            MenuView()
                 .environment(appState)
         }.windowResizability(.contentSize)
 

@@ -24,6 +24,8 @@ extension ImmersiveBeeView {
                 halo.isEnabled = false
                 appState.beeSceneState.halo = halo
                 appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(halo)
+            } else {
+                print("Water bottle and halo already loaded")
             }
         } catch {
             print(error)

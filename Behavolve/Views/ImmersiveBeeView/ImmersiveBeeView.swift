@@ -20,11 +20,13 @@ struct ImmersiveBeeView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State private var errorMessage: String?
-    @State var spatialTrackingSession = SpatialTrackingSession()
+    // @State var spatialTrackingSession = SpatialTrackingSession()
 
     var body: some View {
         RealityView { content, attachments in
             do {
+                initRequiredSystems()
+
                 // let configuration = SpatialTrackingSession.Configuration(
                 //     tracking: [.plane],
                 //     sceneUnderstanding: [.collision, .physics]
@@ -45,11 +47,27 @@ struct ImmersiveBeeView: View {
                     throw ImmersiveBeeViewError.entityError(message: "Could not load Bee Scene (where all content will be placed)")
                 }
 
-                #if targetEnvironment(simulator)
-                // Add a plane ground to not let the watter bottle go beyond the scene in simulator
-                let planeForGroundCollision = loadPlaneForGroundCollision()
-                immersiveContentEntity.addChild(planeForGroundCollision)
+                #if !targetEnvironment(simulator)
+                if AppState.showDebugMeshSceneReconstruction {
+                    let debugRoot = Entity()
+                    debugRoot.name = "DebugMeshRoot"
+                    AppState.debugMeshRoot = debugRoot
+                    content.add(debugRoot)
+                }
                 #endif
+
+                // Add a plane ground to not let the watter bottle go beyond the scene in simulator // Also need it in real device since scene mesh reconstruction is not by made default in app
+                let planeForGroundCollision = loadPlaneForGroundCollision()
+                RealityKitHelper.updateCollisionFilter(
+                    for: planeForGroundCollision,
+                    groupType: .beehive,
+                    maskTypes: [.all],
+                    subtracting: .bee
+                ) // Avoid collision with bee (needed when she fly away when we are are to close)
+                #if !targetEnvironment(simulator)
+                planeForGroundCollision.position.y += 0.12 // Not perfectly at 0 in my appartment
+                #endif
+                immersiveContentEntity.addChild(planeForGroundCollision)
 
                 let therapist = try await loadTherapist()
                 let dialogue = try loadDialogue(from: attachments)
@@ -195,6 +213,7 @@ struct ImmersiveBeeView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .exitGestureDetected)) { _ in
+            print("✊ Exit gesture detected")
             Task { @MainActor in await dismissImmersiveSpace() }
         }
         .onReceive(NotificationCenter.default.publisher(for: .targetReached)) { notification in
@@ -205,7 +224,6 @@ struct ImmersiveBeeView: View {
                 print("📍 At position: \(position)")
             }
 
-            // TODO: trigger visual feedback "congratualition, we can now pass to the next step if you are ready..."
             appState.beeSceneState.isWaterBottlePlacedOnHalo = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .abruptGestureDetected)) { _ in
@@ -214,25 +232,88 @@ struct ImmersiveBeeView: View {
         .onReceive(NotificationCenter.default.publisher(for: .abruptHeadMotionDetected)) { _ in
             print("😱 Abrupt head/body motion detected")
         }
-        .onReceive(NotificationCenter.default.publisher(for: .thumbUpGestureDetected)) { notification in
-            if let position = notification.thumbUpThumbTipPosition {
-                print("👍 Thumb Up detected at position: \(position)")
-            } else {
-                print("👍 Thumb Up detected (no position available)")
-            }
-        }
+        // .onReceive(NotificationCenter.default.publisher(for: .thumbUpGestureDetected)) { notification in
+        //     if let position = notification.thumbUpThumbTipPosition {
+        //         print("👍 Thumb Up detected at position: \(position)")
+        //     } else {
+        //         print("👍 Thumb Up detected (no position available)")
+        //     }
+        // }
         .onReceive(NotificationCenter.default.publisher(for: .palmOpenGestureDetected)) { notification in
             if let position = notification.palmOpenPalmCenterPosition {
                 print("🖐️ Palm open at: \(position)")
                 // TODO: For testing, remove later:
-                appState.beeSceneState.bee.components.set(
-                    MoveToComponent(destination: position,
-                                    speed: 0.5,
-                                    epsilon: 0.01,
-                                    strategy: .direct)
-                )
+                if appState.beeSceneState.isPalmUpGestureTested == false && appState.beeSceneState.step == .neutralExplanation {
+                    appState.beeSceneState.isPalmUpGestureTested = true
+                    appState.beeSceneState.bee.components.set(
+                        MoveToComponent(destination: position + [0, 0.1, -0.05],
+                                        speed: 0.5,
+                                        epsilon: 0.01,
+                                        strategy: .direct)
+                    )
+                    appState.beeSceneState.bee.components.set(LookAtTargetComponent(target: .world(LookAtTargetSystem.shared.devicePoseSafe.value.translation)))
+                }
             }
         }
+    }
+
+    func initRequiredSystems() {
+        LookAtTargetComponent.registerComponent()
+        LookAtTargetSystem.registerSystem()
+
+        MoveToComponent.registerComponent()
+        MovementSystem.registerSystem()
+
+        OscillationComponent.registerComponent()
+        OscillationSystem.registerSystem()
+
+        SteeringComponent.registerComponent()
+        SteeringSystem.registerSystem()
+
+        NectarDepositComponent.registerComponent()
+        NectarDepositSystem.registerSystem()
+
+        NectarGatheringComponent.registerComponent()
+        NectarGatheringSystem.registerSystem()
+
+        UserProximityComponent.registerComponent()
+        UserProximitySystem.registerSystem()
+
+        CalmMotionComponent.registerComponent()
+        CalmMotionSystem.registerSystem()
+
+        FleeStateComponent.registerComponent()
+
+        TargetReachedSystem.registerSystem()
+        TargetReachedComponent.registerComponent()
+
+        #if !targetEnvironment(simulator)
+        if AppState.alwaysUseDirectMovement == false {
+            PathfindingSystem.registerSystem()
+        }
+
+        HandComponent.registerComponent()
+        HandInputSystem.registerSystem()
+
+        HandProximityComponent.registerComponent()
+        HandProximitySystem.registerSystem()
+
+        HandCollisionComponent.registerComponent()
+        HandCollisionSystem.registerSystem()
+
+        ExitGestureComponent.registerComponent()
+        ExitGestureSystem.registerSystem()
+
+        GentleGestureComponent.registerComponent()
+        GentleGestureSystem.registerSystem()
+
+        // ThumbUpGestureComponent.registerComponent()
+        // ThumbUpGestureSystem.registerSystem()
+
+        PalmOpenGestureComponent.registerComponent()
+        PalmOpenGestureSystem.registerSystem()
+
+        #endif
     }
 }
 

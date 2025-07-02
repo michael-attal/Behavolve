@@ -32,6 +32,13 @@ class AppState {
     static let byPassConfirmationStep = false
     static let ChatGptAudioEnabled = true
     static let ChatGptAudioEnabledForOfflineText = false
+    static var debugMeshRoot: Entity?
+    static let showDebugMeshSceneReconstruction = false
+    static let alwaysUseDirectMovement = true
+    static let skypStartScreen = true
+    static let skypSurveyStep = true
+    static let skypToStep: ImmersiveBeeSceneStep? = nil
+    // static let skypToStep: ImmersiveBeeSceneStep? = .interactionInForrestFullSpace
 
     let beeSceneState = BeeSceneState()
 
@@ -44,6 +51,7 @@ class AppState {
     let immersiveSpaceID = "ImmersiveSpace"
 
     var audioConversation = AudioConversation()
+    var isConversationStarted = false
     var audioEngine: AVAudioEngine?
     var speechRecognizer: SFSpeechRecognizer?
     var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -68,13 +76,28 @@ class AppState {
     var currentImmersiveView: ImmersiveViewAvailable = .none
 
     var handAnchorEntities: [AnchorEntity] = []
-    static let handTracking = HandTrackingProvider()
-    static let planeDetection = PlaneDetectionProvider(alignments: [.horizontal]) // Used to detect ceil
-    static let worldTracking = WorldTrackingProvider()
-    static let arkitSession = ARKitSession()
+
+    static var handTrackingProviderHasStopped = false
+    static var worldTrackingProviderHasStopped = false
+
+    static var handTracking = HandTrackingProvider()
+    static var planeDetection = PlaneDetectionProvider(alignments: [.horizontal]) // Used to detect ceil
+    static var worldTracking = WorldTrackingProvider()
+    static var arkitSession = ARKitSession()
+    static var sceneReconstruction = SceneReconstructionProvider()
 
     func didLeaveImmersiveSpace() {
         AppState.arkitSession.stop()
+    }
+
+    func willEnterImmersiveSpace() {
+        AppState.handTracking = HandTrackingProvider()
+        AppState.worldTracking = WorldTrackingProvider()
+        AppState.planeDetection = PlaneDetectionProvider(alignments: [.horizontal])
+        AppState.arkitSession = ARKitSession()
+        AppState.sceneReconstruction = SceneReconstructionProvider()
+        AppState.handTrackingProviderHasStopped = false
+        AppState.worldTrackingProviderHasStopped = false
     }
 
     // MARK: - ARKit state
@@ -82,7 +105,6 @@ class AppState {
     var providersStoppedWithError = false
     var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     var handTrackingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
-    static let sceneReconstruction = SceneReconstructionProvider()
     var isFirstChunkReady = false
 
     var allRequiredAuthorizationsAreGranted: Bool {
@@ -134,7 +156,7 @@ class AppState {
     func monitorSessionEvents() async {
         for await event in AppState.arkitSession.events {
             switch event {
-            case .dataProviderStateChanged(_, let newState, let error):
+            case .dataProviderStateChanged(let provider, let newState, let error):
                 switch newState {
                 case .initialized:
                     break
@@ -143,6 +165,15 @@ class AppState {
                 case .paused:
                     break
                 case .stopped:
+                    print("A providers stopped!")
+                    if provider.contains(where: { $0 === AppState.handTracking }) {
+                        AppState.handTrackingProviderHasStopped = true
+                        print("HandTrackingProvider is now stopped")
+                    }
+                    if provider.contains(where: { $0 === AppState.worldTracking }) {
+                        AppState.worldTrackingProviderHasStopped = true
+                        print("WorldTrackingProvider is now stopped")
+                    }
                     if let error {
                         print("An error occurred: \(error)")
                         providersStoppedWithError = true
@@ -159,6 +190,46 @@ class AppState {
                 }
             default:
                 print("An unknown event occured \(event)")
+            }
+        }
+    }
+
+    func handleBeginTherapy(immersiveView: ImmersiveViewAvailable, researchKitQuestionnaireWindowID: String, openImmersiveSpace: OpenImmersiveSpaceAction, dismissImmersiveSpace: DismissImmersiveSpaceAction, openWindow: OpenWindowAction, dismissWindow: DismissWindowAction) {
+        currentImmersiveView = immersiveView
+        Task { @MainActor in
+            switch immersiveSpaceState {
+            case .open:
+                immersiveSpaceState = .inTransition
+                await dismissImmersiveSpace()
+                didLeaveImmersiveSpace()
+
+            case .closed:
+                immersiveSpaceState = .inTransition
+                switch await openImmersiveSpace(id: immersiveSpaceID) {
+                case .opened:
+                    Task {
+                        await monitorSessionEvents()
+                    }
+                    willEnterImmersiveSpace()
+                    openWindow(id: ConversationWindowID)
+                    if AppState.skypSurveyStep {
+                        dismissWindow(id: MenuWindowID)
+                    } else {
+                        dismissWindow(id: researchKitQuestionnaireWindowID)
+                    }
+
+                    exitWordDetected = false
+
+                case .userCancelled, .error:
+                    fallthrough
+
+                @unknown default:
+                    immersiveSpaceState = .closed
+                    currentImmersiveView = .none
+                }
+
+            case .inTransition:
+                break
             }
         }
     }

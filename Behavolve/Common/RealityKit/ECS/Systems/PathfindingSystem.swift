@@ -50,29 +50,29 @@ final class PathfindingSystem: System {
     private var blocked = Set<Grid>() // all currently occupied grid cells
     private var perAnchorCells = [UUID: Set<Grid>]() // cache for precise removal
 
-    private let meshProvider = AppState.sceneReconstruction
-    private var arSession: ARKitSession? // kept alive for the whole system
+    private let meshProvider = SceneReconstructionProvider()
+    private var arSession: ARKitSession
 
     private static let query = EntityQuery(where: .has(MoveToComponent.self))
 
-    required init(scene: Scene) {
+    required init(scene: RealityKit.Scene) {
+        arSession = ARKitSession()
+
 #if !targetEnvironment(simulator)
         guard SceneReconstructionProvider.isSupported else {
             print("PathfindingSystem: SceneReconstructionProvider is not supported on this device.")
             return
         }
 
-        arSession = AppState.arkitSession
         Task { await listenToMesh() }
 
 #else
         print("PathfindingSystem: Running in simulator, mesh listening is disabled.")
+
 #endif
     }
 
     func update(context: SceneUpdateContext) {
-        guard arSession != nil else { return }
-
         for entity in context.scene.performQuery(Self.query) {
             guard var move = entity.components[MoveToComponent.self],
                   move.strategy == .pathfinding,
@@ -97,7 +97,7 @@ final class PathfindingSystem: System {
 
     private func listenToMesh() async {
         do {
-            try await arSession?.run([meshProvider])
+            try await arSession.run([meshProvider])
             print("PathfindingSystem: ARKitSession running with SceneReconstructionProvider.")
         } catch {
             print("PathfindingSystem: Failed to run ARKitSession – \(error)")
@@ -121,20 +121,47 @@ final class PathfindingSystem: System {
         print("PathfindingSystem: Mesh anchor update stream finished.")
     }
 
-    /// Adds the anchor’s occupied cells to `blocked`.
+    /// Adds the anchor’s occupied cells to `blocked` and creates/updates debug mesh if enabled.
     private func integrate(_ anchor: MeshAnchor) async {
         let cells = await cells(for: anchor)
         blocked.formUnion(cells)
         perAnchorCells[anchor.id] = cells
         print("PathfindingSystem: Integrated anchor \(anchor.id). Total blocked: \(blocked.count)")
+
+        // DEBUG: Add/update mesh visualization if enabled and debugRoot is set
+        if AppState.showDebugMeshSceneReconstruction, let debugRoot = AppState.debugMeshRoot {
+            // Remove any old mesh entity for this anchor if present
+            if let old = debugRoot.findEntity(named: "MeshDebug-\(anchor.id)") {
+                old.removeFromParent()
+            }
+
+            if let meshResource = try? await MeshResource(from: anchor) {
+                let meshEntity = ModelEntity(mesh: meshResource, materials: [
+                    SimpleMaterial(
+                        color: .init(red: 0, green: 1, blue: 0, alpha: 0.25),
+                        isMetallic: false
+                    )
+                ])
+                meshEntity.name = "MeshDebug-\(anchor.id)"
+                meshEntity.transform.matrix = anchor.originFromAnchorTransform
+                debugRoot.addChild(meshEntity)
+            }
+        }
     }
 
-    /// Removes the anchor’s occupied cells from `blocked`.
+    /// Removes the anchor’s occupied cells from `blocked` and removes debug mesh if enabled.
     private func erase(_ anchor: MeshAnchor) async {
         guard let cells = perAnchorCells[anchor.id] else { return }
         blocked.subtract(cells)
         perAnchorCells[anchor.id] = nil
         print("PathfindingSystem: Erased anchor \(anchor.id). Total blocked: \(blocked.count)")
+
+        // DEBUG: Remove mesh visualization if enabled and debugRoot is set
+        if AppState.showDebugMeshSceneReconstruction, let debugRoot = AppState.debugMeshRoot {
+            if let meshEntity = debugRoot.findEntity(named: "MeshDebug-\(anchor.id)") {
+                meshEntity.removeFromParent()
+            }
+        }
     }
 
     /// Builds the set of grid cells occupied by the given anchor.

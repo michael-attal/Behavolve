@@ -49,6 +49,6 @@ extension ImmersiveBeeView {
     }
 
     func performFinishedInteractionInForrestFullSpaceStep() async throws {
-        openWindow(id: "PostSessionAssessmentWindow")
+        openWindow(id: appState.BeeScenePostSessionAssessmentWindowID)
     }
 }

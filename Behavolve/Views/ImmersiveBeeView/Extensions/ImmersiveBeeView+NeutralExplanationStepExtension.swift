@@ -11,12 +11,19 @@ import UIKit
 // Extension for the NeutralExplanation step
 extension ImmersiveBeeView {
     func performNeutralExplanationStep() {
+        let destination: SIMD3<Float> = [0, 1.5, -1.5]
         appState.beeSceneState.bee.components.set(
-            MoveToComponent(destination: [0, 1.5, -1.5],
+            MoveToComponent(destination: destination,
                             speed: 0.5,
                             epsilon: 0.01,
                             strategy: .direct)
         )
+        appState.beeSceneState.bee.components.set(LookAtTargetComponent(target: .world(destination)))
+        
+        Task {
+            try? await Task.sleep(for: .milliseconds(2000))
+            appState.beeSceneState.bee.components.set(LookAtTargetComponent(target: .world(LookAtTargetSystem.shared.devicePoseSafe.value.translation)))
+        }
 
         // Remove any previous glass cube if needed
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })

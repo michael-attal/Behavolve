@@ -119,10 +119,13 @@ final class NectarGatheringSystem: @MainActor System {
             // If the bee is not already moving ➜ MoveTo + LookAt
             if entity.components[MoveToComponent.self] == nil {
                 #if targetEnvironment(simulator)
-                let strategy: MoveStrategy = .direct
+                var strategy: MoveStrategy = .direct
                 #else
-                // let strategy: MoveStrategy = .pathfinding // not working atm
-                let strategy: MoveStrategy = .direct
+                var strategy: MoveStrategy = .direct
+
+                if AppState.alwaysUseDirectMovement == false {
+                    strategy = .pathfinding
+                }
                 #endif
 
                 let distance = simd_distance(here, target.position)

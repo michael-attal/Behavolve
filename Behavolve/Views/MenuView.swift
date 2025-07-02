@@ -16,6 +16,8 @@ struct MenuView: View {
     @State var selectedScene: ImmersiveViewAvailable = .bee
 
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
 
     var body: some View {
@@ -31,12 +33,22 @@ struct MenuView: View {
         .background(
             LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
         ).task {
-            if AppState.isDevelopmentMode {
-                // Directly open the immersive space in development mode
-                try? await Task.sleep(for: .seconds(1))
-                appState.currentImmersiveView = .bee
-                await openImmersiveSpace(id: appState.immersiveSpaceID)
-                dismissWindow(id: appState.MenuWindowID)
+            if AppState.skypStartScreen {
+                // Directly open the immersive space
+                try? await Task.sleep(for: .milliseconds(500))
+                if let step = AppState.skypToStep {
+                    appState.beeSceneState.isCurrentStepConfirmed = false
+                    appState.beeSceneState.step = step
+                    Task {
+                        try? await Task.sleep(for: .milliseconds(2000))
+                        appState.beeSceneState.isCurrentStepConfirmed = true
+                    }
+                }
+                if AppState.skypSurveyStep == false {
+                    openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
+                } else {
+                    appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
+                }
             }
         }
     }
@@ -67,7 +79,24 @@ struct MenuView: View {
                         }).controlSize(.extraLarge)
                     }
 
-                    ToggleImmersiveSpaceButtonView(forImmersiveView: selectedScene, sizeButton: 200, fontButton: .title)
+                    Button {
+                        switch selectedScene {
+                        case .none:
+                            print("Please select a scene")
+                        case .bee:
+                            if AppState.skypSurveyStep {
+                                appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
+                            } else {
+                                openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
+                            }
+                        case .snake:
+                            print("Not implemented yet")
+                        }
+                    } label: {
+                        Text("Start")
+                            .font(.title)
+                            .frame(width: 200)
+                    }.controlSize(.extraLarge)
 
                     Button(action: {}) {
                         Text("Settings")

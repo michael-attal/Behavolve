@@ -35,6 +35,7 @@ class BeeSceneState {
     var isCurrentStepConfirmed = true
     var isWaterBottlePlacedOnHalo = false
     var hasBeeFlownAway = false
+    var isPalmUpGestureTested: Bool = false
 }
 
 enum ImmersiveBeeSceneStep {
@@ -105,7 +106,7 @@ enum ImmersiveBeeSceneStep {
         case .neutralBeeGatheringNectarFromFlowers:
             return "Next: Try the water bottle challenge"
         case .interactionInOwnEnvironment:
-            return "Next: Picnic experience in forest"
+            return "Next: Picnic in forest"
         case .interactionInForrestFullSpace:
             return "Back to home"
         }

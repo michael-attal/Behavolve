@@ -60,10 +60,14 @@ final class NectarDepositSystem: @MainActor System {
                 // Not yet arrived -> ensure a MoveToComponent
                 if !moving {
                     #if targetEnvironment(simulator)
-                    let strategy: MoveStrategy = .direct
+                    var strategy: MoveStrategy = .direct
                     #else
-                    // let strategy: MoveStrategy = .pathfinding // Not working atm
-                    let strategy: MoveStrategy = .direct
+                    var strategy: MoveStrategy = .direct
+
+                    if AppState.alwaysUseDirectMovement == false {
+                        strategy = .pathfinding
+                    }
+
                     #endif
                     parent.components.set(
                         MoveToComponent(destination: deposit.depotPosition,

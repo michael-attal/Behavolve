@@ -31,11 +31,11 @@ struct ConversationView: View {
                 // Status bar with colored circle and status
                 HStack {
                     Circle()
-                        .fill(appState.audioConversation.audioStatus == .listening ? .green : .red)
+                        .fill(appState.audioConversation.audioStatus == .listening ? .green : appState.isConversationStarted ? .blue : .red)
                         .frame(width: 14, height: 14)
                         .shadow(radius: 3)
                         .animation(.easeInOut, value: appState.audioConversation.audioStatus)
-                    Text(appState.audioConversation.audioStatus == .listening ? "Listening..." : "Not started")
+                    Text(appState.audioConversation.audioStatus == .listening ? "Listening..." : appState.isConversationStarted ? "Conversation started" : "Not started")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -90,7 +90,7 @@ struct ConversationView: View {
                             await appState.startAudioConversationStreaming(step: step)
                         }
                     } label: {
-                        Label("Start the conversation", systemImage: "mic.fill")
+                        Label(appState.isConversationStarted ? "Continue the conversation" : "Start the conversation", systemImage: "mic.fill")
                             .font(.title)
                             .padding(.vertical, 22)
                             .padding(.horizontal, 60)
@@ -133,7 +133,7 @@ struct ConversationView: View {
             .animation(.easeInOut(duration: 0.2), value: appState.audioConversation.audioStatus)
             .padding(.horizontal, 28)
         }
-        .frame(maxWidth: 700, maxHeight: 600)
+        .frame(maxWidth: 1000, maxHeight: 800)
         .task {
             // await appState.startAudioConversationStreaming(step: step)
         }

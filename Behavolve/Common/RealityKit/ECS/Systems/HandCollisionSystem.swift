@@ -54,6 +54,7 @@ final class HandCollisionSystem: @MainActor System {
                                         speed: 1 * cfg.impulseStrength,
                                         epsilon: 0.02)
                     )
+                    entity.components.set(LookAtTargetComponent(target: .world(dir)))
 
                     // Add a flee state so other systems know the bee is panicking.
                     entity.components.set(FleeStateComponent(timeRemaining: cfg.recoverDuration))

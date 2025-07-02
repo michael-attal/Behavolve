@@ -71,9 +71,12 @@ struct BeeSceneResearchKitQuestionnaireView: View {
 // MARK: Pre-session assessment
 
 struct BeeScenePreSessionAssessmentView: View {
+    @Environment(AppState.self) private var appState
+
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
-    @Environment(AppState.self) private var appState
 
     @State private var extractedScore: Int = 5
     @State private var extractedExpectations: String = ""
@@ -92,20 +95,15 @@ struct BeeScenePreSessionAssessmentView: View {
                 // TODO: appState.savePreSession(score: level, expectations: exp)
                 print("PRE: Anxiety Score: \(level), Expectations: \(exp)")
 
-                openWindow(id: appState.MenuWindowID)
-                Task { @MainActor in
-                    try await Task.sleep(for: .milliseconds(500))
-                    dismissWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
-                }
+                appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
             } else {
-                openWindow(id: appState.MenuWindowID)
-                Task { @MainActor in
-                    try await Task.sleep(for: .milliseconds(500))
-                    dismissWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
-                }
+                appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
             }
         }
         .frame(width: 600)
+        .task {
+            dismissWindow(id: appState.MenuWindowID)
+        }
     }
 }
 

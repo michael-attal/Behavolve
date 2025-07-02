@@ -15,6 +15,7 @@ final class HandPoseCache: Sendable {
     private var fistClosed: [UUID: Bool] = [:]
     private var thumbsUp: [UUID: Bool] = [:]
     private var palmOpen: [UUID: Bool] = [:]
+    private var palmCenter: [UUID: SIMD3<Float>] = [:]
 
     // MARK: FIST CLOSED
 
@@ -52,12 +53,28 @@ final class HandPoseCache: Sendable {
         else { return false }
         return isPalmOpen(for: id)
     }
+
+    func setPalmCenter(_ pos: SIMD3<Float>?, for id: UUID) {
+        palmCenter[id] = pos
+    }
+
+    func palmCenter(for id: UUID) -> SIMD3<Float>? {
+        palmCenter[id]
+    }
+
+    func palmCenter(for entity: Entity) -> SIMD3<Float>? {
+        guard
+            let comp = entity.components[HandComponent.self],
+            let id = comp.handID
+        else { return nil }
+        return palmCenter[id]
+    }
 }
 
 @MainActor
 final class HandInputSystem: System {
-    private let session = AppState.arkitSession
-    private let provider = AppState.handTracking
+    private let session = ARKitSession()
+    private let provider = HandTrackingProvider()
 
     private static let handsQuery = EntityQuery(where: .has(HandComponent.self))
 
@@ -101,12 +118,32 @@ final class HandInputSystem: System {
 
             // Update cache
             let closed = isFistClosed(anchor)
-            let thumbsUp = isThumbsUp(anchor)
+            // let thumbsUp = isThumbsUp(anchor)
             let palmOpen = isPalmOpen(anchor)
-            Task {
-                await HandPoseCache.shared.setFistClosed(closed, for: anchor.id)
-                await HandPoseCache.shared.setThumbsUp(thumbsUp, for: anchor.id)
-                await HandPoseCache.shared.setPalmOpen(palmOpen, for: anchor.id)
+
+            // print("is closed: \(closed)")
+            // print("is thumbsUp: \(thumbsUp)")
+            // print("is palmOpen: \(palmOpen)")
+            HandPoseCache.shared.setFistClosed(closed, for: anchor.id)
+            // HandPoseCache.shared.setThumbsUp(thumbsUp, for: anchor.id)
+            HandPoseCache.shared.setPalmOpen(palmOpen, for: anchor.id)
+
+            // Store palm center position if available
+            if let skeleton = anchor.handSkeleton {
+                let wrist = skeleton.joint(.wrist)
+                let base = skeleton.joint(.middleFingerKnuckle)
+                if wrist.isTracked, base.isTracked {
+                    let wristPos = wrist.anchorFromJointTransform.columns.3.xyz
+                    let basePos = base.anchorFromJointTransform.columns.3.xyz
+                    let localPalm = (wristPos + basePos) * 0.5
+                    let worldPalm = anchor.originFromAnchorTransform * SIMD4<Float>(localPalm, 1)
+                    let palmPos = SIMD3<Float>(worldPalm.x, worldPalm.y, worldPalm.z)
+                    HandPoseCache.shared.setPalmCenter(palmPos, for: anchor.id)
+                } else {
+                    HandPoseCache.shared.setPalmCenter(nil, for: anchor.id)
+                }
+            } else {
+                HandPoseCache.shared.setPalmCenter(nil, for: anchor.id)
             }
         }
 
@@ -119,15 +156,15 @@ final class HandInputSystem: System {
                 comp.handID = nil // back to “free” state
                 e.components.set(comp)
 
-                Task {
-                    await HandPoseCache.shared.setFistClosed(false, for: id)
-                    await HandPoseCache.shared.setThumbsUp(false, for: id)
-                }
+                HandPoseCache.shared.setFistClosed(false, for: id)
+                // HandPoseCache.shared.setThumbsUp(false, for: id)
+                HandPoseCache.shared.setPalmOpen(false, for: id)
+                HandPoseCache.shared.setPalmCenter(nil, for: id)
             }
         }
     }
 
-    /// Heuristic thumb-pinch + fingers fold
+    /// Heuristic: Detects a closed fist
     private func isFistClosed(_ anchor: HandAnchor) -> Bool {
         guard let skel = anchor.handSkeleton else { return false }
 
@@ -136,31 +173,29 @@ final class HandInputSystem: System {
             return j.isTracked ? j.anchorFromJointTransform.columns.3.xyz : nil
         }
 
-        guard
-            let thumb = pos(.thumbTip),
-            let index = pos(.indexFingerTip),
-            let indexIntermediate = pos(.indexFingerIntermediateTip),
-            let indexIntermediateBase = pos(.indexFingerIntermediateBase),
-            let indexFingerKnuckle = pos(.indexFingerKnuckle),
-            let wrist = pos(.wrist)
-        else { return false }
-
-        // let pinch = simd_distance(thumb, index) < 0.03
-        let pinch = (simd_distance(thumb, indexIntermediate) < 0.03) || (simd_distance(thumb, indexIntermediateBase) < 0.03) || (simd_distance(thumb, indexFingerKnuckle) < 0.03)
-
-        let foldedFingers: [HandSkeleton.JointName] = [
-            .indexFingerTip,
-            .middleFingerTip,
-            .ringFingerTip,
-            .littleFingerTip
+        let fingerJoints: [(base: HandSkeleton.JointName, mid: HandSkeleton.JointName, tip: HandSkeleton.JointName)] = [
+            (.indexFingerKnuckle, .indexFingerIntermediateTip, .indexFingerTip),
+            (.middleFingerKnuckle, .middleFingerIntermediateTip, .middleFingerTip),
+            (.ringFingerKnuckle, .ringFingerIntermediateTip, .ringFingerTip),
+            (.littleFingerKnuckle, .littleFingerIntermediateTip, .littleFingerTip)
         ]
 
-        let folded = foldedFingers.allSatisfy { n in
-            if let p = pos(n) { return simd_distance(p, wrist) < 0.10 }
-            return false
+        let fingerDistanceLimits: [HandSkeleton.JointName: Float] = [
+            .indexFingerTip: 0.09, // 9 cm
+            .middleFingerTip: 0.085,
+            .ringFingerTip: 0.09,
+            .littleFingerTip: 0.10
+        ]
+
+        let folded = fingerJoints.allSatisfy { _, _, tip in
+            guard let t = pos(tip), let wrist = pos(.wrist) else { return false }
+            let dist = simd_distance(t, wrist)
+            let limit = fingerDistanceLimits[tip] ?? 0.07
+            // print("Distance between \(tip): \(dist) (limit: \(limit)), is dist < limit ? \((dist < limit) ? "✅" : "❌") ")
+            return dist < limit
         }
 
-        return pinch && folded
+        return folded
     }
 
     /// Heuristic thumbs up: thumb extended, all other fingers folded
@@ -204,49 +239,78 @@ final class HandInputSystem: System {
         // Final decision
         return folded && thumbExtended && goodAngle && notBent
     }
-}
 
-/// Heuristic: palm open, all fingers extended and apart, palm facing up
-private func isPalmOpen(_ anchor: HandAnchor) -> Bool {
-    guard let skel = anchor.handSkeleton else { return false }
+    /// Heuristic: palm open, all fingers extended and apart, palm facing up (calibrated)
+    private func isPalmOpen(_ anchor: HandAnchor) -> Bool {
+        guard let skel = anchor.handSkeleton else { return false }
 
-    func pos(_ n: HandSkeleton.JointName) -> SIMD3<Float>? {
-        let j = skel.joint(n)
-        return j.isTracked ? j.anchorFromJointTransform.columns.3.xyz : nil
+        func pos(_ n: HandSkeleton.JointName) -> SIMD3<Float>? {
+            let j = skel.joint(n)
+            return j.isTracked ? j.anchorFromJointTransform.columns.3.xyz : nil
+        }
+
+        guard
+            let wrist = pos(.wrist),
+            let thumbTip = pos(.thumbTip),
+            let indexTip = pos(.indexFingerTip),
+            let middleTip = pos(.middleFingerTip),
+            let ringTip = pos(.ringFingerTip),
+            let littleTip = pos(.littleFingerTip),
+            let indexKnuckle = pos(.indexFingerKnuckle),
+            let littleKnuckle = pos(.littleFingerKnuckle)
+        else { return false }
+
+        // All fingers extended (distance tip-wrist)
+        let fingerLimits: [HandSkeleton.JointName: Float] = [
+            .thumbTip: 0.07,
+            .indexFingerTip: 0.09,
+            .middleFingerTip: 0.10,
+            .ringFingerTip: 0.09,
+            .littleFingerTip: 0.08
+        ]
+        let fingerTips: [(HandSkeleton.JointName, SIMD3<Float>)] = [
+            (.thumbTip, thumbTip),
+            (.indexFingerTip, indexTip),
+            (.middleFingerTip, middleTip),
+            (.ringFingerTip, ringTip),
+            (.littleFingerTip, littleTip)
+        ]
+        let allExtended = fingerTips.allSatisfy { name, tip in
+            let dist = simd_distance(tip, wrist)
+            let limit = fingerLimits[name] ?? 0.09
+            let result = dist > limit
+            // print("Extended: \(name): \(dist) (limit: \(limit)), dist > limit ? \(result ? "✅" : "❌")")
+            return result
+        }
+
+        // Fingers apart (distance between neighbors)
+        let apartThreshold: Float = 0.01 // 1 cm
+        let apartPairs = [
+            (thumbTip, indexTip, ".thumbTip-.indexFingerTip"),
+            (indexTip, middleTip, ".indexFingerTip-.middleFingerTip"),
+            (middleTip, ringTip, ".middleFingerTip-.ringFingerTip"),
+            (ringTip, littleTip, ".ringFingerTip-.littleFingerTip")
+        ]
+        let apartCount = apartPairs.reduce(into: 0) { acc, pair in
+            let (a, b, label) = pair
+            let dist = simd_distance(a, b)
+            let result = dist > apartThreshold
+            // print("Apart: \(label): \(dist) (limit: \(apartThreshold)), dist > limit ? \(result ? "✅" : "❌")")
+            if result { acc += 1 }
+        }
+        let notTooClose = apartCount >= 3 // at least 3/4 pairs are well separated
+
+        // Palm facing up (normal)
+        let v1 = indexKnuckle - wrist
+        let v2 = littleKnuckle - wrist
+        let palmNormal = simd_normalize(simd_cross(v2, v1))
+        let worldUp = SIMD3<Float>(0, 1, 0)
+        let upDot = simd_dot(palmNormal, worldUp)
+        let palmFacingUp = upDot > 0.6
+        // print("Palm upDot (normal.y): \(upDot), > 0.6 ? \(palmFacingUp ? "✅" : "❌")")
+
+        let isPalm = allExtended && notTooClose && palmFacingUp
+        // print("isPalmOpen ? \(isPalm ? "✅" : "❌")")
+        return isPalm
     }
-
-    guard
-        let wrist = pos(.wrist),
-        let thumbTip = pos(.thumbTip),
-        let indexTip = pos(.indexFingerTip),
-        let middleTip = pos(.middleFingerTip),
-        let ringTip = pos(.ringFingerTip),
-        let littleTip = pos(.littleFingerTip),
-        let indexKnuckle = pos(.indexFingerKnuckle),
-        let littleKnuckle = pos(.littleFingerKnuckle)
-    else { return false }
-
-    // All fingers extended (> 10 cm from wrist)
-    let fingers = [thumbTip, indexTip, middleTip, ringTip, littleTip]
-    let allExtended = fingers.allSatisfy { simd_distance($0, wrist) > 0.10 }
-
-    // Fingers apart (> 3 cm between neighbors)
-    let pairs = [
-        (thumbTip, indexTip),
-        (indexTip, middleTip),
-        (middleTip, ringTip),
-        (ringTip, littleTip)
-    ]
-    let notTooClose = pairs.allSatisfy { simd_distance($0.0, $0.1) > 0.03 }
-
-    // Palm normal: wrist -> indexKnuckle and wrist -> littleKnuckle
-    let v1 = indexKnuckle - wrist
-    let v2 = littleKnuckle - wrist
-    let palmNormal = simd_normalize(simd_cross(v1, v2))
-
-    let worldUp = SIMD3<Float>(0, 1, 0)
-    let upDot = simd_dot(palmNormal, worldUp)
-    let palmFacingUp = upDot > 0.6 // angle < 53°
-
-    return allExtended && notTooClose && palmFacingUp
 }

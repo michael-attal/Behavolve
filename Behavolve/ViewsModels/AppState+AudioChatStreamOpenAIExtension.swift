@@ -22,7 +22,7 @@ extension AppState {
 
             // Always stop speech recognition before TTS playback to avoid conflicts
             stopSpeechRecognition()
-            
+
             self.audioConversation.isLucieSpeaking = true
 
             let audioQuery = AudioSpeechQuery(
@@ -102,6 +102,8 @@ extension AppState {
 
     @MainActor
     func startAudioConversationStreaming(step: ImmersiveBeeSceneStep) async {
+        isConversationStarted = true
+
         // Configure AVAudioSession for recording and playback
         do {
             let session = AVAudioSession.sharedInstance()
@@ -333,7 +335,7 @@ extension AppState {
             }
             print("✅ GPT response finished: \(audioConversation.responseText)")
             if AppState.ChatGptAudioEnabled, !audioConversation.responseText.isEmpty {
-                await generateAndPlayAudio(from: audioConversation.responseText)
+                await self.generateAndPlayAudio(from: audioConversation.responseText)
             }
         } catch {
             print("Audio streaming error: \(error)")

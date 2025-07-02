@@ -40,6 +40,7 @@ final class UserProximitySystem: System {
                                     speed: cfg.fleeSpeed,
                                     epsilon: 0.02)
                 )
+                entity.components.set(LookAtTargetComponent(target: .world(target)))
                 entity.components.set(FleeStateComponent(timeRemaining: cfg.fleeDuration))
             }
         }

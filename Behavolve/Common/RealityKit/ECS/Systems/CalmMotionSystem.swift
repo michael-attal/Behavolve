@@ -18,15 +18,15 @@ final class CalmMotionSystem: @MainActor System {
     private static let query = EntityQuery(where: .has(CalmMotionComponent.self))
 
     // Use the shared, global WorldTrackingProvider instance from AppState
-    private let worldTrackingProvider = AppState.worldTracking
-    private let session = AppState.arkitSession
+    private let worldTrackingProvider = WorldTrackingProvider()
+    private let session = ARKitSession()
 
     // Store previous device position & time to compute velocity
     private var lastDevicePosition: SIMD3<Float>?
     private var lastTimestamp: TimeInterval?
 
     required init(scene: Scene) {
-        Task.detached { [session, worldTrackingProvider] in
+        Task { [session, worldTrackingProvider] in
             guard WorldTrackingProvider.isSupported else { return }
             try? await session.run([worldTrackingProvider])
         }

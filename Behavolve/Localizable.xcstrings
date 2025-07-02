@@ -7,6 +7,12 @@
     "**You said:**" : {
 
     },
+    "Continue the conversation" : {
+
+    },
+    "Conversation started" : {
+
+    },
     "Error: %@" : {
 
     },
@@ -95,6 +101,9 @@
           }
         }
       }
+    },
+    "Start" : {
+
     },
     "Start the conversation" : {
 

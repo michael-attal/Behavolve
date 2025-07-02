@@ -27,7 +27,7 @@ struct DialogueView: View {
     var body: some View {
         VStack {
             Text(inputText)
-                .frame(maxWidth: 950, alignment: .leading)
+                .frame(maxWidth: 1000, alignment: .leading)
                 .font(.extraLargeTitle2)
                 .fontWeight(.regular)
                 .padding(40)

@@ -13,6 +13,10 @@ extension ImmersiveBeeView {
     func performNeutralBeeGatheringNectarFromFlowersStep() {
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
         appState.beeSceneState.beeAudioPlaybackController.play()
+        #if !targetEnvironment(simulator)
+        appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
+        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))
+        #endif
         appState.beeSceneState.bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
         addNectarGatheringToBee(nectarSpots: appState.beeSceneState.daffodilFlowerPot)
     }
