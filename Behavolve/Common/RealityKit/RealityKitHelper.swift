@@ -74,4 +74,21 @@ class RealityKitHelper {
             addIBLReceiverToAllModels(in: child, from: light)
         }
     }
+
+    @MainActor
+    static func removeIBLReceiverToAllModels(in parent: Entity, except: String? = nil) {
+        for child in parent.children {
+            let isIBLComponent = child.components.has(ImageBasedLightComponent.self)
+
+            if let modelEntity = child as? ModelEntity, !isIBLComponent {
+                if let except = except, modelEntity.name == except || child.name == except {
+                    print("Skipping light for model: \(except)")
+                    continue
+                }
+                modelEntity.components.remove(ImageBasedLightReceiverComponent.self)
+            }
+
+            removeIBLReceiverToAllModels(in: child)
+        }
+    }
 }

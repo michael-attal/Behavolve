@@ -19,18 +19,22 @@ extension ImmersiveBeeView {
                             strategy: .direct)
         )
         appState.beeSceneState.bee.components.set(LookAtTargetComponent(target: .world(destination)))
-        
+
         Task {
             try? await Task.sleep(for: .milliseconds(2000))
             appState.beeSceneState.bee.components.set(LookAtTargetComponent(target: .world(LookAtTargetSystem.shared.devicePoseSafe.value.translation)))
         }
 
-        // Remove any previous glass cube if needed
-        appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
         appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(createBeeInGlassCube(beeEntity: appState.beeSceneState.bee, position: [0, 1.5, -1.5]))
     }
 
     func performFinishedNeutralExplanationStep() {}
+
+    func performCleanNeutralExplanationStep() {
+        appState.beeSceneState.bee.position = appState.beeSceneState.beehiveInitialPosition
+
+        appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
+    }
 
     /// Creates a transparent glass cube at the given position, with the bee entity placed inside.
     func createBeeInGlassCube(beeEntity: Entity, position: SIMD3<Float> = [0, 1.5, -1.5]) -> ModelEntity {

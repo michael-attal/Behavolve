@@ -35,10 +35,10 @@ class AppState {
     static var debugMeshRoot: Entity?
     static let showDebugMeshSceneReconstruction = false
     static let alwaysUseDirectMovement = true
-    static let skypStartScreen = true
-    static let skypSurveyStep = true
+    static let skypStartScreen = false
+    static let skypSurveyStep = false
     static let skypToStep: ImmersiveBeeSceneStep? = nil
-    // static let skypToStep: ImmersiveBeeSceneStep? = .interactionInForrestFullSpace
+    // static let skypToStep: ImmersiveBeeSceneStep? = .interactionInOwnEnvironment
 
     let beeSceneState = BeeSceneState()
 
@@ -314,7 +314,7 @@ class AppState {
        Description: "First interactive exposure: the user is challenged to pick up a blue water bottle placed near the bee and set it on a target, all while maintaining calm, slow movements. The bee will move away if the user gets too close."
 
     5. interactionInForrestFullSpace
-       Label: "Picnic Challenge in the Forest"
+       Label: "Picnic Experience in the Forest"
        Description: "The final challenge. The user experiences a virtual picnic in a peaceful forest. A bee approaches the user's food. The user must stay calm and can use gentle hand movements to guide the bee away or simply remain relaxed until the bee leaves on its own."
 
     After the last step, the experience can loop or return to the start.

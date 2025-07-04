@@ -15,9 +15,14 @@ class BeeSceneState {
     var beeImmersiveContentSceneEntity = Entity()
     var bee = Entity()
     var beehive = Entity()
+    let beehiveInitialPosition: SIMD3<Float> = [-1.5, 0.0, -1.5]
+    let therapistInitialPosition: SIMD3<Float> = [-0.8, 0, -2]
     var beeAudioPlaybackController: AudioPlaybackController!
     var therapist = Entity()
     var dialogue = Entity()
+    var warnings = Entity()
+    var warningsText = ""
+    var warningsTextID = UUID()
     var waterBottle = Entity()
     var halo = Entity()
     var isFlowersPlaced: Bool = false
@@ -31,63 +36,78 @@ class BeeSceneState {
     var lightSkySphereSourceFromForest = Entity()
     var tableInPatientRoom: (any Anchor)?
     var floorInPatientRoom: (any Anchor)?
-    var step: ImmersiveBeeSceneStep = AppState.isDevelopmentMode ? .neutralBeeGatheringNectarFromFlowers : .neutralIdle
-    var isCurrentStepConfirmed = true
+    var step: ImmersiveBeeSceneStep = .init(type: .neutralIdle, isCleaned: false, isLoaded: false, isPlaced: false, isFinished: false, isCurrentStepConfirmed: false)
     var isWaterBottlePlacedOnHalo = false
     var hasBeeFlownAway = false
     var isPalmUpGestureTested: Bool = false
 }
 
-enum ImmersiveBeeSceneStep {
+enum ImmersiveBeeSceneStepType: Int, Codable, CaseIterable {
     case neutralIdle
     case neutralExplanation
     case neutralBeeGatheringNectarFromFlowers
     case interactionInOwnEnvironment
     case interactionInForrestFullSpace
+}
 
-    func isConfirmationRequiredWithThisStep() -> Bool {
-        switch self {
-        case .neutralIdle,
-             .neutralExplanation,
-             .neutralBeeGatheringNectarFromFlowers:
-            return false
-        case .interactionInOwnEnvironment, .interactionInForrestFullSpace:
-            return true
-        }
-    }
+@MainActor
+struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
+    var type: ImmersiveBeeSceneStepType
+    var isCleaned: Bool
+    var isLoaded: Bool
+    var isPlaced: Bool
+    var isFinished: Bool
+    var isCurrentStepConfirmed: Bool
 
     mutating func next() {
-        switch self {
-        case .neutralIdle:
-            self = .neutralExplanation
-        case .neutralExplanation:
-            self = .neutralBeeGatheringNectarFromFlowers
-        case .neutralBeeGatheringNectarFromFlowers:
-            self = .interactionInOwnEnvironment
-        case .interactionInOwnEnvironment:
-            self = .interactionInForrestFullSpace
-        case .interactionInForrestFullSpace:
-            self = .neutralIdle
+        switch type {
+        case .neutralIdle: type = .neutralExplanation
+        case .neutralExplanation: type = .neutralBeeGatheringNectarFromFlowers
+        case .neutralBeeGatheringNectarFromFlowers: type = .interactionInOwnEnvironment
+        case .interactionInOwnEnvironment: type = .interactionInForrestFullSpace
+        case .interactionInForrestFullSpace: print("No next step.")
+        }
+
+        isCleaned = false
+        isLoaded = false
+        isPlaced = false
+        isFinished = false
+
+        if AppState.byPassConfirmationStep == true {
+            // For fast development
+            isCurrentStepConfirmed = true
+        } else {
+            isCurrentStepConfirmed = false
         }
     }
 
     mutating func previous() {
-        switch self {
-        case .neutralIdle:
-            self = .interactionInForrestFullSpace
-        case .neutralExplanation:
-            self = .neutralIdle
-        case .neutralBeeGatheringNectarFromFlowers:
-            self = .neutralExplanation
-        case .interactionInOwnEnvironment:
-            self = .neutralBeeGatheringNectarFromFlowers
-        case .interactionInForrestFullSpace:
-            self = .interactionInOwnEnvironment
+        switch type {
+        case .neutralIdle: print("No previous step.")
+        case .neutralExplanation: type = .neutralIdle
+        case .neutralBeeGatheringNectarFromFlowers: type = .neutralExplanation
+        case .interactionInOwnEnvironment: type = .neutralBeeGatheringNectarFromFlowers
+        case .interactionInForrestFullSpace: type = .interactionInOwnEnvironment
+        }
+
+        isCleaned = false
+        isLoaded = false
+        isPlaced = false
+        isFinished = false
+        isCurrentStepConfirmed = false
+    }
+
+    var isConfirmationRequired: Bool {
+        switch type {
+        case .interactionInOwnEnvironment, .interactionInForrestFullSpace:
+            return true
+        default:
+            return false
         }
     }
 
     func buttonConfirmStepText() -> String? {
-        switch self {
+        switch type {
         case .neutralIdle, .neutralExplanation, .neutralBeeGatheringNectarFromFlowers:
             return nil
         case .interactionInOwnEnvironment:
@@ -97,8 +117,8 @@ enum ImmersiveBeeSceneStep {
         }
     }
 
-    func buttonNextStepText() -> String {
-        switch self {
+    func buttonNextStepText() -> String? {
+        switch type {
         case .neutralIdle:
             return "Begin therapeutic journey"
         case .neutralExplanation:
@@ -108,18 +128,18 @@ enum ImmersiveBeeSceneStep {
         case .interactionInOwnEnvironment:
             return "Next: Picnic in forest"
         case .interactionInForrestFullSpace:
-            return "Back to home"
+            return nil
         }
     }
 
     func buttonCancelText() -> String {
-        switch self {
+        switch type {
         case .neutralIdle:
-            return "I need more time"
+            return "Back to menu"
         case .neutralExplanation:
             return "Return to start"
         case .neutralBeeGatheringNectarFromFlowers:
-            return "Take a break"
+            return "Go back"
         case .interactionInOwnEnvironment:
             return "Step back from challenge"
         case .interactionInForrestFullSpace:
@@ -128,7 +148,7 @@ enum ImmersiveBeeSceneStep {
     }
 
     func offlineStepPresentationText() -> String {
-        switch self {
+        switch type {
         case .neutralIdle:
             return """
             Welcome to Behavolve, a therapeutic experience designed to help you overcome your fear of bees in a safe, controlled environment. 
@@ -189,7 +209,7 @@ enum ImmersiveBeeSceneStep {
     }
 
     func offlineStepInstructionText() -> String? {
-        switch self {
+        switch type {
         case .interactionInOwnEnvironment:
             return """
             Here's your first interactive challenge:

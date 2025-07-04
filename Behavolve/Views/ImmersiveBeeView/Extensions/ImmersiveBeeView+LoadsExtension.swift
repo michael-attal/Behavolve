@@ -12,7 +12,7 @@ import SwiftUI
 
 // Extension for loading asseets in RealityView
 extension ImmersiveBeeView {
-    func loadTherapist() async throws -> Entity {
+    func loadTherapist(at position: SIMD3<Float>) async throws -> Entity {
         guard let therapistSceneEntity = try? await Entity(named: "Models/Therapist/Therapist", in: realityKitContentBundle)
         else {
             throw ImmersiveBeeViewError.entityError(message: "Could not load Therapist")
@@ -25,7 +25,7 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Therapist animation")
         }
         therapist.scale = [0.0095, 0.0095, 0.0095]
-        therapist.position = [-0.8, 0, -2]
+        therapist.position = position
         let therapistControllerAnimation = therapist.playAnimation(
             therapistAnim,
             transitionDuration: 0.3,
@@ -63,7 +63,19 @@ extension ImmersiveBeeView {
         return dialogue
     }
 
-    func loadBeehive() async throws -> Entity {
+    func loadWarnings(from: RealityViewAttachments) throws -> Entity {
+        guard let warnings = from.entity(for: "warnings_box") else { throw ImmersiveBeeViewError.entityError(message: "Can't find warnings_box") }
+        warnings.scale = SIMD3(100, 100, 100)
+        warnings.position = SIMD3<Float>(-10, 195, 0)
+
+        warnings.components.set(LookAtTargetComponent(target: .device) { entityPosition, actualTargetPosition in
+            actualTargetPosition.with(\.y, entityPosition.y)
+        })
+
+        return warnings
+    }
+
+    func loadBeehive(at position: SIMD3<Float>) async throws -> Entity {
         guard let beehiveSceneEntity = try? await Entity(named: "Models/Beehives/Beehive", in: realityKitContentBundle)
         else {
             throw ImmersiveBeeViewError.entityError(message: "Could not load Beehive")
@@ -74,7 +86,7 @@ extension ImmersiveBeeView {
         }
 
         beehive.scale = [0.005, 0.005, 0.005]
-        beehive.position = [-1.5, 0.0, -1.5]
+        beehive.position = position
 
         RealityKitHelper.updateCollisionFilter(
             for: beehive,
@@ -167,7 +179,8 @@ extension ImmersiveBeeView {
     }
 
     func loadWaterBottle() async throws -> Entity {
-        guard let waterBottleSceneEntity = try? await Entity(named: "Models/Water Bottles/Water Bottle 2", in: realityKitContentBundle)
+        // guard let waterBottleSceneEntity = try? await Entity(named: "Models/Water Bottles/Water Bottle 2", in: realityKitContentBundle)
+        guard let waterBottleSceneEntity = try? await Entity(named: "Models/Water Bottles/Water Bottle", in: realityKitContentBundle)
         else {
             throw ImmersiveBeeViewError.entityError(message: "Could not load Water Bottle")
         }
@@ -175,7 +188,9 @@ extension ImmersiveBeeView {
         guard let waterBottle = waterBottleSceneEntity.findEntity(named: "Water_Bottle") else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find Water_Bottle entity")
         }
-        waterBottle.scale = [0.006, 0.006, 0.006]
+
+        // waterBottle.scale = [0.006, 0.006, 0.006]
+        waterBottle.scale = [0.18, 0.18, 0.18]
         waterBottle.position.y = RealityKitHelper.getModelHeight(modelEntity: waterBottle.findModelEntity()!) + 0.10
 
         waterBottle.isEnabled = false // Enabled at InteractionInOwnEnvironment
@@ -187,12 +202,22 @@ extension ImmersiveBeeView {
         guard let collisionComponent = waterBottle.findModelEntity()?.findFirstCollisionComponent() else {
             throw ImmersiveBeeViewError.entityError(message: "Could not get Water_Bottle collision shapes")
         }
+        #if !targetEnvironment(simulator)
         ManipulationComponent.configureEntity(
             waterBottle,
             hoverEffect: .spotlight(.init(color: .white)),
             allowedInputTypes: .direct,
             collisionShapes: collisionComponent.shapes
         )
+        #endif
+        #if targetEnvironment(simulator)
+        ManipulationComponent.configureEntity(
+            waterBottle,
+            hoverEffect: .spotlight(.init(color: .white)),
+            allowedInputTypes: .all,
+            collisionShapes: collisionComponent.shapes
+        )
+        #endif
 
         var manipulationComponent = waterBottle.components[ManipulationComponent.self]!
         manipulationComponent.dynamics.scalingBehavior = .none
@@ -221,6 +246,7 @@ extension ImmersiveBeeView {
         var planeMaterial = PhysicallyBasedMaterial()
         planeMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
             tint: .white.withAlphaComponent(1)
+            // tint: .red
         )
         planeMaterial.blending = .transparent(opacity: 0.0)
         planeMaterial.opacityThreshold = 1.0
@@ -230,6 +256,14 @@ extension ImmersiveBeeView {
         planeEntity.generateCollisionShapes(recursive: true)
         planeEntity.components.set(PhysicsBodyComponent(shapes: planeEntity.findFirstCollisionComponent()!.shapes, mass: .infinity, mode: .static))
         planeEntity.position.y = -0.5
+
+        RealityKitHelper.updateCollisionFilter(
+            for: planeEntity,
+            groupType: .beehive,
+            maskTypes: [.all],
+            subtracting: .bee
+        ) // Avoid collision with bee (needed when she fly away when we are are to close)
+
         return planeEntity
     }
 

@@ -36,7 +36,7 @@ struct DialogueView: View {
             if showButtons {
                 VStack(spacing: 20) {
                     HStack {
-                        if !appState.beeSceneState.isCurrentStepConfirmed,
+                        if appState.beeSceneState.step.isConfirmationRequired && !appState.beeSceneState.step.isCurrentStepConfirmed,
                            let confirm = step.buttonConfirmStepText()
                         {
                             Button(action: {
@@ -59,7 +59,7 @@ struct DialogueView: View {
                             .buttonStyle(.plain)
                         }
 
-                        if appState.beeSceneState.isCurrentStepConfirmed {
+                        if let buttonNextStepText = step.buttonNextStepText(), !appState.beeSceneState.step.isConfirmationRequired || appState.beeSceneState.step.isCurrentStepConfirmed {
                             Button(action: {
                                 let presentationStep = step.offlineStepPresentationText()
                                 animateText(presentationStep)
@@ -70,7 +70,7 @@ struct DialogueView: View {
                                     }
                                 }
                             }) {
-                                Text(step.buttonNextStepText())
+                                Text(buttonNextStepText)
                                     .font(.extraLargeTitle)
                                     .fontWeight(.regular)
                                     .padding(42)

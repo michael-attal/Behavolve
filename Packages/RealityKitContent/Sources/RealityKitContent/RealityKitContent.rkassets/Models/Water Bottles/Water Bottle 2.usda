@@ -12,9 +12,13 @@ def Xform "Root"
 {
     def "Water_Bottle" (
         active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
         references = @water_bottle_2.usdz@
     )
     {
+        reorder nameChildren = ["Cube", "Materials", "Meshes", "Collider", "RigidBody"]
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 0, 0)
@@ -385,9 +389,9 @@ def Xform "Root"
 
         def RealityKitComponent "RigidBody"
         {
-            float angularDamping = 0.05
+            float angularDamping = 1
             uniform token info:id = "RealityKit.RigidBody"
-            bool isCCDEnabled = 1
+            bool isCCDEnabled = 0
             float linearDamping = 10
             token motionType = "Dynamic"
 
@@ -396,7 +400,7 @@ def Xform "Root"
                 def RealityKitStruct "m_pose"
                 {
                     quatf orientation = (1, 0, 0, 0)
-                    float3 position = (0, 11, 0)
+                    float3 position = (0, 0, 0)
                 }
             }
 

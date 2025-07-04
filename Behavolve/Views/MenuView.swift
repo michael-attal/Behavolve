@@ -21,36 +21,32 @@ struct MenuView: View {
     @Environment(\.dismissWindow) private var dismissWindow
 
     var body: some View {
-        Group {
-            if appState.currentImmersiveView == .none {
-                startMenu.frame(width: 800, height: 600)
-            } else {
-                // TODO: Do each menu for each scene
-                beeMenu.frame(width: 350, height: 400)
-            }
-        }
-        .edgesIgnoringSafeArea(.all)
-        .background(
-            LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
-        ).task {
-            if AppState.skypStartScreen {
-                // Directly open the immersive space
-                try? await Task.sleep(for: .milliseconds(500))
-                if let step = AppState.skypToStep {
-                    appState.beeSceneState.isCurrentStepConfirmed = false
-                    appState.beeSceneState.step = step
-                    Task {
-                        try? await Task.sleep(for: .milliseconds(2000))
-                        appState.beeSceneState.isCurrentStepConfirmed = true
+        startMenu
+            .frame(width: 800, height: 600)
+            .edgesIgnoringSafeArea(.all)
+            .background(
+                LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
+            ).task {
+                if AppState.skypStartScreen {
+                    // Directly open the immersive space
+                    try? await Task.sleep(for: .milliseconds(500))
+                    if let step = AppState.skypToStep {
+                        appState.beeSceneState.step.isCurrentStepConfirmed = false
+                        appState.beeSceneState.step = step
+                        if AppState.byPassConfirmationStep == true {
+                            Task {
+                                try? await Task.sleep(for: .milliseconds(2000))
+                                appState.beeSceneState.step.isCurrentStepConfirmed = true
+                            }
+                        }
+                    }
+                    if AppState.skypSurveyStep == false {
+                        openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
+                    } else {
+                        appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
                     }
                 }
-                if AppState.skypSurveyStep == false {
-                    openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
-                } else {
-                    appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
-                }
             }
-        }
     }
 
     var startMenu: some View {
@@ -133,23 +129,6 @@ struct MenuView: View {
         .onAppear {
             withAnimation(.linear(duration: 5.0).repeatForever(autoreverses: true)) {
                 currentSunIconSize += 40
-            }
-        }
-    }
-
-    var beeMenu: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Button(action: {
-                    appState.currentImmersiveView = .none
-                }) {
-                    Text("Exit")
-                }.position(x: geometry.size.width - 60, y: 40)
-                VStack {
-                    Button(action: {}) {
-                        Text("I'm ready")
-                    }
-                }
             }
         }
     }

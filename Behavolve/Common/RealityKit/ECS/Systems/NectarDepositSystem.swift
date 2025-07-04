@@ -42,7 +42,8 @@ final class NectarDepositSystem: @MainActor System {
                             nectarDepotSitePosition: deposit.depotPosition,
                             nectarSources: deposit.nectarSources,
                             speed: deposit.speed,
-                            nectarStock: 0
+                            nectarStock: 0,
+                            goToDepositAmount: deposit.goToDepositAmount
                         )
                     )
                 }

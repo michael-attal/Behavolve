@@ -15,7 +15,6 @@ final class NectarGatheringSystem: @MainActor System {
 
     // Quantity withdrawn at each visit (limit: remaining stock).
     private let harvestAmount = 100
-    private let goToDepositAmount = 400
     private let epsilon: Float = 0.01 // arrival tolerance
 
     private static let query = EntityQuery(
@@ -64,7 +63,7 @@ final class NectarGatheringSystem: @MainActor System {
             }
 
             // Full bag? -> go to the depot
-            if gather.nectarStock >= goToDepositAmount {
+            if gather.nectarStock >= gather.goToDepositAmount {
                 entity.components.remove(NectarGatheringComponent.self)
                 entity.components.set(
                     NectarDepositComponent(
@@ -72,7 +71,8 @@ final class NectarGatheringSystem: @MainActor System {
                         nectarSources: gather.nectarSources,
                         speed: gather.speed,
                         carriedNectar: gather.nectarStock, // deposit quantity
-                        depositDuration: 5.0
+                        depositDuration: 5.0,
+                        goToDepositAmount: gather.goToDepositAmount
                     )
                 )
                 continue

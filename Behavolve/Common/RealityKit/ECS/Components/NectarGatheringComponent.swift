@@ -55,6 +55,7 @@ struct NectarGatheringComponent: Component, Sendable {
     var nectarStock: Int = 0 // carried
     var speed: Float
     var gatheringCooldown: TimeInterval = 3.0
+    var goToDepositAmount: Int
 
     /// Index of the flower visited at last foraging (nil if none).
     var lastVisitedIndex: Int? = nil
@@ -63,13 +64,15 @@ struct NectarGatheringComponent: Component, Sendable {
          nectarSources: [NectarSource],
          speed: Float,
          nectarStock: Int = 0,
-         gatheringCooldown: TimeInterval = 3.0)
+         gatheringCooldown: TimeInterval = 3.0,
+         goToDepositAmount: Int)
     {
         self.nectarDepotSitePosition = nectarDepotSitePosition
         self.nectarSources = nectarSources
         self.speed = speed
         self.nectarStock = nectarStock
         self.gatheringCooldown = gatheringCooldown
+        self.goToDepositAmount = goToDepositAmount
     }
 }
 

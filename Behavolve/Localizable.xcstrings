@@ -17,6 +17,7 @@
 
     },
     "Exit" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -44,6 +45,7 @@
       }
     },
     "I'm ready" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

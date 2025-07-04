@@ -24,6 +24,8 @@ struct NectarDepositComponent: Component, Sendable {
     /// Amount of nectar currently carried (for analytics / UI).
     var carriedNectar: Int
 
+    var goToDepositAmount: Int
+
     /// Duration of the unloading animation in seconds.
     var depositDuration: TimeInterval = 2.0
 
@@ -35,7 +37,8 @@ struct NectarDepositComponent: Component, Sendable {
          nectarSources: [NectarSource],
          speed: Float,
          carriedNectar: Int,
-         depositDuration: TimeInterval = 2.0)
+         depositDuration: TimeInterval = 2.0,
+         goToDepositAmount: Int)
     {
         self.depotPosition = depotPosition
         self.nectarSources = nectarSources
@@ -43,5 +46,6 @@ struct NectarDepositComponent: Component, Sendable {
         self.carriedNectar = carriedNectar
         self.depositDuration = depositDuration
         self.remainingCooldown = 0.0
+        self.goToDepositAmount = goToDepositAmount
     }
 }

@@ -5,7 +5,6 @@
 //  Created by Michaël ATTAL on 28/10/2024.
 //
 
-import ARKit
 import RealityKit
 import RealityKitContent
 import SwiftUI
@@ -17,6 +16,7 @@ enum ImmersiveBeeViewError: Error {
 struct ImmersiveBeeView: View {
     @Environment(AppState.self) var appState
     @Environment(\.openWindow) var openWindow
+    @Environment(\.dismissWindow) var dismissWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State private var errorMessage: String?
@@ -58,23 +58,16 @@ struct ImmersiveBeeView: View {
 
                 // Add a plane ground to not let the watter bottle go beyond the scene in simulator // Also need it in real device since scene mesh reconstruction is not by made default in app
                 let planeForGroundCollision = loadPlaneForGroundCollision()
-                RealityKitHelper.updateCollisionFilter(
-                    for: planeForGroundCollision,
-                    groupType: .beehive,
-                    maskTypes: [.all],
-                    subtracting: .bee
-                ) // Avoid collision with bee (needed when she fly away when we are are to close)
-                #if !targetEnvironment(simulator)
-                planeForGroundCollision.position.y += 0.12 // Not perfectly at 0 in my appartment
-                #endif
                 immersiveContentEntity.addChild(planeForGroundCollision)
 
-                let therapist = try await loadTherapist()
+                let therapist = try await loadTherapist(at: appState.beeSceneState.therapistInitialPosition)
                 let dialogue = try loadDialogue(from: attachments)
+                let warnings = try loadWarnings(from: attachments)
                 therapist.addChild(dialogue)
+                therapist.addChild(warnings)
                 immersiveContentEntity.addChild(therapist)
 
-                let beehive = try await loadBeehive()
+                let beehive = try await loadBeehive(at: appState.beeSceneState.beehiveInitialPosition)
                 immersiveContentEntity.addChild(beehive)
 
                 let bee = try await loadBee()
@@ -91,6 +84,7 @@ struct ImmersiveBeeView: View {
                 appState.beeSceneState.daffodilFlowerPot = flower
                 appState.beeSceneState.therapist = therapist
                 appState.beeSceneState.dialogue = dialogue
+                appState.beeSceneState.warnings = warnings
                 appState.beeSceneState.beehive = beehive
                 appState.beeSceneState.bee = bee
                 appState.beeSceneState.beeImmersiveContentSceneEntity = immersiveContentEntity
@@ -108,47 +102,88 @@ struct ImmersiveBeeView: View {
             do {
                 print(appState.beeSceneState.step)
 
-                switch appState.beeSceneState.step {
+                switch appState.beeSceneState.step.type {
+                case .neutralIdle:
+                    if appState.beeSceneState.step.isCleaned == false {
+                        // performCleanNeutralIdleStep()
+                        performCleanNeutralExplanationStep() // Clean if we step back
+                        appState.beeSceneState.step.isCleaned = true
+                    }
+                    if appState.beeSceneState.step.isPlaced == false {
+                        performNeutralIdleStep()
+                        appState.beeSceneState.step.isPlaced = true
+                    }
                 case .neutralExplanation:
-                    performNeutralExplanationStep()
+                    if appState.beeSceneState.step.isCleaned == false {
+                        // performCleanNeutralExplanationStep()
+                        performCleanNeutralBeeGatheringNectarFromFlowersStep() // Clean if we step back
+                        appState.beeSceneState.step.isCleaned = true
+                    }
+                    if appState.beeSceneState.step.isPlaced == false {
+                        performNeutralExplanationStep()
+                        appState.beeSceneState.step.isPlaced = true
+                    }
                 case .neutralBeeGatheringNectarFromFlowers:
-                    performNeutralBeeGatheringNectarFromFlowersStep()
+                    if appState.beeSceneState.step.isCleaned == false {
+                        // performCleanNeutralBeeGatheringNectarFromFlowersStep()
+                        performCleanInteractionInOwnEnvironmentStep() // Clean if we step back
+                        appState.beeSceneState.step.isCleaned = true
+                    }
+                    if appState.beeSceneState.step.isPlaced == false {
+                        performNeutralBeeGatheringNectarFromFlowersStep()
+                        appState.beeSceneState.step.isPlaced = true
+                    }
                 case .interactionInOwnEnvironment:
+                    if appState.beeSceneState.step.isCleaned == false {
+                        // performCleanInteractionInOwnEnvironmentStep()
+                        performCleanInteractionInForrestFullSpaceStep() // Clean if we step back
+                        appState.beeSceneState.step.isCleaned = true
+                    }
                     if appState.beeSceneState.isWaterBottlePlacedOnHalo {
                         Task { @MainActor in
                             try await performFinishedInteractionInOwnEnvironmentStep()
                         }
                     } else {
-                        if appState.beeSceneState.isCurrentStepConfirmed {
-                            performInteractionInOwnEnvironmentStep()
+                        if appState.beeSceneState.step.isCurrentStepConfirmed {
+                            if appState.beeSceneState.step.isPlaced == false {
+                                performInteractionInOwnEnvironmentStep()
+                                appState.beeSceneState.step.isPlaced = true
+                            }
                         } else {
                             Task { @MainActor in
-                                try await performPrepareInteractionInOwnEnvironmentStep()
+                                if appState.beeSceneState.step.isLoaded == false {
+                                    try await performPrepareInteractionInOwnEnvironmentStep()
+                                    appState.beeSceneState.step.isLoaded = true
+                                }
                             }
                         }
                     }
                 case .interactionInForrestFullSpace:
+                    if appState.beeSceneState.step.isCleaned == false {
+                        // performCleanInteractionInForrestFullSpaceStep()
+                        appState.beeSceneState.step.isCleaned = true
+                    }
                     if appState.beeSceneState.hasBeeFlownAway {
                         Task { @MainActor in
                             try await performFinishedInteractionInForrestFullSpaceStep()
                         }
                     } else {
-                        if appState.beeSceneState.isCurrentStepConfirmed {
-                            performInteractionInForrestFullSpaceStep()
+                        if appState.beeSceneState.step.isCurrentStepConfirmed {
+                            if appState.beeSceneState.step.isPlaced == false {
+                                performInteractionInForrestFullSpaceStep()
+                                appState.beeSceneState.step.isPlaced = true
+                            }
                         } else {
                             print("Waiting for user confirmation to start \(appState.beeSceneState.step)")
                             Task { @MainActor in
-                                try await performPrepareInteractionInForrestFullSpaceStep()
+                                if appState.beeSceneState.step.isLoaded == false {
+                                    try await performPrepareInteractionInForrestFullSpaceStep()
+                                    appState.beeSceneState.step.isLoaded = true
+                                }
                             }
                         }
                     }
-                case .neutralIdle:
-                    if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
-                        appState.currentImmersionStyle = .mixed
-                    }
-                    print("Restart experience?")
                 }
-
             } catch {
                 let formattedErrorMessage = "Error in ImmersiveBeeView RealityView's update func: " + String(describing: error)
                 print(formattedErrorMessage)
@@ -166,25 +201,29 @@ struct ImmersiveBeeView: View {
                 DialogueView(
                     step: appState.beeSceneState.step,
                     onConfirmationButtonClicked: {
-                        appState.beeSceneState.isCurrentStepConfirmed = true
+                        appState.beeSceneState.step.isCurrentStepConfirmed = true
                     },
                     onNextStepButtonClicked: {
                         appState.beeSceneState.step.next()
-
-                        if appState.beeSceneState.step.isConfirmationRequiredWithThisStep() {
-                            // If it require a confirmation, reset to false and wait for the confirmation button in dialogue view
-                            appState.beeSceneState.isCurrentStepConfirmed = false
-
-                            // For fast development
-                            if AppState.byPassConfirmationStep == true {
-                                appState.beeSceneState.isCurrentStepConfirmed = true
-                            }
-                        }
                     },
                     onCancelButtonClicked: {
-                        appState.beeSceneState.step.previous()
+                        if appState.beeSceneState.step.type == .neutralIdle {
+                            // Back to menu
+                            openWindow(id: appState.MenuWindowID)
+                            Task { @MainActor in
+                                dismissWindow(id: appState.ConversationWindowID)
+                                await dismissImmersiveSpace()
+                            }
+                        } else {
+                            appState.beeSceneState.step.previous()
+                        }
                     }
                 )
+            }
+
+            Attachment(id: "warnings_box") {
+                WarningsView(warningsText: appState.beeSceneState.warningsText,
+                             warningsTextID: appState.beeSceneState.warningsTextID)
             }
 
             Attachment(id: "error_view") {
@@ -227,10 +266,18 @@ struct ImmersiveBeeView: View {
             appState.beeSceneState.isWaterBottlePlacedOnHalo = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .abruptGestureDetected)) { _ in
-            print("🤚 Abrupt gesture detected")
+            if (appState.beeSceneState.step.type == .interactionInOwnEnvironment || appState.beeSceneState.step.type == .interactionInForrestFullSpace) && appState.beeSceneState.step.isCurrentStepConfirmed == true {
+                print("🤚 Abrupt gesture detected")
+                appState.beeSceneState.warningsText = "Oops! An abrupt gesture was detected – try to move gently so the bee doesn’t get scared."
+                appState.beeSceneState.warningsTextID = UUID()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .abruptHeadMotionDetected)) { _ in
-            print("😱 Abrupt head/body motion detected")
+            if (appState.beeSceneState.step.type == .interactionInOwnEnvironment || appState.beeSceneState.step.type == .interactionInForrestFullSpace) && appState.beeSceneState.step.isCurrentStepConfirmed == true {
+                print("😱 Abrupt head/body motion detected")
+                appState.beeSceneState.warningsText = "Oops! An abrupt head/body motion was detected – try to move gently so the bee doesn’t get scared."
+                appState.beeSceneState.warningsTextID = UUID()
+            }
         }
         // .onReceive(NotificationCenter.default.publisher(for: .thumbUpGestureDetected)) { notification in
         //     if let position = notification.thumbUpThumbTipPosition {
@@ -243,7 +290,7 @@ struct ImmersiveBeeView: View {
             if let position = notification.palmOpenPalmCenterPosition {
                 print("🖐️ Palm open at: \(position)")
                 // TODO: For testing, remove later:
-                if appState.beeSceneState.isPalmUpGestureTested == false && appState.beeSceneState.step == .neutralExplanation {
+                if appState.beeSceneState.isPalmUpGestureTested == false && appState.beeSceneState.step.type == .neutralExplanation {
                     appState.beeSceneState.isPalmUpGestureTested = true
                     appState.beeSceneState.bee.components.set(
                         MoveToComponent(destination: position + [0, 0.1, -0.05],
