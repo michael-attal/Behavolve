@@ -17,7 +17,7 @@ struct ImmersiveBeeView: View {
     @Environment(AppState.self) var appState
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
-    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
 
     @State private var errorMessage: String?
     // @State var spatialTrackingSession = SpatialTrackingSession()
@@ -105,7 +105,6 @@ struct ImmersiveBeeView: View {
                 switch appState.beeSceneState.step.type {
                 case .neutralIdle:
                     if appState.beeSceneState.step.isCleaned == false {
-                        // performCleanNeutralIdleStep()
                         performCleanNeutralExplanationStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -115,7 +114,6 @@ struct ImmersiveBeeView: View {
                     }
                 case .neutralExplanation:
                     if appState.beeSceneState.step.isCleaned == false {
-                        // performCleanNeutralExplanationStep()
                         performCleanNeutralBeeGatheringNectarFromFlowersStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -125,7 +123,6 @@ struct ImmersiveBeeView: View {
                     }
                 case .neutralBeeGatheringNectarFromFlowers:
                     if appState.beeSceneState.step.isCleaned == false {
-                        // performCleanNeutralBeeGatheringNectarFromFlowersStep()
                         performCleanInteractionInOwnEnvironmentStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -135,7 +132,6 @@ struct ImmersiveBeeView: View {
                     }
                 case .interactionInOwnEnvironment:
                     if appState.beeSceneState.step.isCleaned == false {
-                        // performCleanInteractionInOwnEnvironmentStep()
                         performCleanInteractionInForrestFullSpaceStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -160,7 +156,6 @@ struct ImmersiveBeeView: View {
                     }
                 case .interactionInForrestFullSpace:
                     if appState.beeSceneState.step.isCleaned == false {
-                        // performCleanInteractionInForrestFullSpaceStep()
                         appState.beeSceneState.step.isCleaned = true
                     }
                     if appState.beeSceneState.hasBeeFlownAway {
@@ -182,6 +177,11 @@ struct ImmersiveBeeView: View {
                                 }
                             }
                         }
+                    }
+                case .end:
+                    if appState.beeSceneState.step.isPlaced == false {
+                        performEndStep()
+                        appState.beeSceneState.step.isPlaced = true
                     }
                 }
             } catch {
@@ -205,13 +205,24 @@ struct ImmersiveBeeView: View {
                     },
                     onNextStepButtonClicked: {
                         appState.beeSceneState.step.next()
+                        if appState.beeSceneState.step.type == .end {
+                            // Open post assessment when therapy is finished
+                            Task { @MainActor in
+                                performCleanEndStep()
+                                openWindow(id: appState.BeeScenePostSessionAssessmentWindowID)
+                                appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = true
+                            }
+                        }
                     },
                     onCancelButtonClicked: {
-                        if appState.beeSceneState.step.type == .neutralIdle {
+                        if appState.beeSceneState.step.type == .neutralIdle || appState.beeSceneState.step.type == .end {
                             // Back to menu
                             openWindow(id: appState.MenuWindowID)
                             Task { @MainActor in
                                 dismissWindow(id: appState.ConversationWindowID)
+                                if appState.beeSceneState.isPostSessionAssessmentFormWindowOpened {
+                                    dismissWindow(id: appState.BeeScenePostSessionAssessmentWindowID)
+                                }
                                 await dismissImmersiveSpace()
                             }
                         } else {
@@ -302,6 +313,12 @@ struct ImmersiveBeeView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .entityTargetDistanceToUserReached)) { notification in
+            if let name = notification.entityName, let position = notification.entityPosition, let dist = notification.targetDistanceToUser {
+                print("➡ Distance from entity: \(name) to user has reached target distance (\(dist)) -  Entity position: \(position)")
+                appState.beeSceneState.hasBeeFlownAway = true
+            }
+        }
     }
 
     func initRequiredSystems() {
@@ -331,8 +348,11 @@ struct ImmersiveBeeView: View {
 
         FleeStateComponent.registerComponent()
 
-        TargetReachedSystem.registerSystem()
         TargetReachedComponent.registerComponent()
+        TargetReachedSystem.registerSystem()
+
+        EntityProximityComponent.registerComponent()
+        EntityProximitySystem.registerSystem()
 
         #if !targetEnvironment(simulator)
         if AppState.alwaysUseDirectMovement == false {

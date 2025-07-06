@@ -109,34 +109,78 @@ struct BeeScenePreSessionAssessmentView: View {
 
 // MARK: - Post-session assessment view
 
-struct BeeScenePostSessionAssessmentView: View {
-    @Environment(\.dismissWindow) private var dismissWindow
-    @Environment(AppState.self) private var appState
+struct BeeScenePostSessionResearchKitView: View {
+    var onCompletion: (ORKTaskResult?) -> Void
 
-    @State private var score: Int = 5
-    @State private var feedback: String = ""
+    private var task: ORKOrderedTask {
+        // Mood/Anxiety after session
+        let scaleAnswerFormat = ORKScaleAnswerFormat(
+            maximumValue: 10,
+            minimumValue: 0,
+            defaultValue: 5,
+            step: 1,
+            vertical: false,
+            maximumValueDescription: "Max anxiety",
+            minimumValueDescription: "No anxiety"
+        )
+        let moodStep = ORKQuestionStep(
+            identifier: "moodAfter",
+            title: "How do you feel now (anxiety level)?",
+            answer: scaleAnswerFormat
+        )
+
+        let feedbackStep = ORKQuestionStep(
+            identifier: "feedback",
+            title: "How did the experience go? Any feedback?",
+            answer: ORKTextAnswerFormat(maximumLength: 200)
+        )
+
+        return ORKOrderedTask(
+            identifier: "BeeSceneTherapyPostAssessment",
+            steps: [moodStep, feedbackStep]
+        )
+    }
 
     var body: some View {
-        VStack {
-            Text("How do you feel now?").font(.largeTitle).bold().padding(.top, 12)
-            Slider(value: Binding(
-                get: { Double(score) },
-                set: { score = Int($0) }
-            ), in: 0 ... 10, step: 1)
-                .padding()
-            Text("Score: \(score)/10").font(.title2)
-            TextField("How did the experience go? Any feedback?", text: $feedback)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 400)
-                .padding(.bottom, 18)
-            Button("Submit") {
-                // TODO: appState.savePostSession(score: score, feedback: feedback)
-                print("POST: Mood Score: \(score), Feedback: \(feedback)")
+        ORKOrderedTaskView(tasks: task) { result in
+            switch result {
+            case .completed(let taskResult):
+                onCompletion(taskResult)
+            default:
+                onCompletion(nil)
+            }
+        }
+        .navigationTitle("Post-session assessment")
+    }
+}
+
+struct BeeScenePostSessionAssessmentView: View {
+    @Environment(AppState.self) private var appState
+    @Environment(\.dismissWindow) private var dismissWindow
+
+    @State private var extractedScore: Int = 5
+    @State private var extractedFeedback: String = ""
+
+    var body: some View {
+        BeeScenePostSessionResearchKitView { result in
+            if let result = result,
+               let moodStep = result.stepResult(forStepIdentifier: "moodAfter")?.firstResult as? ORKScaleQuestionResult,
+               let level = moodStep.scaleAnswer?.intValue,
+               let fbStep = result.stepResult(forStepIdentifier: "feedback")?.firstResult as? ORKTextQuestionResult,
+               let fb = fbStep.textAnswer
+            {
+                extractedScore = level
+                extractedFeedback = fb
+
+                // TODO: appState.savePostSession(score: level, feedback: fb)
+                print("POST: Mood Score: \(level), Feedback: \(fb)")
+                appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = false
+                dismissWindow()
+            } else {
+                appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = false
                 dismissWindow()
             }
-            .buttonStyle(.borderedProminent)
-            .padding(.top)
         }
-        .frame(width: 600, height: 340)
+        .frame(width: 600)
     }
 }

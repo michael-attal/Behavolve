@@ -18,5 +18,7 @@ extension ImmersiveBeeView {
         }
     }
 
-    func performCleanNeutralIdleStep() {}
+    func performCleanNeutralIdleStep() {
+        appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll()
+    }
 }

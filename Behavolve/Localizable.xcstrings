@@ -27,12 +27,6 @@
         }
       }
     },
-    "How did the experience go? Any feedback?" : {
-
-    },
-    "How do you feel now?" : {
-
-    },
     "I'd like to know more" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -75,13 +69,13 @@
     "Not started" : {
 
     },
+    "Post-session assessment" : {
+
+    },
     "Pre-session assessment" : {
 
     },
     "Ready to start a conversation with Lucie, your cognitive behavioral therapist?" : {
-
-    },
-    "Score: %lld/10" : {
 
     },
     "Selected scene" : {
@@ -111,9 +105,6 @@
 
     },
     "Stop the conversation" : {
-
-    },
-    "Submit" : {
 
     }
   },

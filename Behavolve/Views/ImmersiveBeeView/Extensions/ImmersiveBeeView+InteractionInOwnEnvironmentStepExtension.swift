@@ -40,9 +40,8 @@ extension ImmersiveBeeView {
     func performFinishedInteractionInOwnEnvironmentStep() async throws {
         do {
             appState.beeSceneState.step.next()
-            appState.beeSceneState.step.isCurrentStepConfirmed = false
 
-            try? await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(for: .milliseconds(1000))
             var newPosition = appState.beeSceneState.halo.position(relativeTo: nil)
             newPosition.y += 0.17
 

@@ -38,7 +38,7 @@ class AppState {
     static let skypStartScreen = false
     static let skypSurveyStep = false
     static let skypToStep: ImmersiveBeeSceneStep? = nil
-    // static let skypToStep: ImmersiveBeeSceneStep? = .interactionInOwnEnvironment
+    // static let skypToStep: ImmersiveBeeSceneStep? = ImmersiveBeeSceneStep(type: .interactionInForrestFullSpace)
 
     let beeSceneState = BeeSceneState()
 
@@ -317,7 +317,9 @@ class AppState {
        Label: "Picnic Experience in the Forest"
        Description: "The final challenge. The user experiences a virtual picnic in a peaceful forest. A bee approaches the user's food. The user must stay calm and can use gentle hand movements to guide the bee away or simply remain relaxed until the bee leaves on its own."
 
-    After the last step, the experience can loop or return to the start.
+    6. end
+       Label: "End of Experience"
+       Description: "After completing all steps, the user is invited to fill out the post-session assessment form or return to the main menu. This is an opportunity to reflect on progress and help improve Behavolve for future users."
 
     During the scenario, for each step, the following context may also be given:
     - The current step name
@@ -327,6 +329,7 @@ class AppState {
         - isCurrentStepConfirmed (Bool): Whether the current step has been confirmed by the user
         - isWaterBottlePlacedOnHalo (Bool): Whether the user has successfully placed the water bottle
         - hasBeeFlownAway (Bool): Whether the bee has left the scene
+        - isPostSessionAssessmentFormWindowOpened (Bool): Whether the post-session assessment form window is currently open
     - You should use all this information to respond with empathy, guidance, and contextually relevant advice.
 
     Your role is to act as a cognitive-behavioral therapist, guide the user step by step, answer their questions, reassure them, and help them progress in managing their phobia of bees.

@@ -20,19 +20,37 @@ struct BehavolveApp: App {
         WindowGroup(id: appState.BeeScenePreSessionAssessmentWindowID) {
             BeeScenePreSessionAssessmentView()
                 .environment(appState)
-        }.windowResizability(.contentSize)
+        }
+        .windowResizability(.contentSize)
+        .defaultWindowPlacement { _, context in
+            if let main = context.windows.first(where: { $0.id == appState.MenuWindowID }) {
+                WindowPlacement(.replacing(main))
+            } else {
+                WindowPlacement()
+            }
+        }
+        .windowResizability(.contentSize)
 
         WindowGroup(id: appState.BeeScenePostSessionAssessmentWindowID) {
             BeeScenePostSessionAssessmentView()
                 .environment(appState)
-        }.windowResizability(.contentSize)
+        }
+        .windowResizability(.contentSize)
+        .defaultWindowPlacement { _, context in
+            if let main = context.windows.first(where: { $0.id == appState.ConversationWindowID }) {
+                // WindowPlacement(.leading(main))
+                WindowPlacement(.utilityPanel)
+            } else {
+                WindowPlacement()
+            }
+        }
 
         WindowGroup(id: appState.ConversationWindowID) {
             ConversationView(step: appState.beeSceneState.step)
                 .environment(appState)
         }
         .defaultWindowPlacement { _, context in
-            if let main = context.windows.first(where: { $0.id == appState.MenuWindowID }) {
+            if let main = context.windows.first(where: { $0.id == appState.BeeScenePreSessionAssessmentWindowID }) {
                 WindowPlacement(.trailing(main))
             } else {
                 WindowPlacement()

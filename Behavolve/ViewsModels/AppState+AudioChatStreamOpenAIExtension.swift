@@ -294,9 +294,10 @@ extension AppState {
             let stepPresentation = step.offlineStepPresentationText()
             let stepInstructions = step.offlineStepInstructionText()
             let stateSummary = """
-            isCurrentStepConfirmedForWaterBottleChallengeOrPicnicExperienceStep: \(beeSceneState.step.isCurrentStepConfirmed) - (If confirmed, it means that the user has started the current step challenge (Water Bottle Challenge or Picnic Experience).
+            isCurrentStepConfirmedForWaterBottleChallengeOrPicnicExperienceStep: \(beeSceneState.step.isCurrentStepConfirmed) - (If true, it means that the user has started the current step challenge (Water Bottle Challenge or Picnic Experience).
             isWaterBottlePlacedOnHaloForWaterBottleChallengeStep: \(beeSceneState.isWaterBottlePlacedOnHalo)
-            hasBeeFlownAwayInPicnicExperienceStep: \(beeSceneState.hasBeeFlownAway) - (Used in the Picnic Experience step. When the bee has flown away, it means the experience has been successful.)
+            hasBeeFlownAwayInPicnicExperienceStep: \(beeSceneState.hasBeeFlownAway) - (Used in the Picnic Experience step. If treu (when the bee has flown away) it means the experience has been successful.)
+            isPostSessionAssessmentFormWindowOpened: \(beeSceneState.isPostSessionAssessmentFormWindowOpened)
             """
 
             let systemPrompt = """

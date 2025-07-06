@@ -32,6 +32,8 @@ class BeeSceneState {
     var flowersPotTreeOriginal = Entity()
     var daffodilFlowerPot = Entity()
     var forest = Entity()
+    var nextTextButton3D = Entity()
+    var prevTextButton3D = Entity()
     var bowlOfFruit = Entity()
     var lightSkySphereSourceFromForest = Entity()
     var tableInPatientRoom: (any Anchor)?
@@ -39,6 +41,7 @@ class BeeSceneState {
     var step: ImmersiveBeeSceneStep = .init(type: .neutralIdle, isCleaned: false, isLoaded: false, isPlaced: false, isFinished: false, isCurrentStepConfirmed: false)
     var isWaterBottlePlacedOnHalo = false
     var hasBeeFlownAway = false
+    var isPostSessionAssessmentFormWindowOpened: Bool = false
     var isPalmUpGestureTested: Bool = false
 }
 
@@ -48,16 +51,17 @@ enum ImmersiveBeeSceneStepType: Int, Codable, CaseIterable {
     case neutralBeeGatheringNectarFromFlowers
     case interactionInOwnEnvironment
     case interactionInForrestFullSpace
+    case end
 }
 
 @MainActor
 struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
     var type: ImmersiveBeeSceneStepType
-    var isCleaned: Bool
-    var isLoaded: Bool
-    var isPlaced: Bool
-    var isFinished: Bool
-    var isCurrentStepConfirmed: Bool
+    var isCleaned: Bool = false
+    var isLoaded: Bool = false
+    var isPlaced: Bool = false
+    var isFinished: Bool = false
+    var isCurrentStepConfirmed: Bool = false
 
     mutating func next() {
         switch type {
@@ -65,7 +69,8 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         case .neutralExplanation: type = .neutralBeeGatheringNectarFromFlowers
         case .neutralBeeGatheringNectarFromFlowers: type = .interactionInOwnEnvironment
         case .interactionInOwnEnvironment: type = .interactionInForrestFullSpace
-        case .interactionInForrestFullSpace: print("No next step.")
+        case .interactionInForrestFullSpace: type = .end
+        case .end: print("No next step.")
         }
 
         isCleaned = false
@@ -88,6 +93,7 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         case .neutralBeeGatheringNectarFromFlowers: type = .neutralExplanation
         case .interactionInOwnEnvironment: type = .neutralBeeGatheringNectarFromFlowers
         case .interactionInForrestFullSpace: type = .interactionInOwnEnvironment
+        case .end: type = .interactionInForrestFullSpace
         }
 
         isCleaned = false
@@ -108,7 +114,7 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
 
     func buttonConfirmStepText() -> String? {
         switch type {
-        case .neutralIdle, .neutralExplanation, .neutralBeeGatheringNectarFromFlowers:
+        case .neutralIdle, .neutralExplanation, .neutralBeeGatheringNectarFromFlowers, .end:
             return nil
         case .interactionInOwnEnvironment:
             return "Start water bottle challenge"
@@ -128,7 +134,9 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         case .interactionInOwnEnvironment:
             return "Next: Picnic in forest"
         case .interactionInForrestFullSpace:
-            return nil
+            return "End the experience"
+        case .end:
+            return "Fill out the form"
         }
     }
 
@@ -143,7 +151,9 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         case .interactionInOwnEnvironment:
             return "Step back from challenge"
         case .interactionInForrestFullSpace:
-            return "Leave forest experience"
+            return "Step back"
+        case .end:
+            return "Back to menu"
         }
     }
 
@@ -204,6 +214,17 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
             Your goal is to remain calm. Just like in real life, you can gently guide the bee away using smooth hand movements — or simply stay still and relaxed. If you’re calm and patient, the bee will eventually fly away on its own.
 
             Remember everything you’ve learned about bee behavior. And as always, you can exit the experience at any time by making a fist or saying “EXIT. Let's go?”
+            """
+
+        case .end:
+            return """
+            Congratulations – you've completed the full Behavolve bee experience!
+
+            This is a big step in managing your fear. Throughout this session, you faced several challenges and practiced calm, controlled responses around bees. Remember, the goal isn't to eliminate all anxiety instantly, but to build confidence and realize that you can remain in control.
+
+            Before you finish, we'd like to hear about your experience. Please take a moment to answer a few final questions. Your feedback is important – it helps you reflect on your progress, and it helps us improve Behavolve for others.
+
+            When you're ready, continue to the short post-session questionnaire.
             """
         }
     }

@@ -34,7 +34,7 @@ extension ImmersiveBeeView {
         appState.beeSceneState.bee.components.remove(NectarGatheringComponent.self)
     }
 
-    func addNectarGatheringToBee(nectarSpots: Entity, goToDepositAmount: Int = 400) {
+    func addNectarGatheringToBee(nectarSpots: Entity, speed: Float = 0.3, goToDepositAmount: Int = 400, reloadDuration: Double? = nil) {
         var nectarSourcesPositions: [SIMD3<Float>] = []
         for i in 1 ... 5 {
             if let entity = nectarSpots.findEntity(named: "Nectar_spot_\(i)") {
@@ -46,7 +46,7 @@ extension ImmersiveBeeView {
             NectarSource(
                 position: position,
                 stock: 100,
-                reloadDuration: TimeInterval(Int.random(in: 20 ... 40))
+                reloadDuration: reloadDuration ?? TimeInterval(Int.random(in: 20 ... 40))
             )
         }
 
@@ -57,8 +57,8 @@ extension ImmersiveBeeView {
             NectarGatheringComponent(
                 nectarDepotSitePosition: depotSitePosition,
                 nectarSources: nectarSources,
-                speed: 0.3,
-                goToDepositAmount: 400
+                speed: speed,
+                goToDepositAmount: goToDepositAmount
             )
         )
     }

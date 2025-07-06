@@ -241,32 +241,6 @@ extension ImmersiveBeeView {
         return particlesEmitter
     }
 
-    func loadPlaneForGroundCollision() -> Entity {
-        let planeMesh = MeshResource.generateBox(width: 100, height: 1, depth: 100)
-        var planeMaterial = PhysicallyBasedMaterial()
-        planeMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
-            tint: .white.withAlphaComponent(1)
-            // tint: .red
-        )
-        planeMaterial.blending = .transparent(opacity: 0.0)
-        planeMaterial.opacityThreshold = 1.0
-
-        let planeModelCommponent = ModelComponent(mesh: planeMesh, materials: [planeMaterial])
-        let planeEntity = Entity(components: planeModelCommponent)
-        planeEntity.generateCollisionShapes(recursive: true)
-        planeEntity.components.set(PhysicsBodyComponent(shapes: planeEntity.findFirstCollisionComponent()!.shapes, mass: .infinity, mode: .static))
-        planeEntity.position.y = -0.5
-
-        RealityKitHelper.updateCollisionFilter(
-            for: planeEntity,
-            groupType: .beehive,
-            maskTypes: [.all],
-            subtracting: .bee
-        ) // Avoid collision with bee (needed when she fly away when we are are to close)
-
-        return planeEntity
-    }
-
     func loadForest() async throws -> Entity {
         guard let forestSceneEntity = try? await Entity(named: "Models/Forest/Forest", in: realityKitContentBundle)
         else {
@@ -292,6 +266,45 @@ extension ImmersiveBeeView {
         RealityKitHelper.addIBLReceiverToAllModels(in: forestWithPicnic, from: lightSkySphere)
 
         return forestWithPicnic
+    }
+
+    func load3DTextButtons() async throws -> (Entity, Entity) {
+        // TODO: Create 3D text mesh with blender
+        guard let textButtonsEntity = try? await Entity(named: "Models/3DTextButtons/3DTextButtons", in: realityKitContentBundle)
+        else {
+            throw ImmersiveBeeViewError.entityError(message: "Could not load 3DTextButtons")
+        }
+        
+        let nextTextButton = textButtonsEntity.findEntity(named: "NextTextButton3D")!
+        let prevTextButton = textButtonsEntity.findEntity(named: "PrevTextButton3D")!
+
+        return (nextTextButton, prevTextButton)
+    }
+
+    func loadPlaneForGroundCollision() -> Entity {
+        let planeMesh = MeshResource.generateBox(width: 100, height: 1, depth: 100)
+        var planeMaterial = PhysicallyBasedMaterial()
+        planeMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
+            tint: .white.withAlphaComponent(1)
+            // tint: .red
+        )
+        planeMaterial.blending = .transparent(opacity: 0.0)
+        planeMaterial.opacityThreshold = 1.0
+
+        let planeModelCommponent = ModelComponent(mesh: planeMesh, materials: [planeMaterial])
+        let planeEntity = Entity(components: planeModelCommponent)
+        planeEntity.generateCollisionShapes(recursive: true)
+        planeEntity.components.set(PhysicsBodyComponent(shapes: planeEntity.findFirstCollisionComponent()!.shapes, mass: .infinity, mode: .static))
+        planeEntity.position.y = -0.5
+
+        RealityKitHelper.updateCollisionFilter(
+            for: planeEntity,
+            groupType: .beehive,
+            maskTypes: [.all],
+            subtracting: .bee
+        ) // Avoid collision with bee (needed when she fly away when we are are to close)
+
+        return planeEntity
     }
 
     func loadUserHands(content: inout RealityViewContent) {

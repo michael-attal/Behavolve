@@ -8,6 +8,7 @@
 import RealityKit
 import SwiftUI
 
+// TODO: Refactor later for other therapy (not only for bee scenario)
 struct DialogueView: View {
     let step: ImmersiveBeeSceneStep
 
@@ -36,18 +37,12 @@ struct DialogueView: View {
             if showButtons {
                 VStack(spacing: 20) {
                     HStack {
-                        if appState.beeSceneState.step.isConfirmationRequired && !appState.beeSceneState.step.isCurrentStepConfirmed,
-                           let confirm = step.buttonConfirmStepText()
+                        if appState.beeSceneState.step.isConfirmationRequired
+                            && appState.beeSceneState.step.isCurrentStepConfirmed == false,
+                            let confirm = step.buttonConfirmStepText()
                         {
                             Button(action: {
-                                let instruction = step.offlineStepInstructionText()
-                                animateText(instruction ?? "")
                                 onConfirmationButtonClicked()
-                                if AppState.ChatGptAudioEnabledForOfflineText, instruction != nil {
-                                    Task {
-                                        await appState.generateAndPlayAudio(from: instruction!)
-                                    }
-                                }
                             }) {
                                 Text(confirm)
                                     .font(.extraLargeTitle)
@@ -59,25 +54,24 @@ struct DialogueView: View {
                             .buttonStyle(.plain)
                         }
 
-                        if let buttonNextStepText = step.buttonNextStepText(), !appState.beeSceneState.step.isConfirmationRequired || appState.beeSceneState.step.isCurrentStepConfirmed {
-                            Button(action: {
-                                let presentationStep = step.offlineStepPresentationText()
-                                animateText(presentationStep)
-                                onNextStepButtonClicked()
-                                if AppState.ChatGptAudioEnabledForOfflineText {
-                                    Task {
-                                        await appState.generateAndPlayAudio(from: presentationStep)
-                                    }
+                        if appState.beeSceneState.step.type != .end || (appState.beeSceneState.step.type == .end && appState.beeSceneState.isPostSessionAssessmentFormWindowOpened == false) {
+                            if (appState.beeSceneState.step.isConfirmationRequired
+                                && appState.beeSceneState.step.isCurrentStepConfirmed)
+                                || appState.beeSceneState.step.isConfirmationRequired == false,
+                                let buttonNextStepText = step.buttonNextStepText()
+                            {
+                                Button(action: {
+                                    onNextStepButtonClicked()
+                                }) {
+                                    Text(buttonNextStepText)
+                                        .font(.extraLargeTitle)
+                                        .fontWeight(.regular)
+                                        .padding(42)
+                                        .cornerRadius(8)
+                                        .glassBackgroundEffect()
                                 }
-                            }) {
-                                Text(buttonNextStepText)
-                                    .font(.extraLargeTitle)
-                                    .fontWeight(.regular)
-                                    .padding(42)
-                                    .cornerRadius(8)
-                                    .glassBackgroundEffect()
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
 
                         Button(action: {
@@ -105,7 +99,22 @@ struct DialogueView: View {
             }
         }
         .onChange(of: step) { _, newStep in
-            animateText(newStep.offlineStepPresentationText())
+            var text = ""
+            if appState.beeSceneState.step.isConfirmationRequired
+                && appState.beeSceneState.step.isCurrentStepConfirmed,
+                let offlineStepInstructionText = newStep.offlineStepInstructionText()
+            {
+                text = offlineStepInstructionText
+            } else {
+                text = newStep.offlineStepPresentationText()
+            }
+
+            animateText(text)
+            if AppState.ChatGptAudioEnabledForOfflineText {
+                Task {
+                    await appState.generateAndPlayAudio(from: text)
+                }
+            }
         }
         .onDisappear {
             timer?.invalidate()
