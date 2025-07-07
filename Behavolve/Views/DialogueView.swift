@@ -54,7 +54,7 @@ struct DialogueView: View {
                             .buttonStyle(.plain)
                         }
 
-                        if appState.beeSceneState.step.type != .end || (appState.beeSceneState.step.type == .end && appState.beeSceneState.isPostSessionAssessmentFormWindowOpened == false) {
+                        if appState.beeSceneState.step.type != .end || (appState.beeSceneState.step.type == .end && appState.beeSceneState.isPostSessionAssessmentFormWindowOpened == false && appState.beeSceneState.isPostSessionAssessmentFormWindowFulfilled == false) {
                             if (appState.beeSceneState.step.isConfirmationRequired
                                 && appState.beeSceneState.step.isCurrentStepConfirmed)
                                 || appState.beeSceneState.step.isConfirmationRequired == false,

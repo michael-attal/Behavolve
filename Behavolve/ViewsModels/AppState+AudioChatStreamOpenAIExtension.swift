@@ -298,6 +298,7 @@ extension AppState {
             isWaterBottlePlacedOnHaloForWaterBottleChallengeStep: \(beeSceneState.isWaterBottlePlacedOnHalo)
             hasBeeFlownAwayInPicnicExperienceStep: \(beeSceneState.hasBeeFlownAway) - (Used in the Picnic Experience step. If treu (when the bee has flown away) it means the experience has been successful.)
             isPostSessionAssessmentFormWindowOpened: \(beeSceneState.isPostSessionAssessmentFormWindowOpened)
+            isPostSessionAssessmentFormWindowFulfilled: \(beeSceneState.isPostSessionAssessmentFormWindowFulfilled) - (If true it mean the post-session assessment form has been completed and submitted).
             """
 
             let systemPrompt = """

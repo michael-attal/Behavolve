@@ -12,7 +12,7 @@ extension ImmersiveBeeView {
     func performPrepareInteractionInForrestFullSpaceStep() async throws {
         let forest = try await loadForest()
         let (nextTextButton3D, prevTextButton3D) = try await load3DTextButtons()
-        forest.position = [0, 0, -8.3]
+        forest.position = [0, 0, -7]
         appState.beeSceneState.forest = forest
         appState.beeSceneState.nextTextButton3D = nextTextButton3D
         appState.beeSceneState.prevTextButton3D = prevTextButton3D
@@ -31,10 +31,12 @@ extension ImmersiveBeeView {
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "Daffodil_flower_pot" })
         
         appState.beeSceneState.bee.components.remove(UserProximityComponent.self)
-                
+        appState.beeSceneState.bee.components.remove(NectarGatheringComponent.self)
+        appState.beeSceneState.bee.components.remove(NectarDepositComponent.self)
+
         appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(appState.beeSceneState.lightSkySphereSourceFromForest)
                 
-        appState.beeSceneState.beehive.position = [15, 13, -25]
+        appState.beeSceneState.beehive.position = [14, 13, -24]
         
         appState.beeSceneState.bee.components.remove(MoveToComponent.self)
         appState.beeSceneState.bee.position = [5, 5, -5]
@@ -43,7 +45,7 @@ extension ImmersiveBeeView {
                 
         appState.beeSceneState.therapist.position.x -= 1
         appState.beeSceneState.therapist.position.y += 0.16
-        appState.beeSceneState.therapist.position.z -= 1.8
+        appState.beeSceneState.therapist.position.z -= 0.5
         
         appState.beeSceneState.nextTextButton3D.position = appState.beeSceneState.therapist.position
         appState.beeSceneState.prevTextButton3D.position.x -= 0.5
@@ -58,10 +60,10 @@ extension ImmersiveBeeView {
         
         #if !targetEnvironment(simulator)
         appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: .infinity)) // If hand proxity has been detected and no abrupt gesture then the bee will flee away forever and a notification will be send to end the experience
-        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))
+        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))   
         #endif
         
-        appState.beeSceneState.bee.components.set(EntityProximityComponent(distanceToUser: 0, targetDistanceToUser: 8))
+        appState.beeSceneState.bee.components.set(EntityProximityComponent(distanceToUser: 0, targetDistanceToUser: 10))
     }
 
     func performFinishedInteractionInForrestFullSpaceStep() async throws {

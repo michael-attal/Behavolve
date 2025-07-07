@@ -175,9 +175,11 @@ struct BeeScenePostSessionAssessmentView: View {
                 // TODO: appState.savePostSession(score: level, feedback: fb)
                 print("POST: Mood Score: \(level), Feedback: \(fb)")
                 appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = false
+                appState.beeSceneState.isPostSessionAssessmentFormWindowFulfilled = true
                 dismissWindow()
             } else {
                 appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = false
+                appState.beeSceneState.isPostSessionAssessmentFormWindowFulfilled = true
                 dismissWindow()
             }
         }

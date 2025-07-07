@@ -42,6 +42,7 @@ class BeeSceneState {
     var isWaterBottlePlacedOnHalo = false
     var hasBeeFlownAway = false
     var isPostSessionAssessmentFormWindowOpened: Bool = false
+    var isPostSessionAssessmentFormWindowFulfilled: Bool = false
     var isPalmUpGestureTested: Bool = false
 }
 

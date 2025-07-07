@@ -1,8 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Scenes\/Bee Scene.usda",
-    "Models\/Forest\/Picnic\/Picnic.usdc"
+    "Scenes\/Bee Scene.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -686,6 +685,28 @@
     ],
     "2FBEE1E8-3F0D-424A-A38F-1BB00670370D" : [
       {
+        "date" : 773578135.988071,
+        "title" : "Untitled",
+        "transform" : [
+          0.9699563,
+          3.9519794e-08,
+          0.24327938,
+          0,
+          0.09534534,
+          0.9200004,
+          -0.38014254,
+          0,
+          -0.22381717,
+          0.39191717,
+          0.8923601,
+          0,
+          0.0006535761,
+          0.15438737,
+          0.29496628,
+          1
+        ]
+      },
+      {
         "date" : 773578116.000682,
         "title" : "Untitled",
         "transform" : [
@@ -880,28 +901,6 @@
           -0.09380297,
           0.65580827,
           1.1439716,
-          1
-        ]
-      },
-      {
-        "date" : 773526663.563386,
-        "title" : "Untitled",
-        "transform" : [
-          0.6036179,
-          5.4126733e-08,
-          -0.7972737,
-          0,
-          -0.4017044,
-          0.86379266,
-          -0.30413133,
-          0,
-          0.6886791,
-          0.50384754,
-          0.5214007,
-          0,
-          -0.021866111,
-          0.6481609,
-          0.45134225,
           1
         ]
       }
@@ -4634,5 +4633,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Models\/Forest\/Picnic\/Picnic.usdc"
+  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
 }
