@@ -14,6 +14,7 @@ struct MenuView: View {
 
     @State var currentSunIconSize = CGFloat(90)
     @State var selectedScene: ImmersiveViewAvailable = .bee
+    @State private var showingSettings = false
 
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
@@ -21,57 +22,65 @@ struct MenuView: View {
     @Environment(\.dismissWindow) private var dismissWindow
 
     var body: some View {
-        startMenu
-            .frame(width: 800, height: 600)
-            .edgesIgnoringSafeArea(.all)
-            .background(
-                LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom)
-            ).task {
-                if AppState.skypStartScreen {
-                    // Directly open the immersive space
-                    try? await Task.sleep(for: .milliseconds(500))
-                    if let step = AppState.skypToStep {
-                        appState.beeSceneState.step.isCurrentStepConfirmed = false
-                        appState.beeSceneState.step = step
-                        if AppState.byPassConfirmationStep == true {
-                            Task {
-                                try? await Task.sleep(for: .milliseconds(2000))
-                                appState.beeSceneState.step.isCurrentStepConfirmed = true
-                            }
+        Group {
+            if showingSettings {
+                SettingsKeysView(onClose: {
+                    showingSettings = false
+                })
+            } else {
+                startMenu
+            }
+        }
+        .frame(width: 800, height: 600)
+        .edgesIgnoringSafeArea(.all)
+        .background(LinearGradient(gradient: Gradient(colors: [.blue, .cyan]), startPoint: .top, endPoint: .bottom))
+        .task {
+            if AppState.skypStartScreen {
+                // Directly open the immersive space
+                try? await Task.sleep(for: .milliseconds(500))
+                if let step = AppState.skypToStep {
+                    // TODO: Refactor the code to make it more generic for future therapies, such as treating ophidiophobia (fear of snakes) ...
+                    appState.beeSceneState.step.isCurrentStepConfirmed = false
+                    appState.beeSceneState.step = step
+                    if AppState.byPassConfirmationStep == true {
+                        Task {
+                            try? await Task.sleep(for: .milliseconds(2000))
+                            appState.beeSceneState.step.isCurrentStepConfirmed = true
                         }
                     }
-                    if AppState.skypSurveyStep == false {
-                        openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
-                    } else {
-                        appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
-                    }
+                }
+                if AppState.skypSurveyStep == false {
+                    openWindow(id: appState.BeeScenePreSessionAssessmentWindowID)
+                } else {
+                    appState.handleBeginTherapy(immersiveView: .bee, researchKitQuestionnaireWindowID: appState.BeeScenePreSessionAssessmentWindowID, openImmersiveSpace: openImmersiveSpace, dismissImmersiveSpace: dismissImmersiveSpace, openWindow: openWindow, dismissWindow: dismissWindow)
                 }
             }
+        }
     }
 
     var startMenu: some View {
         GeometryReader { geometry in
             ZStack {
                 VStack {
-                    Text("Selected scene")
+                    Text("Select your therapy")
                         .font(.largeTitle)
                     VStack {
                         Menu(content: {
-                            Picker("Selected scene", selection: $selectedScene) {
+                            Picker("Select your therapy", selection: $selectedScene) {
                                 ForEach(ImmersiveViewAvailable.getAllImmersiveViews(), id: \.self) { scene in
-                                    Text(scene.rawValue.capitalized)
+                                    Text(scene.getFormattedImmersiveViewName())
                                         .font(.largeTitle)
                                 }
                             }
                         }, label: {
                             HStack {
                                 Spacer()
-                                Text(selectedScene.rawValue.capitalized)
+                                Text(selectedScene.getFormattedImmersiveViewName())
                                     .font(.title)
                                 Spacer()
                                 Image(systemName: "chevron.down.circle")
                                     .font(.title2)
-                            }.frame(width: 200)
+                            }.frame(width: 225)
                         }).controlSize(.extraLarge)
                     }
 
@@ -91,13 +100,17 @@ struct MenuView: View {
                     } label: {
                         Text("Start")
                             .font(.title)
-                            .frame(width: 200)
-                    }.controlSize(.extraLarge)
+                            .frame(width: 225)
+                    }
+                    .controlSize(.extraLarge)
+                    .disabled(!(selectedScene == .bee)) // Ftm only bee scene is available
 
-                    Button(action: {}) {
+                    Button(action: {
+                        showingSettings = true
+                    }) {
                         Text("Settings")
                             .font(.title)
-                            .frame(width: 200)
+                            .frame(width: 225)
                     }.controlSize(.extraLarge)
                 }
                 .padding()
@@ -147,6 +160,71 @@ struct WaveView<Effect: SymbolEffect & IndefiniteSymbolEffect>: View {
             .symbolEffect(symbolEffect, options: symbolEffectOptions)
             .padding()
             .foregroundStyle(color)
+    }
+}
+
+struct SettingsKeysView: View {
+    @Environment(AppState.self) private var appState
+    @Environment(\.openURL) private var openURL
+
+    @State private var openAIToken: String
+    @State private var organizationID: String
+
+    var onClose: () -> Void
+
+    init(onClose: @escaping () -> Void) {
+        _openAIToken = State(initialValue:
+            UserDefaults.standard.string(forKey: "OPENAI_TOKEN") ?? AppState.OPENAI_TOKEN
+        )
+        _organizationID = State(initialValue:
+            UserDefaults.standard.string(forKey: "OPENAI_ORGANIZATION_ID") ?? AppState.OPENAI_ORGANIZATION_ID
+        )
+        self.onClose = onClose
+    }
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("API Configuration")
+                .font(.largeTitle)
+                .bold()
+
+            TextField("OpenAI Token", text: $openAIToken)
+                .textFieldStyle(.roundedBorder)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+
+            TextField("Organization ID", text: $organizationID)
+                .textFieldStyle(.roundedBorder)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+
+            Button {
+                openURL(URL(string: "https://platform.openai.com/account/api-keys")!)
+            } label: {
+                Text("Get your key at platform.openai.com")
+                    .font(.callout)
+                    .underline()
+            }
+
+            HStack(spacing: 40) {
+                Button("Back") {
+                    onClose()
+                }
+                .controlSize(.large)
+
+                Button("Save") {
+                    AppState.OPENAI_TOKEN = openAIToken
+                    AppState.OPENAI_ORGANIZATION_ID = organizationID
+                    UserDefaults.standard.set(openAIToken, forKey: "OPENAI_TOKEN")
+                    UserDefaults.standard.set(organizationID, forKey: "OPENAI_ORGANIZATION_ID")
+                    onClose()
+                }
+                .controlSize(.large)
+                .disabled(openAIToken.isEmpty || organizationID.isEmpty)
+            }
+        }
+        .padding(40)
+        .frame(minWidth: 450)
     }
 }
 

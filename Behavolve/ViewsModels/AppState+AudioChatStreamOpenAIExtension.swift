@@ -12,6 +12,8 @@ import OpenAI
 import RealityKit
 import Speech
 
+// TODO: Refactor the code to make it more generic for future therapies, such as treating ophidiophobia (fear of snakes) ...
+
 /// OpenAI extensions
 extension AppState {
     /// Generates audio via the OpenAI TTS API, plays it from the therapist, then restarts listening if needed.
@@ -32,7 +34,7 @@ extension AppState {
                 responseFormat: .wav,
                 speed: 1.0
             )
-            let result = try await openAI.audioCreateSpeech(query: audioQuery)
+            let result = try await AppState.openAI.audioCreateSpeech(query: audioQuery)
 
             let outputURL = FileManager.default.temporaryDirectory
                 .appendingPathComponent("tts_output-\(UUID().uuidString).wav")
@@ -101,7 +103,7 @@ extension AppState {
     }
 
     @MainActor
-    func startAudioConversationStreaming(step: ImmersiveBeeSceneStep) async {
+    func startAudioConversationStreaming(step: ImmersiveSceneStep) async {
         isConversationStarted = true
 
         // Configure AVAudioSession for recording and playback
@@ -232,7 +234,7 @@ extension AppState {
 
     // Send the current buffer to OpenAI, then puts the file to 0 for the next chunk
     @MainActor
-    private func streamAudioChunkToOpenAI(step: ImmersiveBeeSceneStep) async {
+    private func streamAudioChunkToOpenAI(step: ImmersiveSceneStep) async {
         guard audioConversation.isStreaming, let url = audioFileURL else {
             print("⏩ [STREAM] Not streaming or no audio file, skipping chunk")
             return
@@ -270,7 +272,7 @@ extension AppState {
             language: "en"
         )
         do {
-            let transcription = try await openAI.audioTranscriptions(query: query)
+            let transcription = try await AppState.openAI.audioTranscriptions(query: query)
             let transcript = transcription.text.trimmingCharacters(in: .whitespacesAndNewlines)
             print("✅ Whisper transcript: '\(transcript)'")
 
@@ -294,7 +296,7 @@ extension AppState {
             let stepPresentation = step.offlineStepPresentationText()
             let stepInstructions = step.offlineStepInstructionText()
             let stateSummary = """
-            isCurrentStepConfirmedForWaterBottleChallengeOrPicnicExperienceStep: \(beeSceneState.step.isCurrentStepConfirmed) - (If true, it means that the user has started the current step challenge (Water Bottle Challenge or Picnic Experience).
+            isCurrentStepConfirmedForWaterBottleChallengeOrPicnicExperienceStep: \(step.isCurrentStepConfirmed) - (If true, it means that the user has started the current step challenge (Water Bottle Challenge or Picnic Experience).
             isWaterBottlePlacedOnHaloForWaterBottleChallengeStep: \(beeSceneState.isWaterBottlePlacedOnHalo)
             hasBeeFlownAwayInPicnicExperienceStep: \(beeSceneState.hasBeeFlownAway) - (Used in the Picnic Experience step. If treu (when the bee has flown away) it means the experience has been successful.)
             isPostSessionAssessmentFormWindowOpened: \(beeSceneState.isPostSessionAssessmentFormWindowOpened)
@@ -326,7 +328,7 @@ extension AppState {
             ]
             let chatQuery = ChatQuery(messages: messages, model: .gpt4_o, stream: true)
             print("🧠 Sending to GPT: \(transcript)")
-            for try await result in openAI.chatsStream(query: chatQuery) {
+            for try await result in AppState.openAI.chatsStream(query: chatQuery) {
                 for choice in result.choices {
                     if let text = choice.delta.content, !text.isEmpty {
                         await MainActor.run {

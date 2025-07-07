@@ -7,6 +7,12 @@
     "**You said:**" : {
 
     },
+    "API Configuration" : {
+
+    },
+    "Back" : {
+
+    },
     "Continue the conversation" : {
 
     },
@@ -26,6 +32,9 @@
           }
         }
       }
+    },
+    "Get your key at platform.openai.com" : {
+
     },
     "I'd like to know more" : {
       "extractionState" : "stale",
@@ -69,6 +78,12 @@
     "Not started" : {
 
     },
+    "OpenAI Token" : {
+
+    },
+    "Organization ID" : {
+
+    },
     "Post-session assessment" : {
 
     },
@@ -78,7 +93,14 @@
     "Ready to start a conversation with Lucie, your cognitive behavioral therapist?" : {
 
     },
+    "Save" : {
+
+    },
+    "Select your therapy" : {
+
+    },
     "Selected scene" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

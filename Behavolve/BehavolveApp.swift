@@ -15,6 +15,9 @@ struct BehavolveApp: App {
         WindowGroup(id: appState.MenuWindowID) {
             MenuView()
                 .environment(appState)
+                .task {
+                    KeyManager.loadAPIKeysIfAvailable()
+                }
         }.windowResizability(.contentSize)
 
         WindowGroup(id: appState.BeeScenePreSessionAssessmentWindowID) {

@@ -56,14 +56,15 @@ enum ImmersiveBeeSceneStepType: Int, Codable, CaseIterable {
 }
 
 @MainActor
-struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
+struct ImmersiveBeeSceneStep: ImmersiveSceneStep {
     var type: ImmersiveBeeSceneStepType
     var isCleaned: Bool = false
     var isLoaded: Bool = false
     var isPlaced: Bool = false
     var isFinished: Bool = false
     var isCurrentStepConfirmed: Bool = false
-
+    var isPreviousStep: Bool = false
+    
     mutating func next() {
         switch type {
         case .neutralIdle: type = .neutralExplanation
@@ -78,6 +79,7 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         isLoaded = false
         isPlaced = false
         isFinished = false
+        isPreviousStep = false
 
         if AppState.byPassConfirmationStep == true {
             // For fast development
@@ -102,6 +104,7 @@ struct ImmersiveBeeSceneStep: Equatable, Codable, Sendable {
         isPlaced = false
         isFinished = false
         isCurrentStepConfirmed = false
+        isPreviousStep = true
     }
 
     var isConfirmationRequired: Bool {

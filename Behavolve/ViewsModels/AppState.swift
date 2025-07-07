@@ -21,12 +21,27 @@ enum ImmersiveViewAvailable: String {
     static func getAllImmersiveViews() -> [ImmersiveViewAvailable] {
         return [.bee, .snake]
     }
+
+    func getFormattedImmersiveViewName() -> String {
+        switch self {
+        case .bee:
+            return "Apiphobia (Bee)"
+        case .snake:
+            return "Ophidiophobia (Snake)"
+        case .none:
+            return "None"
+        }
+    }
 }
 
 /// Maintains app-wide state
 @MainActor
 @Observable
 class AppState {
+    static var OPENAI_TOKEN = ""
+    static var OPENAI_ORGANIZATION_ID = ""
+    static var openAI = OpenAI(configuration: OpenAI.Configuration(token: OPENAI_TOKEN, organizationIdentifier: OPENAI_ORGANIZATION_ID, timeoutInterval: 86400.0))
+
     static let isDevelopmentMode = false
     static let fastDialogue = true
     static let byPassConfirmationStep = false
@@ -41,8 +56,6 @@ class AppState {
     // static let skypToStep: ImmersiveBeeSceneStep? = ImmersiveBeeSceneStep(type: .interactionInForrestFullSpace)
 
     let beeSceneState = BeeSceneState()
-
-    var openAI = OpenAI(configuration: OpenAI.Configuration(token: YOUR_OPENAI_TOKEN_HERE, organizationIdentifier: YOUR_OPENAI_ORGANIZATION_ID_HERE, timeoutInterval: 86400.0))
 
     let BeeScenePreSessionAssessmentWindowID = "BeeScenePreSessionAssessmentWindow"
     let BeeScenePostSessionAssessmentWindowID = "BeeScenePostSessionAssessmentWindow"

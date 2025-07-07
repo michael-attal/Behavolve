@@ -38,6 +38,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Private/keys.swift,
 			);
 			target = B8ED48A22CCFFFF6004F410C /* Behavolve */;
 		};
@@ -117,6 +118,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8ED48C52CCFFFF9004F410C /* Build configuration list for PBXNativeTarget "Behavolve" */;
 			buildPhases = (
+				B83AE8722E1C1D94004B2543 /* ShellScript */,
 				B8ED489F2CCFFFF6004F410C /* Sources */,
 				B8ED48A02CCFFFF6004F410C /* Frameworks */,
 				B8ED48A12CCFFFF6004F410C /* Resources */,
@@ -224,6 +226,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B83AE8722E1C1D94004B2543 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Script: Override Behavolve/Common/keys.swift if Behavolve/Private/keys.swift exists\nKEYS_LOCAL=\"${PROJECT_DIR}/Private/keys.swift\"\nKEYS_PLACEHOLDER=\"${PROJECT_DIR}/Common/keys.swift\"\n\nif [ -f \"$KEYS_LOCAL\" ]; then\n  echo \"🟢 Behavolve/Private/keys.swift found, overriding Behavolve/Common/keys.swift for build.\"\n  cp \"$KEYS_LOCAL\" \"$KEYS_PLACEHOLDER\"\nelse\n  echo \"🔵 Using placeholder Behavolve/Common/keys.swift.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B8ED489F2CCFFFF6004F410C /* Sources */ = {

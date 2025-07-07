@@ -23,7 +23,7 @@ struct ConversationView: View {
     @State private var currentWordIndex = 0
     @State private var timer: Timer?
 
-    let step: ImmersiveBeeSceneStep
+    let step: any ImmersiveSceneStep
 
     var body: some View {
         ZStack {
@@ -140,11 +140,11 @@ struct ConversationView: View {
     }
 
     private func waitUntilRunComplete(threadId: String, runId: String) async throws -> RunResult {
-        var result = try await appState.openAI.runRetrieve(threadId: threadId, runId: runId)
+        var result = try await AppState.openAI.runRetrieve(threadId: threadId, runId: runId)
 
         while result.status == .queued || result.status == .inProgress {
             try await Task.sleep(nanoseconds: 1_000_000_000) // 1s
-            result = try await appState.openAI.runRetrieve(threadId: threadId, runId: runId)
+            result = try await AppState.openAI.runRetrieve(threadId: threadId, runId: runId)
         }
         return result
     }

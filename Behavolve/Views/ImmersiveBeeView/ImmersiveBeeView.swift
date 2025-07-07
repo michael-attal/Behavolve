@@ -104,7 +104,9 @@ struct ImmersiveBeeView: View {
 
                 switch appState.beeSceneState.step.type {
                 case .neutralIdle:
-                    if appState.beeSceneState.step.isCleaned == false {
+                    if appState.beeSceneState.step.isPreviousStep
+                        && appState.beeSceneState.step.isCleaned == false
+                    {
                         performCleanNeutralExplanationStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -113,7 +115,9 @@ struct ImmersiveBeeView: View {
                         appState.beeSceneState.step.isPlaced = true
                     }
                 case .neutralExplanation:
-                    if appState.beeSceneState.step.isCleaned == false {
+                    if appState.beeSceneState.step.isPreviousStep
+                        && appState.beeSceneState.step.isCleaned == false
+                    {
                         performCleanNeutralBeeGatheringNectarFromFlowersStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -122,7 +126,9 @@ struct ImmersiveBeeView: View {
                         appState.beeSceneState.step.isPlaced = true
                     }
                 case .neutralBeeGatheringNectarFromFlowers:
-                    if appState.beeSceneState.step.isCleaned == false {
+                    if appState.beeSceneState.step.isPreviousStep
+                        && appState.beeSceneState.step.isCleaned == false
+                    {
                         performCleanInteractionInOwnEnvironmentStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -131,7 +137,9 @@ struct ImmersiveBeeView: View {
                         appState.beeSceneState.step.isPlaced = true
                     }
                 case .interactionInOwnEnvironment:
-                    if appState.beeSceneState.step.isCleaned == false {
+                    if appState.beeSceneState.step.isPreviousStep
+                        && appState.beeSceneState.step.isCleaned == false
+                    {
                         performCleanInteractionInForrestFullSpaceStep() // Clean if we step back
                         appState.beeSceneState.step.isCleaned = true
                     }
@@ -155,7 +163,9 @@ struct ImmersiveBeeView: View {
                         }
                     }
                 case .interactionInForrestFullSpace:
-                    if appState.beeSceneState.step.isCleaned == false {
+                    if appState.beeSceneState.step.isPreviousStep
+                        && appState.beeSceneState.step.isCleaned == false
+                    {
                         appState.beeSceneState.step.isCleaned = true
                     }
                     if appState.beeSceneState.hasBeeFlownAway {

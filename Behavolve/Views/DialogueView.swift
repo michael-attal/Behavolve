@@ -8,7 +8,8 @@
 import RealityKit
 import SwiftUI
 
-// TODO: Refactor later for other therapy (not only for bee scenario)
+// TODO: Refactor the code to make it more generic for future therapies, such as treating ophidiophobia (fear of snakes) ...
+
 struct DialogueView: View {
     let step: ImmersiveBeeSceneStep
 
@@ -37,8 +38,8 @@ struct DialogueView: View {
             if showButtons {
                 VStack(spacing: 20) {
                     HStack {
-                        if appState.beeSceneState.step.isConfirmationRequired
-                            && appState.beeSceneState.step.isCurrentStepConfirmed == false,
+                        if step.isConfirmationRequired
+                            && step.isCurrentStepConfirmed == false,
                             let confirm = step.buttonConfirmStepText()
                         {
                             Button(action: {
@@ -54,10 +55,10 @@ struct DialogueView: View {
                             .buttonStyle(.plain)
                         }
 
-                        if appState.beeSceneState.step.type != .end || (appState.beeSceneState.step.type == .end && appState.beeSceneState.isPostSessionAssessmentFormWindowOpened == false && appState.beeSceneState.isPostSessionAssessmentFormWindowFulfilled == false) {
-                            if (appState.beeSceneState.step.isConfirmationRequired
-                                && appState.beeSceneState.step.isCurrentStepConfirmed)
-                                || appState.beeSceneState.step.isConfirmationRequired == false,
+                        if step.type != .end || (step.type == .end && appState.beeSceneState.isPostSessionAssessmentFormWindowOpened == false && appState.beeSceneState.isPostSessionAssessmentFormWindowFulfilled == false) {
+                            if (step.isConfirmationRequired
+                                && step.isCurrentStepConfirmed)
+                                || step.isConfirmationRequired == false,
                                 let buttonNextStepText = step.buttonNextStepText()
                             {
                                 Button(action: {
@@ -100,8 +101,8 @@ struct DialogueView: View {
         }
         .onChange(of: step) { _, newStep in
             var text = ""
-            if appState.beeSceneState.step.isConfirmationRequired
-                && appState.beeSceneState.step.isCurrentStepConfirmed,
+            if step.isConfirmationRequired
+                && step.isCurrentStepConfirmed,
                 let offlineStepInstructionText = newStep.offlineStepInstructionText()
             {
                 text = offlineStepInstructionText
