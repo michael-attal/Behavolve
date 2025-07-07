@@ -48,7 +48,8 @@ extension ImmersiveBeeView {
             let particles = try await loadParticles()
             appState.beeSceneState.halo.addChild(particles)
 
-            appState.beeSceneState.waterBottle.transform.rotation = .init()
+            // appState.beeSceneState.waterBottle.transform.rotation = .init() // For Water_Bottle_2
+            appState.beeSceneState.waterBottle.transform.rotation = .init(angle: .pi / 2, axis: .init(x: 1, y: 0, z: 0)) // For Water_Bottle
             appState.beeSceneState.waterBottle.position = newPosition
             print("Particule loaded and next step charged!")
 
