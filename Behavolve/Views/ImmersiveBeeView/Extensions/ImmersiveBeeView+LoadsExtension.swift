@@ -5,7 +5,6 @@
 //  Created by Michaël ATTAL on 27/03/2025.
 //
 
-import _RealityKit_SwiftUI
 import RealityKit
 import RealityKitContent
 import SwiftUI
@@ -163,7 +162,12 @@ extension ImmersiveBeeView {
             guard let animatedEntity = flower.findEntity(named: "Daffodil") else {
                 throw ImmersiveBeeViewError.entityError(message: "Could not find Daffodil entity for the animation of Flowers")
             }
-            RealityKitHelper.fromToByAnimationScaling(fromScale: animatedEntity.scale, toScale: animatedEntity.scale * 1.01, toEntity: animatedEntity, timing: .linear, duration: 2.0, loop: true, isAdditive: false, playAutomatically: true)
+
+            Entity.animate(.linear.repeatForever(autoreverses: true).speed(0.1)) {
+                animatedEntity.scale *= 1.002
+            } completion: {
+                print("TADA")
+            }
         }
 
         flower.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
@@ -274,7 +278,7 @@ extension ImmersiveBeeView {
         else {
             throw ImmersiveBeeViewError.entityError(message: "Could not load 3DTextButtons")
         }
-        
+
         let nextTextButton = textButtonsEntity.findEntity(named: "NextTextButton3D")!
         let prevTextButton = textButtonsEntity.findEntity(named: "PrevTextButton3D")!
 
