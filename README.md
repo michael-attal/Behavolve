@@ -46,7 +46,7 @@ Subsequently (if time permits):
 To install this app on your device, follow these steps:
 
 - Download the app:
-    - Either directly from the App Store (when it will be published).
+    - Directly from the App Store (when it will be published).
     - In "Settings" from the App set your OpenAI key.
 - Alternative: Download the source project from the main branch:
     - Then open the project with Xcode, hit build, and wait.
