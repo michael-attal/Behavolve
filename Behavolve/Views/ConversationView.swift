@@ -18,6 +18,8 @@ enum ConversationApiMode {
 struct ConversationView: View {
     @Environment(AppState.self) private var appState
 
+    @State private var showMissingCredentialsAlert = false
+
     @State private var inputText = ""
     @State private var words: [String] = []
     @State private var currentWordIndex = 0
@@ -86,8 +88,13 @@ struct ConversationView: View {
                 // Control buttons
                 if appState.audioConversation.audioStatus != .listening {
                     Button {
-                        Task {
-                            await appState.startAudioConversationStreaming(step: step)
+                        if AppState.OPENAI_TOKEN.isEmpty || AppState.OPENAI_ORGANIZATION_ID.isEmpty {
+                            showMissingCredentialsAlert = true
+                            return
+                        } else {
+                            Task {
+                                await appState.startAudioConversationStreaming(step: step)
+                            }
                         }
                     } label: {
                         Label(appState.isConversationStarted ? "Continue the conversation" : "Start the conversation", systemImage: "mic.fill")
@@ -132,6 +139,13 @@ struct ConversationView: View {
             }
             .animation(.easeInOut(duration: 0.2), value: appState.audioConversation.audioStatus)
             .padding(.horizontal, 28)
+        }
+        .alert("Missing OpenAI credentials",
+               isPresented: $showMissingCredentialsAlert)
+        {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Please configure both your OpenAI API Key and Organization ID in the app settings before starting a conversation.")
         }
         .frame(maxWidth: 1000, maxHeight: 800)
         .task {

@@ -46,7 +46,7 @@ Subsequently (if time permits):
 To install this app on your device, follow these steps:
 
 - Download the app:
-    - Either directly from the App Store or in the release tab of GitHub.
+    - Either directly from the App Store (when it will be published).
     - In "Settings" from the App set your OpenAI key.
 - Alternative: Download the source project from the main branch:
     - Then open the project with Xcode, hit build, and wait.
@@ -78,4 +78,4 @@ Behavolve represents a fusion between cutting-edge technology and modern therape
 
 **GitHub Link**: [https://github.com/michael-attal/Behavolve](https://github.com/michael-attal/Behavolve)  
 **GitHub Project Link**: [https://github.com/users/michael-attal/projects/6](https://github.com/users/michael-attal/projects/6)  
-**Freeform Prototype Drawing Link**: [https://www.icloud.com/freeform/06csODfI_O6AZDa1-rEcUmgoA#Behavolve](https://www.icloud.com/freeform/06csODfI_O6AZDa1-rEcUmgoA#Behavolve)
+***Presentation Power Point Link***: [https://onedrive.live.com/:p:/g/personal/E90769AC0D968106/EUFkngQuzRtHhfhkf8nQNScBXurBxdqRQDBlncvmPB0vqg?resid=E90769AC0D968106!s049e6441cd2e471b85f8647fc9d03527&ithint=file%2Cpptx&e=67awpY&migratedtospo=true&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3AvYy9lOTA3NjlhYzBkOTY4MTA2L0VVRmtuZ1F1elJ0SGhmaGtmOG5RTlNjQlh1ckJ4ZHFSUURCbG5jdm1QQjB2cWc_ZT02N2F3cFk](https://onedrive.live.com/:p:/g/personal/E90769AC0D968106/EUFkngQuzRtHhfhkf8nQNScBXurBxdqRQDBlncvmPB0vqg?resid=E90769AC0D968106!s049e6441cd2e471b85f8647fc9d03527&ithint=file%2Cpptx&e=67awpY&migratedtospo=true&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3AvYy9lOTA3NjlhYzBkOTY4MTA2L0VVRmtuZ1F1elJ0SGhmaGtmOG5RTlNjQlh1ckJ4ZHFSUURCbG5jdm1QQjB2cWc_ZT02N2F3cFk)

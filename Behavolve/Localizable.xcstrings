@@ -75,13 +75,22 @@
     "Lucie is speaking..." : {
 
     },
+    "Missing OpenAI credentials" : {
+
+    },
     "Not started" : {
+
+    },
+    "OK" : {
 
     },
     "OpenAI Token" : {
 
     },
     "Organization ID" : {
+
+    },
+    "Please configure both your OpenAI API Key and Organization ID in the app settings before starting a conversation." : {
 
     },
     "Post-session assessment" : {
