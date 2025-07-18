@@ -61,7 +61,8 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-/Behavolve/Private/*
-
 .DS_Store
+
+
+/Behavolve/Private/*
 Enterprise.license

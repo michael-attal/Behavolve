@@ -11,7 +11,7 @@ import simd
 /// Stores motion statistics for abrupt-gesture detection.
 struct GentleGestureComponent: Component, Sendable {
     /// Maximum allowed smoothed speed (m/s).
-    var maxSpeed: Float = 1.2
+    var maxSpeed: Float = 5
 
     /// Exponential-moving-average factor (0‒1).
     /// Higher = more inertia, less jitter.

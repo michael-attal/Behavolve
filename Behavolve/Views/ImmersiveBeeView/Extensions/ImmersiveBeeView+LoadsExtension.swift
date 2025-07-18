@@ -120,7 +120,8 @@ extension ImmersiveBeeView {
         guard let audioResource = try? await AudioFileResource(named: "/Root/bee_mp3", from: "Models/Bees/Bee.usda", in: realityKitContentBundle) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee audio")
         }
-        bee.spatialAudio = SpatialAudioComponent(gain: -50)
+
+        bee.spatialAudio = SpatialAudioComponent(gain: -40)
         appState.beeSceneState.beeAudioPlaybackController = bee.prepareAudio(audioResource)
 
         bee.components.set(SteeringComponent(avoidDistance: 0.15, strength: 1.0))
@@ -263,6 +264,18 @@ extension ImmersiveBeeView {
             throw ImmersiveBeeViewError.entityError(message: "Could not find SkySphere entity")
         }
 
+        #if !targetEnvironment(simulator)
+        // In device remove one third of tree for performance
+        // for i in 0 ... 100 {
+        //     if let tree = forestWithPicnic.findEntity(named: "_4K_0_\(i)"), i % 3 == 0 {
+        //         tree.removeFromParent()
+        //     }
+        // }
+        // if let koffer = forestWithPicnic.findEntity(named: "Koffer") /* , i % 3 == 0 */ {
+        //     koffer.removeFromParent()
+        // }
+        #endif
+
         appState.beeSceneState.bowlOfFruit = bowlOfFruit
 
         appState.beeSceneState.lightSkySphereSourceFromForest = lightSkySphere
@@ -324,8 +337,7 @@ extension ImmersiveBeeView {
         for handAnchorEntity in appState.handAnchorEntities {
             handAnchorEntity.components.set(ExitGestureComponent())
             handAnchorEntity.components.set(GentleGestureComponent())
-            handAnchorEntity.components.set(ThumbUpGestureComponent())
-            handAnchorEntity.components.set(PalmOpenGestureComponent())
+            // handAnchorEntity.components.set(ThumbUpGestureComponent())
         }
         #endif
     }

@@ -11,6 +11,8 @@ import UIKit
 // Extension for the NeutralExplanation step
 extension ImmersiveBeeView {
     func performNeutralExplanationStep() {
+        appState.beeSceneState.isPalmUpGestureTested = false
+        
         let destination: SIMD3<Float> = [0, 1.5, -1.5]
         appState.beeSceneState.bee.components.set(
             MoveToComponent(destination: destination,
@@ -26,6 +28,10 @@ extension ImmersiveBeeView {
         }
 
         appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(createBeeInGlassCube(beeEntity: appState.beeSceneState.bee, position: [0, 1.5, -1.5]))
+
+        for handAnchorEntity in appState.handAnchorEntities {
+            handAnchorEntity.components.set(PalmOpenGestureComponent())
+        }
     }
 
     func performFinishedNeutralExplanationStep() {}
@@ -34,6 +40,10 @@ extension ImmersiveBeeView {
         appState.beeSceneState.bee.position = appState.beeSceneState.beehiveInitialPosition
 
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
+
+        for handAnchorEntity in appState.handAnchorEntities {
+            handAnchorEntity.components.remove(PalmOpenGestureComponent.self)
+        }        
     }
 
     /// Creates a transparent glass cube at the given position, with the bee entity placed inside.

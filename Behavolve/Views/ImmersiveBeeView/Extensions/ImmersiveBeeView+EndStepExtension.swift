@@ -12,11 +12,7 @@ import UIKit
 
 // Extension for the End step (the last one)
 extension ImmersiveBeeView {
-    func performEndStep() {
-        if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
-            appState.currentImmersionStyle = .mixed
-        }
-    }
+    func performEndStep() {}
 
     func performCleanEndStep() {
         performCleanInteractionInForrestFullSpaceStep()

@@ -5,6 +5,7 @@
 //  Created by Michaël ATTAL on 24/04/2025.
 //
 
+import RealityKit
 import SwiftUI
 
 // Extension for the InteractionInForrestFullSpace step
@@ -12,7 +13,7 @@ extension ImmersiveBeeView {
     func performPrepareInteractionInForrestFullSpaceStep() async throws {
         let forest = try await loadForest()
         let (nextTextButton3D, prevTextButton3D) = try await load3DTextButtons()
-        forest.position = [0, 0, -7]
+        forest.position = [0, 0, -5]
         appState.beeSceneState.forest = forest
         appState.beeSceneState.nextTextButton3D = nextTextButton3D
         appState.beeSceneState.prevTextButton3D = prevTextButton3D
@@ -22,8 +23,10 @@ extension ImmersiveBeeView {
     }
 
     func performInteractionInForrestFullSpaceStep() {
-        // appState.currentImmersionStyle = .full
-                
+        if type(of: appState.currentImmersionStyle) != FullImmersionStyle.self {
+            appState.currentImmersionStyle = .full
+        }
+        
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "Water_Bottle" })
                 
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "Halo" })
@@ -36,7 +39,7 @@ extension ImmersiveBeeView {
 
         appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(appState.beeSceneState.lightSkySphereSourceFromForest)
                 
-        appState.beeSceneState.beehive.position = [14, 13, -24]
+        appState.beeSceneState.beehive.position = [14, 13, -22]
         
         appState.beeSceneState.bee.components.remove(MoveToComponent.self)
         appState.beeSceneState.bee.position = [5, 5, -5]
@@ -59,11 +62,15 @@ extension ImmersiveBeeView {
         appState.beeSceneState.beeImmersiveContentSceneEntity.addChild(appState.beeSceneState.forest)
         
         #if !targetEnvironment(simulator)
-        appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: .infinity)) // If hand proxity has been detected and no abrupt gesture then the bee will flee away forever and a notification will be send to end the experience
-        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))   
+        appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: .infinity))
+        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: .infinity))
         #endif
         
         appState.beeSceneState.bee.components.set(EntityProximityComponent(distanceToUser: 0, targetDistanceToUser: 10))
+        
+        appState.beeSceneState.therapist.components.remove(EnvironmentBlendingComponent.self)
+        appState.beeSceneState.bee.components.remove(EnvironmentBlendingComponent.self)
+        appState.beeSceneState.beehive.components.remove(EnvironmentBlendingComponent.self)
     }
 
     func performFinishedInteractionInForrestFullSpaceStep() async throws {
@@ -71,6 +78,10 @@ extension ImmersiveBeeView {
     }
     
     func performCleanInteractionInForrestFullSpaceStep() {
+        if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
+            appState.currentImmersionStyle = .mixed
+        }
+        
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "Forest_With_Picnic" })
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "SkySphere" })
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "NextTextButton3D" })
@@ -86,5 +97,15 @@ extension ImmersiveBeeView {
         addNectarGatheringToBee(nectarSpots: appState.beeSceneState.daffodilFlowerPot)
         appState.beeSceneState.therapist.position = appState.beeSceneState.therapistInitialPosition
         appState.beeSceneState.bee.components.set(UserProximityComponent(safeDistance: 1.0, fleeSpeed: 0.5, fleeDuration: 2))
+        
+        appState.beeSceneState.therapist.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+        appState.beeSceneState.bee.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+        appState.beeSceneState.beehive.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+        
+        #if !targetEnvironment(simulator)
+        appState.beeSceneState.bee.components.remove(FleeStateComponent.self)
+        appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
+        appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))
+        #endif
     }
 }

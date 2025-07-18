@@ -11,6 +11,10 @@ import RealityKit
 // Extension for the NeutralBeeGatheringNectarFromFlowers step
 extension ImmersiveBeeView {
     func performNeutralBeeGatheringNectarFromFlowersStep() {
+        for handAnchorEntity in appState.handAnchorEntities {
+            handAnchorEntity.components.remove(PalmOpenGestureComponent.self)
+        }
+
         appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "BeeGlassCube" })
         appState.beeSceneState.beeAudioPlaybackController.play()
 

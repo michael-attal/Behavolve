@@ -30,10 +30,56 @@
         "Root",
         "Flying_Bee",
         "SkinnedMeshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "084BD482-E65F-429B-8135-ECD26F0294B8",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
         "RootNode_0_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "084BD482-E65F-429B-8135-ECD26F0294B8",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "084BD482-E65F-429B-8135-ECD26F0294B8",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "084BD482-E65F-429B-8135-ECD26F0294B8",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -69,25 +115,11 @@
         "Root",
         "Flying_Bee",
         "SkinnedMeshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "084BD482-E65F-429B-8135-ECD26F0294B8",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "084BD482-E65F-429B-8135-ECD26F0294B8",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes"
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1"
       ],
       {
         "isExpanded" : true,
@@ -114,22 +146,6 @@
       [
         "084BD482-E65F-429B-8135-ECD26F0294B8",
         "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "084BD482-E65F-429B-8135-ECD26F0294B8",
-        "Root",
         "Flying_Bee"
       ],
       {
@@ -146,23 +162,7 @@
         "GLTF_SceneRootNode",
         "RootNode_0_0",
         "skeletal_1_1",
-        "GLTF_created_0",
-        "GLTF_created_0_rootJoint"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "084BD482-E65F-429B-8135-ECD26F0294B8",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1"
+        "GLTF_created_0"
       ],
       {
         "isExpanded" : true,
@@ -187,7 +187,7 @@
       [
         "0AC8040E-B526-4AE0-ACAF-85FE1C58360E",
         "root",
-        "_materials"
+        "Forest"
       ],
       {
         "isExpanded" : true,
@@ -213,7 +213,7 @@
       [
         "0AC8040E-B526-4AE0-ACAF-85FE1C58360E",
         "root",
-        "Forest"
+        "_materials"
       ],
       {
         "isExpanded" : true,
@@ -246,17 +246,7 @@
     "objectMetadataList" : [
       [
         "18E10823-679D-4620-8E3E-A00382323A06",
-        "Root",
-        "Material"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "18E10823-679D-4620-8E3E-A00382323A06",
-        "Root",
-        "Cube"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -274,7 +264,17 @@
       },
       [
         "18E10823-679D-4620-8E3E-A00382323A06",
-        "Root"
+        "Root",
+        "Cube"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "18E10823-679D-4620-8E3E-A00382323A06",
+        "Root",
+        "Material"
       ],
       {
         "isExpanded" : true,
@@ -300,26 +300,6 @@
         "23AD7BFC-E225-4280-ADF3-834054631B22",
         "root",
         "Forest_With_Low_Poly_Trees",
-        "_4K",
-        "tree_001"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "Forest_With_Low_Poly_Trees"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "Forest_With_Low_Poly_Trees",
         "_4K"
       ],
       {
@@ -341,56 +321,7 @@
         "root",
         "Forest_With_Low_Poly_Trees",
         "Forest_D",
-        "_4K_0_42"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "Forest_With_Low_Poly_Trees",
-        "Forest_D",
-        "_4K_0_23"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "Forest_With_Low_Poly_Trees",
-        "Forest_D",
         "_4K_0_12"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "_materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "23AD7BFC-E225-4280-ADF3-834054631B22",
-        "root",
-        "Forest_With_Low_Poly_Trees",
-        "Forest_D"
       ],
       {
         "isExpanded" : true,
@@ -410,9 +341,78 @@
       [
         "23AD7BFC-E225-4280-ADF3-834054631B22",
         "root",
+        "_materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
+        "Forest_With_Low_Poly_Trees",
+        "Forest_D",
+        "_4K_0_42"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
         "Forest_With_Low_Poly_Trees",
         "Forest_D",
         "_4K_0_48"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
+        "Forest_With_Low_Poly_Trees",
+        "Forest_D",
+        "_4K_0_23"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
+        "Forest_With_Low_Poly_Trees"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
+        "Forest_With_Low_Poly_Trees",
+        "_4K",
+        "tree_001"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "23AD7BFC-E225-4280-ADF3-834054631B22",
+        "root",
+        "Forest_With_Low_Poly_Trees",
+        "Forest_D"
       ],
       {
         "isExpanded" : true,
@@ -425,7 +425,15 @@
       [
         "2FBEE1E8-3F0D-424A-A38F-1BB00670370D",
         "root",
-        "bowl_of_fruit"
+        "Art_deco_picnic_suitcase"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2FBEE1E8-3F0D-424A-A38F-1BB00670370D",
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -444,15 +452,7 @@
       [
         "2FBEE1E8-3F0D-424A-A38F-1BB00670370D",
         "root",
-        "Art_deco_picnic_suitcase"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2FBEE1E8-3F0D-424A-A38F-1BB00670370D",
-        "root"
+        "bowl_of_fruit"
       ],
       {
         "isExpanded" : true,
@@ -478,7 +478,33 @@
       },
       [
         "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root"
+        "Root",
+        "Therapist_TCC",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
+        "Root",
+        "Therapist_TCC"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
+        "Root",
+        "Therapist_TCC",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2"
       ],
       {
         "isExpanded" : true,
@@ -489,6 +515,32 @@
         "Root",
         "Therapist_TCC",
         "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
+        "Root",
+        "Therapist_TCC",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
+        "Root",
+        "Therapist_TCC",
+        "SkinnedMeshes",
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -515,26 +567,6 @@
         "Root",
         "Therapist_TCC",
         "SkinnedMeshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root",
-        "Therapist_TCC"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root",
-        "Therapist_TCC",
-        "SkinnedMeshes",
         "Sketchfab_model",
         "f85782bc985f4e62bb69fd252d027cfc_fbx",
         "Object_2",
@@ -549,39 +581,7 @@
       },
       [
         "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root",
-        "Therapist_TCC",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
-        "RootNode",
-        "autorig_actor_Rigify"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root",
-        "Therapist_TCC",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "31189299-B7B6-428D-B268-C47B6BD3B4FC",
-        "Root",
-        "Therapist_TCC",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -595,7 +595,10 @@
         "377C89A5-01EC-4978-9696-BEFC030DED81",
         "Root",
         "Flying_Bee",
-        "SkinnedMeshes"
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
       ],
       {
         "isExpanded" : true,
@@ -609,9 +612,7 @@
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0"
+        "RootNode_0_0"
       ],
       {
         "isExpanded" : true,
@@ -620,15 +621,7 @@
       [
         "377C89A5-01EC-4978-9696-BEFC030DED81",
         "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0",
-        "GLTF_created_0_rootJoint"
+        "Flying_Bee"
       ],
       {
         "isExpanded" : true,
@@ -640,21 +633,6 @@
         "Flying_Bee",
         "SkinnedMeshes",
         "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "377C89A5-01EC-4978-9696-BEFC030DED81",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1"
       ],
       {
         "isExpanded" : true,
@@ -673,6 +651,28 @@
         "GLTF_created_0",
         "GLTF_created_0_rootJoint",
         "root_jnt_2_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "377C89A5-01EC-4978-9696-BEFC030DED81",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "377C89A5-01EC-4978-9696-BEFC030DED81",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -705,7 +705,10 @@
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
-        "RootNode_0_0"
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint"
       ],
       {
         "isExpanded" : true,
@@ -717,7 +720,10 @@
         "Flying_Bee",
         "SkinnedMeshes",
         "Sketchfab_model",
-        "root"
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1"
       ],
       {
         "isExpanded" : true,
@@ -734,20 +740,14 @@
       [
         "377C89A5-01EC-4978-9696-BEFC030DED81",
         "Root",
-        "Flying_Bee"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "377C89A5-01EC-4978-9696-BEFC030DED81",
-        "Root",
         "Flying_Bee",
         "SkinnedMeshes",
         "Sketchfab_model",
         "root",
-        "GLTF_SceneRootNode"
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0"
       ],
       {
         "isExpanded" : true,
@@ -780,7 +780,7 @@
       [
         "58FBE6B4-BEAD-4A36-9D0C-FBBFE3077599",
         "Root",
-        "Cylinder"
+        "Cube"
       ],
       {
         "isExpanded" : true,
@@ -798,7 +798,7 @@
       [
         "58FBE6B4-BEAD-4A36-9D0C-FBBFE3077599",
         "Root",
-        "Cube"
+        "Cylinder"
       ],
       {
         "isExpanded" : true,
@@ -835,8 +835,67 @@
       [
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
-        "Water_Bottle",
-        "Mesh_0"
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Design_2",
+        "Object_9"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Ring_Plastic_1",
+        "Object_7"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Ring_Plastic_1",
+        "Object_7"
       ],
       {
         "isExpanded" : true,
@@ -859,8 +918,102 @@
       [
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
+        "water_bottle_2",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Design_2",
+        "Object_9"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Bottle_3",
+        "Object_11"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0",
+        "Object_4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
         "water_bottle",
         "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Design_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -877,52 +1030,8 @@
       [
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Bottle_3"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0",
-        "Object_4"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root"
+        "Water_Bottle",
+        "Mesh_0"
       ],
       {
         "isExpanded" : true,
@@ -947,10 +1056,7 @@
         "Root",
         "water_bottle",
         "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Bottle_3"
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -959,22 +1065,7 @@
       [
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Ring_Plastic_1",
-        "Object_7"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
+        "water_bottle",
         "Meshes",
         "Sketchfab_model",
         "root",
@@ -988,9 +1079,38 @@
       [
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
-        "water_bottle_2",
+        "water_bottle",
         "Meshes",
-        "Sketchfab_model"
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Design_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Bottle_3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
+        "Root",
+        "water_bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -1015,44 +1135,6 @@
         "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
         "Root",
         "water_bottle",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
         "Meshes",
         "Sketchfab_model",
         "root",
@@ -1070,32 +1152,6 @@
         "water_bottle_2",
         "Meshes",
         "Sketchfab_model",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
         "Cover_0"
@@ -1112,63 +1168,7 @@
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
-        "Bottle_3",
-        "Object_11"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2",
-        "Object_9"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2",
-        "Object_9"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle_2",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "6ED7F55B-0B72-4AB0-B46B-1DB2BC19607D",
-        "Root",
-        "water_bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Ring_Plastic_1",
-        "Object_7"
+        "Bottle_3"
       ],
       {
         "isExpanded" : true,
@@ -1205,6 +1205,17 @@
       [
         "723C769A-5513-418D-AD95-41A92CE8B749",
         "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "723C769A-5513-418D-AD95-41A92CE8B749",
+        "Root",
         "pots_and_vase_with_flowers"
       ],
       {
@@ -1215,8 +1226,7 @@
         "723C769A-5513-418D-AD95-41A92CE8B749",
         "Root",
         "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model"
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -1242,21 +1252,63 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
-      [
-        "723C769A-5513-418D-AD95-41A92CE8B749",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       }
     ]
   },
   "7652EE20-9B4E-401A-8065-567E45A84C1B" : {
     "objectMetadataList" : [
+      [
+        "7652EE20-9B4E-401A-8065-567E45A84C1B",
+        "Root",
+        "wooden_beehive",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7652EE20-9B4E-401A-8065-567E45A84C1B",
+        "Root",
+        "wooden_beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx",
+        "RootNode",
+        "world_root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7652EE20-9B4E-401A-8065-567E45A84C1B",
+        "Root",
+        "wooden_beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7652EE20-9B4E-401A-8065-567E45A84C1B",
+        "Root",
+        "wooden_beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx",
+        "RootNode",
+        "world_root",
+        "wjfjabl_LOD0_TIER3_000"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "7652EE20-9B4E-401A-8065-567E45A84C1B",
         "Root",
@@ -1283,12 +1335,7 @@
         "7652EE20-9B4E-401A-8065-567E45A84C1B",
         "Root",
         "wooden_beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode",
-        "world_root",
-        "wjfjabl_LOD0_TIER3_000"
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -1313,53 +1360,6 @@
         "world_root",
         "wjfjabl_LOD0_TIER3_000",
         "wjfjabl_LOD0_TIER3_000_MatID_1_0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7652EE20-9B4E-401A-8065-567E45A84C1B",
-        "Root",
-        "wooden_beehive",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7652EE20-9B4E-401A-8065-567E45A84C1B",
-        "Root",
-        "wooden_beehive",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7652EE20-9B4E-401A-8065-567E45A84C1B",
-        "Root",
-        "wooden_beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7652EE20-9B4E-401A-8065-567E45A84C1B",
-        "Root",
-        "wooden_beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode",
-        "world_root"
       ],
       {
         "isExpanded" : true,
@@ -1392,7 +1392,9 @@
     "objectMetadataList" : [
       [
         "7973F962-0557-41B5-8423-626C21711043",
-        "Root"
+        "Root",
+        "Material",
+        "nodegraph"
       ],
       {
         "isExpanded" : true,
@@ -1400,8 +1402,7 @@
       },
       [
         "7973F962-0557-41B5-8423-626C21711043",
-        "Root",
-        "Cube"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -1419,8 +1420,7 @@
       [
         "7973F962-0557-41B5-8423-626C21711043",
         "Root",
-        "Material",
-        "nodegraph"
+        "Cube"
       ],
       {
         "isExpanded" : true,
@@ -1434,7 +1434,47 @@
         "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
         "Root",
         "Forest",
+        "Art_deco_picnic_suitcase"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
+        "Root",
+        "Forest",
+        "_materials",
+        "Ground_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
+        "Root",
+        "Forest",
         "Forest"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
+        "Root",
+        "Forest",
+        "_materials",
+        "SimpleProceduralLeaf_1"
       ],
       {
         "isExpanded" : true,
@@ -1456,7 +1496,7 @@
         "Root",
         "Forest",
         "_materials",
-        "Ground_2"
+        "Bark"
       ],
       {
         "isExpanded" : true,
@@ -1468,46 +1508,6 @@
         "Forest",
         "_materials",
         "SimpleProceduralLeaf"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
-        "Root",
-        "Forest",
-        "Art_deco_picnic_suitcase"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
-        "Root",
-        "Forest",
-        "_materials",
-        "Bark"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "79E38019-7CA8-48D4-B2A8-8498EF3FBDB4",
-        "Root",
-        "Forest",
-        "_materials",
-        "SimpleProceduralLeaf_1"
       ],
       {
         "isExpanded" : true,
@@ -1561,8 +1561,7 @@
       [
         "8C91C853-8655-497B-AB59-4FAF0008C7B9",
         "root",
-        "_materials",
-        "Bark"
+        "_materials"
       ],
       {
         "isExpanded" : true,
@@ -1571,7 +1570,8 @@
       [
         "8C91C853-8655-497B-AB59-4FAF0008C7B9",
         "root",
-        "_materials"
+        "_materials",
+        "Bark"
       ],
       {
         "isExpanded" : true,
@@ -1596,10 +1596,11 @@
       [
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
         "Root",
-        "SkySphere"
+        "Forest",
+        "Lowpoly_tree__with_random_season_",
+        "_4K"
       ],
       {
-        "disallowsFraming" : true,
         "isExpanded" : true,
         "isLocked" : false
       },
@@ -1608,7 +1609,20 @@
         "Root",
         "Forest",
         "Lowpoly_tree__with_random_season_",
-        "_4K"
+        "Forest_D",
+        "_4K_0_9"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "96A9D80C-DA9E-49AA-9543-A709586A7613",
+        "Root",
+        "Forest",
+        "Lowpoly_tree__with_random_season_",
+        "Forest_D",
+        "_4K_0_11"
       ],
       {
         "isExpanded" : true,
@@ -1631,29 +1645,6 @@
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
         "Root",
         "Forest",
-        "Lowpoly_tree__with_random_season_",
-        "Forest_D",
-        "_4K_0_10"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root",
-        "Forest",
-        "_materials",
-        "SimpleProceduralLeaf"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root",
-        "Forest",
         "_materials",
         "Bark"
       ],
@@ -1664,8 +1655,21 @@
       [
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
         "Root",
+        "SkyDome"
+      ],
+      {
+        "disallowsFraming" : true,
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "96A9D80C-DA9E-49AA-9543-A709586A7613",
+        "Root",
         "Forest",
-        "Lowpoly_tree__with_random_season_"
+        "Lowpoly_tree__with_random_season_",
+        "Forest_D",
+        "_4K_0_10",
+        "tree_001"
       ],
       {
         "isExpanded" : true,
@@ -1693,7 +1697,8 @@
       },
       [
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root"
+        "Root",
+        "Forest"
       ],
       {
         "isExpanded" : true,
@@ -1704,9 +1709,35 @@
         "Root",
         "Forest",
         "Lowpoly_tree__with_random_season_",
-        "Forest_D",
-        "_4K_0_10",
-        "tree_001"
+        "Forest_D"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "96A9D80C-DA9E-49AA-9543-A709586A7613",
+        "Root",
+        "Forest",
+        "Lowpoly_tree__with_random_season_"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "96A9D80C-DA9E-49AA-9543-A709586A7613",
+        "Root",
+        "Forest",
+        "_materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "96A9D80C-DA9E-49AA-9543-A709586A7613",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -1728,7 +1759,8 @@
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
         "Root",
         "Forest",
-        "_materials"
+        "_materials",
+        "SimpleProceduralLeaf"
       ],
       {
         "isExpanded" : true,
@@ -1750,31 +1782,10 @@
       [
         "96A9D80C-DA9E-49AA-9543-A709586A7613",
         "Root",
-        "Forest"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root",
-        "SkyDome"
+        "SkySphere"
       ],
       {
         "disallowsFraming" : true,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root",
-        "Forest",
-        "Lowpoly_tree__with_random_season_",
-        "Forest_D",
-        "_4K_0_11"
-      ],
-      {
         "isExpanded" : true,
         "isLocked" : false
       },
@@ -1784,18 +1795,7 @@
         "Forest",
         "Lowpoly_tree__with_random_season_",
         "Forest_D",
-        "_4K_0_9"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "96A9D80C-DA9E-49AA-9543-A709586A7613",
-        "Root",
-        "Forest",
-        "Lowpoly_tree__with_random_season_",
-        "Forest_D"
+        "_4K_0_10"
       ],
       {
         "isExpanded" : true,
@@ -1810,7 +1810,75 @@
         "Root",
         "Water_Bottle",
         "Meshes",
-        "Sketchfab_model"
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0",
+        "Object_4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Water_Bottle",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Cylinder",
+        "DefaultMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Water_Bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Water_Bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Bottle_3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Cube",
+        "DefaultMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -1839,22 +1907,7 @@
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
-        "Cover_0",
-        "Object_4"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
-        "Water_Bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0"
+        "Design_2"
       ],
       {
         "isExpanded" : true,
@@ -1883,15 +1936,8 @@
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode",
-        "Bottle_3"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root"
+        "Cover_0",
+        "Object_5"
       ],
       {
         "isExpanded" : true,
@@ -1901,7 +1947,24 @@
         "99C1246B-9150-477F-A2DC-39F589399865",
         "Root",
         "Water_Bottle",
-        "Meshes"
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "99C1246B-9150-477F-A2DC-39F589399865",
+        "Root",
+        "Water_Bottle",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
       ],
       {
         "isExpanded" : true,
@@ -1925,15 +1988,6 @@
       [
         "99C1246B-9150-477F-A2DC-39F589399865",
         "Root",
-        "Water_Bottle"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
         "Water_Bottle",
         "Meshes",
         "Sketchfab_model",
@@ -1948,10 +2002,7 @@
       [
         "99C1246B-9150-477F-A2DC-39F589399865",
         "Root",
-        "Water_Bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root"
+        "Water_Bottle"
       ],
       {
         "isExpanded" : true,
@@ -1962,58 +2013,7 @@
         "Root",
         "Water_Bottle",
         "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
-        "Cylinder",
-        "DefaultMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
-        "Water_Bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
-        "Cube",
-        "DefaultMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "99C1246B-9150-477F-A2DC-39F589399865",
-        "Root",
-        "Water_Bottle",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0",
-        "Object_5"
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -2025,7 +2025,9 @@
     "objectMetadataList" : [
       [
         "A0609F0B-75B3-4C0D-AF43-A9443C58C612",
-        "Root"
+        "Root",
+        "Forest_With_Picnic",
+        "Picnic"
       ],
       {
         "isExpanded" : true,
@@ -2044,6 +2046,25 @@
         "A0609F0B-75B3-4C0D-AF43-A9443C58C612",
         "Root",
         "Forest_With_Picnic"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A0609F0B-75B3-4C0D-AF43-A9443C58C612",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A0609F0B-75B3-4C0D-AF43-A9443C58C612",
+        "Root",
+        "Forest_With_Picnic",
+        "Picnic",
+        "Art_deco_picnic_suitcase"
       ],
       {
         "isExpanded" : true,
@@ -2068,8 +2089,11 @@
       [
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root",
-        "flower_with_vase",
-        "Meshes"
+        "pots_and_vase_with_flowers",
+        "Meshes",
+        "Sketchfab_model",
+        "allflowersspot_obj_cleaner_materialmerger_gles",
+        "Object_12"
       ],
       {
         "isExpanded" : true,
@@ -2079,6 +2103,62 @@
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root",
         "pots_and_vase_with_flowers"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "flower_with_vase",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
+        "Sketchfab_model",
+        "allflowersspot_obj_cleaner_materialmerger_gles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "flower_with_vase",
+        "Meshes",
+        "Sketchfab_model",
+        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles",
+        "Object_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
+        "Root",
+        "flower_with_vase",
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -2100,27 +2180,6 @@
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root",
         "pots_and_vase_with_flowers",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "flower_with_vase",
         "Meshes",
         "Sketchfab_model"
       ],
@@ -2131,44 +2190,6 @@
       [
         "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
         "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model",
-        "allflowersspot_obj_cleaner_materialmerger_gles"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model",
-        "allflowersspot_obj_cleaner_materialmerger_gles",
-        "Object_12"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "A7828AD8-A23C-46DE-8CD2-9E29DBD03C67",
-        "Root",
-        "flower_with_vase",
-        "Meshes",
-        "Sketchfab_model",
-        "Sun_flower_with_Vase_obj_cleaner_materialmerger_gles",
-        "Object_2"
       ],
       {
         "isExpanded" : true,
@@ -2193,32 +2214,6 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
-        "Water_Bottle",
-        "water_bottle_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
-        "RootNode",
-        "autorig_actor_Rigify",
-        "Object_5"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
         "Therapist",
         "SkinnedMeshes",
         "Sketchfab_model",
@@ -2234,26 +2229,11 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
         "Water_Bottle",
         "water_bottle_2",
         "Meshes",
         "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0"
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -2278,8 +2258,105 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
         "Water_Bottle",
-        "Water_Bottle_1"
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0",
+        "Object_5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Bottle_3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0",
+        "Object_4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
+        "Sketchfab_model",
+        "allflowersspot_obj_cleaner_materialmerger_gles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flowers",
+        "Daffodil_flower_pot"
       ],
       {
         "isExpanded" : true,
@@ -2290,10 +2367,7 @@
         "Root",
         "Flying_Bee",
         "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0"
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -2318,9 +2392,311 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify",
+        "Object_5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
         "Flying_Bee",
         "SkinnedMeshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "pots_and_vase_with_flowers",
+        "Meshes",
         "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "Water_Bottle_1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx",
+        "RootNode",
+        "world_root",
+        "wjfjabl_LOD0_TIER3_000"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Water"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/Flying_Bee\/bee_mp3"
+        }
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "Water_Bottle_1",
+        "Mesh_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Ring_Plastic_1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx",
+        "RootNode",
+        "world_root",
+        "wjfjabl_LOD0_TIER3_000",
+        "wjfjabl_LOD0_TIER3_000_MatID_1_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Design_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Flying_Bee",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "RootNode_0_0",
+        "skeletal_1_1",
+        "GLTF_created_0",
+        "GLTF_created_0_rootJoint",
+        "root_jnt_2_2"
       ],
       {
         "isExpanded" : true,
@@ -2337,11 +2713,14 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
-        "Wooden_Beehive",
+        "Water_Bottle",
+        "water_bottle_2",
         "Meshes",
         "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode"
+        "root",
+        "GLTF_SceneRootNode",
+        "Ring_Plastic_1",
+        "Object_7"
       ],
       {
         "isExpanded" : true,
@@ -2354,7 +2733,46 @@
         "SkinnedMeshes",
         "Sketchfab_model",
         "root",
-        "GLTF_SceneRootNode"
+        "GLTF_SceneRootNode",
+        "RootNode_0_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
+        "Root",
+        "Water_Bottle",
+        "water_bottle_2",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cover_0"
       ],
       {
         "isExpanded" : true,
@@ -2382,224 +2800,6 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Bottle_3"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Water"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0",
-        "Object_5"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Design_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode",
-        "world_root",
-        "wjfjabl_LOD0_TIER3_000"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flowers",
-        "Daffodil_flower_pot"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Ring_Plastic_1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
         "Wooden_Beehive",
         "Meshes",
         "Sketchfab_model",
@@ -2614,69 +2814,8 @@
       [
         "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
         "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0",
-        "GLTF_created_0_rootJoint",
-        "root_jnt_2_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : false,
-        "selectedAudioFilePrim" : {
-          "string" : "\/Root\/Flying_Bee\/bee_mp3"
-        }
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
         "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1",
-        "GLTF_created_0",
-        "GLTF_created_0_rootJoint"
+        "water_bottle_2"
       ],
       {
         "isExpanded" : true,
@@ -2689,125 +2828,7 @@
         "Meshes",
         "Sketchfab_model",
         "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode",
-        "world_root",
-        "wjfjabl_LOD0_TIER3_000",
-        "wjfjabl_LOD0_TIER3_000_MatID_1_0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
         "RootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cover_0",
-        "Object_4"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Flying_Bee",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "RootNode_0_0",
-        "skeletal_1_1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "pots_and_vase_with_flowers",
-        "Meshes",
-        "Sketchfab_model",
-        "allflowersspot_obj_cleaner_materialmerger_gles"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Ring_Plastic_1",
-        "Object_7"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AAB0E9C4-770F-46B0-8DE3-90BA04648C77",
-        "Root",
-        "Water_Bottle",
-        "Water_Bottle_1",
-        "Mesh_0"
       ],
       {
         "isExpanded" : true,
@@ -2837,7 +2858,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Left"
+        "Sphere_Right"
       ],
       {
         "isExpanded" : true,
@@ -2846,7 +2867,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Right"
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -2866,7 +2887,20 @@
     "objectMetadataList" : [
       [
         "B40D299B-8783-45D0-9264-D7E768275298",
-        "Root"
+        "Root",
+        "Daffodil_flower_pot",
+        "Daffodil",
+        "Daffodil_geometry"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "B40D299B-8783-45D0-9264-D7E768275298",
+        "Root",
+        "Daffodil_flower_pot",
+        "Daffodil"
       ],
       {
         "isExpanded" : true,
@@ -2884,10 +2918,7 @@
       },
       [
         "B40D299B-8783-45D0-9264-D7E768275298",
-        "Root",
-        "Daffodil_flower_pot",
-        "Daffodil",
-        "Daffodil_geometry"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -2897,16 +2928,6 @@
         "B40D299B-8783-45D0-9264-D7E768275298",
         "Root",
         "Daffodil_flower_pot"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "B40D299B-8783-45D0-9264-D7E768275298",
-        "Root",
-        "Daffodil_flower_pot",
-        "Daffodil"
       ],
       {
         "isExpanded" : true,
@@ -2928,6 +2949,46 @@
   },
   "C2866E72-8CD2-4B52-A8A0-8EEE3F479018" : {
     "objectMetadataList" : [
+      [
+        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
+        "Root",
+        "Therapist",
+        "SkinnedMeshes",
+        "Sketchfab_model",
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
         "Root",
@@ -2960,48 +3021,6 @@
       },
       [
         "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
-        "RootNode",
-        "autorig_actor_Rigify"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
-        "RootNode",
-        "autorig_actor_Rigify",
-        "Object_5"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
-        "Root",
-        "Therapist",
-        "SkinnedMeshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "C2866E72-8CD2-4B52-A8A0-8EEE3F479018",
         "Root"
       ],
       {
@@ -3024,9 +3043,7 @@
         "Therapist",
         "SkinnedMeshes",
         "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx",
-        "Object_2",
-        "RootNode"
+        "f85782bc985f4e62bb69fd252d027cfc_fbx"
       ],
       {
         "isExpanded" : true,
@@ -3038,7 +3055,11 @@
         "Therapist",
         "SkinnedMeshes",
         "Sketchfab_model",
-        "f85782bc985f4e62bb69fd252d027cfc_fbx"
+        "f85782bc985f4e62bb69fd252d027cfc_fbx",
+        "Object_2",
+        "RootNode",
+        "autorig_actor_Rigify",
+        "Object_5"
       ],
       {
         "isExpanded" : true,
@@ -3064,6 +3085,52 @@
         "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
         "Root",
         "Wooden_Beehive",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model",
+        "Wooden_Beehive_wjfjabl_Low_fbx",
+        "RootNode",
+        "world_root",
+        "wjfjabl_LOD0_TIER3_000",
+        "wjfjabl_LOD0_TIER3_000_MatID_1_0"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
+        "Root",
+        "Wooden_Beehive",
         "Meshes",
         "Sketchfab_model",
         "Wooden_Beehive_wjfjabl_Low_fbx",
@@ -3077,9 +3144,7 @@
       [
         "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
         "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model"
+        "Wooden_Beehive"
       ],
       {
         "isExpanded" : true,
@@ -3107,62 +3172,18 @@
         "Wooden_Beehive_wjfjabl_Low_fbx",
         "RootNode",
         "world_root",
-        "wjfjabl_LOD0_TIER3_000",
-        "wjfjabl_LOD0_TIER3_000_MatID_1_0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
-        "Root",
-        "Wooden_Beehive"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
-        "Root",
-        "Wooden_Beehive",
-        "Meshes",
-        "Sketchfab_model",
-        "Wooden_Beehive_wjfjabl_Low_fbx",
-        "RootNode",
-        "world_root",
         "wjfjabl_LOD0_TIER3_000"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "CAF9FF9C-F850-482B-A48F-5BB69917B1B1",
+        "Root",
+        "Wooden_Beehive",
+        "Meshes",
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -3174,7 +3195,8 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -3182,8 +3204,7 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -3222,7 +3243,8 @@
     "objectMetadataList" : [
       [
         "E15FD315-94C8-40C5-8B95-4AC8AEB92825",
-        "Root"
+        "Root",
+        "Material"
       ],
       {
         "isExpanded" : true,
@@ -3230,8 +3252,7 @@
       },
       [
         "E15FD315-94C8-40C5-8B95-4AC8AEB92825",
-        "Root",
-        "Material"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -3267,6 +3288,17 @@
         "Root",
         "water_bottle_2",
         "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2",
+        "Meshes",
         "Sketchfab_model",
         "root",
         "GLTF_SceneRootNode"
@@ -3277,9 +3309,35 @@
       },
       [
         "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
         "Root",
         "water_bottle_2",
         "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Capsule",
+        "Cylinder"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
+        "Root",
+        "water_bottle_2"
       ],
       {
         "isExpanded" : true,
@@ -3299,47 +3357,10 @@
       [
         "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
         "Root",
-        "water_bottle_2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
-        "Root",
-        "water_bottle_2",
-        "Meshes",
-        "Sketchfab_model"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
-        "Root",
         "water_bottle_2",
         "Meshes",
         "Sketchfab_model",
         "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
-        "Capsule",
-        "Cylinder"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "F5DD40D3-F5C1-4B32-8D81-ED09747AC285",
-        "Root"
       ],
       {
         "isExpanded" : true,

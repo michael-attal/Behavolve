@@ -18,7 +18,7 @@ final class NectarGatheringSystem: @MainActor System {
     private let epsilon: Float = 0.01 // arrival tolerance
 
     private static let query = EntityQuery(
-        where: .has(NectarGatheringComponent.self)
+        where: .has(NectarGatheringComponent.self) && !.has(FleeStateComponent.self)
     )
 
     required init(scene: RealityKit.Scene) {}

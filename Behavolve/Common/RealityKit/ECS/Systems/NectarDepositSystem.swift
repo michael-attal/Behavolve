@@ -14,7 +14,9 @@ final class NectarDepositSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(MovementSystem.self), .after(NectarGatheringSystem.self)] }
 
     /// Entities currently in deposit phase (no gathering component).
-    private static let query = EntityQuery(where: .has(NectarDepositComponent.self))
+    private static let query = EntityQuery(
+        where: .has(NectarDepositComponent.self) && !.has(FleeStateComponent.self)
+    )
 
     private let epsilon: Float = 0.01
 

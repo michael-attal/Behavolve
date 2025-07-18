@@ -12,7 +12,7 @@ import SwiftUI
 struct MenuView: View {
     @Environment(AppState.self) private var appState
 
-    @State var currentSunIconSize = CGFloat(90)
+    @State var currentTopLeftIconSize = CGFloat(140)
     @State var selectedScene: ImmersiveViewAvailable = .bee
     @State private var showingSettings = false
 
@@ -115,15 +115,42 @@ struct MenuView: View {
                 }
                 .padding()
 
-                // Sun image at the top-left corner
-                Image(systemName: "sun.max")
-                    .resizable()
-                    .frame(width: currentSunIconSize, height: currentSunIconSize)
-                    .position(x: 110, y: 110)
-                    .foregroundStyle(.yellow)
+                // Images at the top-left corner
+                Group {
+                    Image(systemName: "brain.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 30)
+                        // .font(.system(size: 30, weight: .thin))
+                        .position(x: 50, y: 50)
+                        .foregroundStyle(.white)
+
+                    Image("chamomile-transparent-fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: currentTopLeftIconSize)
+                        .position(x: 110, y: 110)
+                        .foregroundStyle(.white)
+
+                    Image(systemName: "cross.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 30)
+                        // .font(.system(size: 30, weight: .thin))
+                        .position(x: 170, y: 50)
+                        .foregroundStyle(.white)
+
+                    Image(systemName: "suit.heart.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 30)
+                        // .font(.system(size: 30, weight: .thin))
+                        .position(x: 170, y: 170)
+                        .foregroundStyle(.white)
+                }
 
                 // Wave image at position top-right
-                WaveView(symbolEffect: .variableColor, symbolEffectOptions: .speed(0.2), color: .blue)
+                WaveView(symbolEffect: .variableColor, symbolEffectOptions: .speed(0.2))
                     .position(x: geometry.size.width - 120, y: 80)
 
                 // Wave image at position middle-left
@@ -131,7 +158,7 @@ struct MenuView: View {
                     .position(x: 80, y: geometry.size.height / 2)
 
                 // Wave image at position bottom-left
-                WaveView(symbolEffect: .breathe, symbolEffectOptions: .speed(0.2), color: .blue)
+                WaveView(symbolEffect: .breathe, symbolEffectOptions: .speed(0.2))
                     .position(x: 120, y: geometry.size.height - 120)
 
                 // Wave image at position bottom-right
@@ -141,7 +168,7 @@ struct MenuView: View {
         }
         .onAppear {
             withAnimation(.linear(duration: 5.0).repeatForever(autoreverses: true)) {
-                currentSunIconSize += 40
+                currentTopLeftIconSize += 40
             }
         }
     }
@@ -150,13 +177,16 @@ struct MenuView: View {
 struct WaveView<Effect: SymbolEffect & IndefiniteSymbolEffect>: View {
     var symbolEffect: Effect
     var symbolEffectOptions: SymbolEffectOptions = .default
-
-    var color: Color = .cyan
+    var width: CGFloat = 40
+    var color: Color = .white // .cyan
+    var weight: Font.Weight? = .bold // .thin
 
     var body: some View {
         Image(systemName: "water.waves")
             .resizable()
-            .frame(width: 50, height: 50)
+            .scaledToFit()
+            .frame(height: width)
+            .font(.system(size: width, weight: weight))
             .symbolEffect(symbolEffect, options: symbolEffectOptions)
             .padding()
             .foregroundStyle(color)

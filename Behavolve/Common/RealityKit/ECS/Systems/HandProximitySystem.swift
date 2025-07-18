@@ -44,7 +44,12 @@ final class HandProximitySystem: @MainActor System {
                 // Compute an escape target 1.5× farther in the opposite direction.
                 let dir = normalize(model.position(relativeTo: nil) -
                     nearest.position(relativeTo: nil))
-                let target = model.position(relativeTo: nil) + dir * cfg.safeDistance * 1.5
+                var target = model.position(relativeTo: nil) + dir * cfg.safeDistance * 1.5
+
+                if cfg.fleeDuration == .infinity {
+                    // target *= Float(cfg.fleeDuration)
+                    target *= 10
+                }
 
                 // Replace ongoing MoveTo if any.
                 entity.components.remove(MoveToComponent.self)

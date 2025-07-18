@@ -49,8 +49,17 @@ final class HandCollisionSystem: @MainActor System {
                     let dir = normalize(model.position(relativeTo: nil) -
                         hand.position(relativeTo: nil))
                     // model.applyLinearImpulse(dir * cfg.impulseStrength, relativeTo: nil)
+
+                    var target = dir
+
+                    if cfg.recoverDuration == .infinity {
+                        // let fleeDistance = Float(cfg.recoverDuration) * cfg.impulseStrength
+                        // target *= Float(cfg.recoverDuration)
+                        target *= 10
+                    }
+
                     entity.components.set(
-                        MoveToComponent(destination: dir,
+                        MoveToComponent(destination: target,
                                         speed: 1 * cfg.impulseStrength,
                                         epsilon: 0.02)
                     )

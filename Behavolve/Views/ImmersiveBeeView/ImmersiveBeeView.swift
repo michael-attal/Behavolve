@@ -219,6 +219,10 @@ struct ImmersiveBeeView: View {
                             // Open post assessment when therapy is finished
                             Task { @MainActor in
                                 performCleanEndStep()
+                                appState.beeSceneState.therapist.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
+                                if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
+                                    appState.currentImmersionStyle = .mixed
+                                }
                                 openWindow(id: appState.BeeScenePostSessionAssessmentWindowID)
                                 appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = true
                             }

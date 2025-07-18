@@ -104,7 +104,7 @@ def Xform "Root"
     def RealityKitAudioFile "bee_mp3"
     {
         uniform asset file = @../../Audios/bee.mp3@
-        uniform bool shouldLoop = 0
+        uniform bool shouldLoop = 1
     }
 }
 
