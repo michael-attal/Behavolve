@@ -54,6 +54,8 @@ struct ImmersiveBeeView: View {
                     AppState.debugMeshRoot = debugRoot
                     content.add(debugRoot)
                 }
+                // Add brightness in the app. I don’t know why the model is so dark in mixed space, even though there is enough light in the room.
+                addDefaultLighting(to: immersiveContentEntity)
                 #endif
 
                 // Add a plane ground to not let the watter bottle go beyond the scene in simulator // Also need it in real device since scene mesh reconstruction is not by made default in app
@@ -219,10 +221,6 @@ struct ImmersiveBeeView: View {
                             // Open post assessment when therapy is finished
                             Task { @MainActor in
                                 performCleanEndStep()
-                                appState.beeSceneState.therapist.components.set(EnvironmentBlendingComponent(preferredBlendingMode: .occluded(by: .surroundings)))
-                                if type(of: appState.currentImmersionStyle) != MixedImmersionStyle.self {
-                                    appState.currentImmersionStyle = .mixed
-                                }
                                 openWindow(id: appState.BeeScenePostSessionAssessmentWindowID)
                                 appState.beeSceneState.isPostSessionAssessmentFormWindowOpened = true
                             }
@@ -293,7 +291,7 @@ struct ImmersiveBeeView: View {
         .onReceive(NotificationCenter.default.publisher(for: .abruptGestureDetected)) { _ in
             if (appState.beeSceneState.step.type == .interactionInOwnEnvironment || appState.beeSceneState.step.type == .interactionInForrestFullSpace) && appState.beeSceneState.step.isCurrentStepConfirmed == true {
                 print("🤚 Abrupt gesture detected")
-                appState.beeSceneState.warningsText = "Oops! An abrupt gesture was detected – try to move gently so the bee doesn’t get scared."
+                appState.beeSceneState.warningsText = "Oops! An abrupt gesture was detected – Move your hands gently so the bee doesn’t get scared."
                 appState.beeSceneState.warningsTextID = UUID()
             }
         }
@@ -361,6 +359,7 @@ struct ImmersiveBeeView: View {
         CalmMotionSystem.registerSystem()
 
         FleeStateComponent.registerComponent()
+        FleeStateSystem.registerSystem()
 
         TargetReachedComponent.registerComponent()
         TargetReachedSystem.registerSystem()

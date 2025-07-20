@@ -64,7 +64,7 @@ struct ImmersiveBeeSceneStep: ImmersiveSceneStep {
     var isFinished: Bool = false
     var isCurrentStepConfirmed: Bool = false
     var isPreviousStep: Bool = false
-    
+
     mutating func next() {
         switch type {
         case .neutralIdle: type = .neutralExplanation
@@ -176,11 +176,15 @@ struct ImmersiveBeeSceneStep: ImmersiveSceneStep {
 
         case .neutralExplanation:
             return """
-            Let me explain how bees behave in their natural environment. Bees are fascinating creatures that play a vital role in our ecosystem. They are actually quite predictable and peaceful when undisturbed.
+            You can observe the bee inside its protective cube. If you feel confident enough, you can even move the cube by tapping on it and dragging it to a new spot. In the next step, you’ll have the opportunity to watch the bee as it collects nectar from the flowers near you.
 
-            In their daily routine, bees follow specific patterns: they leave their hive, search for flowers, collect nectar and pollen, and return home. They're not interested in humans at all - they're focused on their important work!
+            Before we continue, let me explain how bees behave in their natural environment. Bees are fascinating creatures that play a vital role in our ecosystem. When undisturbed, they are actually quite predictable and peaceful.
 
-            I'll show you these behaviors step by step, starting with a simple demonstration. This will help you understand that bees are not actively seeking to harm anyone. They're simply busy workers doing their job.
+            In their daily routine, bees follow specific patterns: they leave their hive, search for flowers, collect nectar and pollen, and return home. They're not interested in humans at all – they're focused on their important work!
+
+            Bees are not actively seeking to harm anyone. They're simply busy workers doing their job.
+
+            Are you ready for the next step, where the bee will collect nectar from the flowers placed next to you?
 
             Remember, you're completely safe here. We can pause or stop at any time if you feel uncomfortable. Would you like to see how a bee typically moves around flowers?
             """

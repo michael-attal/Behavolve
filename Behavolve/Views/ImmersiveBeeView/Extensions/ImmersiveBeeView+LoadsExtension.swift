@@ -11,6 +11,30 @@ import SwiftUI
 
 // Extension for loading asseets in RealityView
 extension ImmersiveBeeView {
+    func addDefaultLighting(to scene: Entity) {
+        let directionalLight = Entity()
+        directionalLight.name = "DirectionalLightMixedSpace"
+        directionalLight.components.set(
+            DirectionalLightComponent(
+                color: .white,
+                intensity: 1000
+            )
+        )
+
+        directionalLight.transform.rotation = simd_quatf(angle: -.pi / 4, axis: [1, 0, 0])
+        scene.addChild(directionalLight)
+
+        // let pointLight = Entity()
+        // pointLight.name = "PointLightMixedSpace"
+        // pointLight.components.set(
+        //     PointLightComponent(
+        //         color: .white,
+        //         intensity: 500
+        //     )
+        // )
+        // scene.addChild(pointLight)
+    }
+
     func loadTherapist(at position: SIMD3<Float>) async throws -> Entity {
         guard let therapistSceneEntity = try? await Entity(named: "Models/Therapist/Therapist", in: realityKitContentBundle)
         else {
@@ -117,11 +141,18 @@ extension ImmersiveBeeView {
 
         bee.playAnimation(beeFlyingAnim)
 
-        guard let audioResource = try? await AudioFileResource(named: "/Root/bee_mp3", from: "Models/Bees/Bee.usda", in: realityKitContentBundle) else {
+        guard let audioResource = try? await AudioFileResource(named: "/Root/Flying_Bee/bee_mp3", from: "Models/Bees/Bee.usda", in: realityKitContentBundle) else {
             throw ImmersiveBeeViewError.entityError(message: "Could not find bee audio")
         }
 
-        bee.spatialAudio = SpatialAudioComponent(gain: -40)
+        bee.components.set(SpatialAudioComponent(
+            gain: -35.0,
+            directLevel: 0.0,
+            reverbLevel: -10.0,
+            directivity: .beam(focus: 0.5),
+            distanceAttenuation: .rolloff(factor: 2)
+        ))
+
         appState.beeSceneState.beeAudioPlaybackController = bee.prepareAudio(audioResource)
 
         bee.components.set(SteeringComponent(avoidDistance: 0.15, strength: 1.0))

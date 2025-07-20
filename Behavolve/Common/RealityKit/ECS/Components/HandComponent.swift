@@ -11,4 +11,6 @@ import RealityKit
 /// Links a RealityKit entity to an ARKit HandAnchor (by UUID).
 struct HandComponent: Component, Sendable {
     var handID: UUID?
+    var isCurrentlyTracked: Bool = false
+    var trackedPosition: SIMD3<Float>? = nil
 }

@@ -12,9 +12,10 @@ def Xform "Root"
 {
     def "Flying_Bee" (
         active = true
-        prepend references = @Flying_Bee.usdz@
+        references = @Flying_Bee.usdz@
     )
     {
+        reorder nameChildren = ["bee_mp3", "Materials", "SkinnedMeshes"]
         float3 xformOp:scale = (0.01, 0.01, 0.01)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -99,12 +100,12 @@ def Xform "Root"
                 }
             }
         }
-    }
 
-    def RealityKitAudioFile "bee_mp3"
-    {
-        uniform asset file = @../../Audios/bee.mp3@
-        uniform bool shouldLoop = 1
+        def RealityKitAudioFile "bee_mp3"
+        {
+            uniform asset file = @../../Audios/bee.mp3@
+            uniform bool shouldLoop = 1
+        }
     }
 }
 

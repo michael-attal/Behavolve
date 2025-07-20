@@ -50,6 +50,20 @@ def Xform "Root"
                 }
             }
         }
+
+        over "Materials"
+        {
+            over "Material_001"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "pbr_shader"
+                {
+                    float inputs:roughness = 0.7
+                }
+            }
+        }
     }
 }
 

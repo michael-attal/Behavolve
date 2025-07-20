@@ -64,6 +64,7 @@ extension ImmersiveBeeView {
         #if !targetEnvironment(simulator)
         appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: .infinity))
         appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: .infinity))
+        appState.beeSceneState.beeImmersiveContentSceneEntity.children.removeAll(where: { $0.name == "DirectionalLightMixedSpace" })
         #endif
         
         appState.beeSceneState.bee.components.set(EntityProximityComponent(distanceToUser: 0, targetDistanceToUser: 10))
@@ -106,6 +107,7 @@ extension ImmersiveBeeView {
         appState.beeSceneState.bee.components.remove(FleeStateComponent.self)
         appState.beeSceneState.bee.components.set(HandProximityComponent(safeDistance: 0.3, fleeSpeed: 0.5, fleeDuration: 2))
         appState.beeSceneState.bee.components.set(HandCollisionComponent(collisionDistance: 0.2, impulseStrength: 1, recoverDuration: 3))
+        addDefaultLighting(to: appState.beeSceneState.beeImmersiveContentSceneEntity)
         #endif
     }
 }

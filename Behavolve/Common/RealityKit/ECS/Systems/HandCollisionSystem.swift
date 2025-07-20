@@ -12,8 +12,13 @@ import RealityKit
 final class HandCollisionSystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.after(HandProximitySystem.self)] }
 
-    private static let handQuery = EntityQuery(where: .has(HandComponent.self))
-    private static let entityWithHandCollisionQuery = EntityQuery(where: .has(HandCollisionComponent.self))
+    private static let handQuery = EntityQuery(
+        where: .has(HandComponent.self)
+    )
+
+    private static let entityWithHandCollisionQuery = EntityQuery(
+        where: .has(HandCollisionComponent.self) && !.has(FleeStateComponent.self)
+    )
 
     required init(scene: RealityKit.Scene) {}
 
@@ -23,16 +28,6 @@ final class HandCollisionSystem: @MainActor System {
         for entity in context.scene.performQuery(Self.entityWithHandCollisionQuery) {
             guard let model = entity.findModelEntity(),
                   let cfg = entity.components[HandCollisionComponent.self] else { continue }
-
-            if let fleeState = entity.components[FleeStateComponent.self] {
-                let newTimeRemaining = fleeState.timeRemaining - context.deltaTime
-                if newTimeRemaining <= 0 {
-                    entity.components.remove(FleeStateComponent.self)
-                } else {
-                    entity.components.set(FleeStateComponent(timeRemaining: newTimeRemaining))
-                }
-                continue
-            }
 
             for hand in hands {
                 let dist = simd_distance(model.position(relativeTo: nil),
@@ -55,7 +50,7 @@ final class HandCollisionSystem: @MainActor System {
                     if cfg.recoverDuration == .infinity {
                         // let fleeDistance = Float(cfg.recoverDuration) * cfg.impulseStrength
                         // target *= Float(cfg.recoverDuration)
-                        target *= 10
+                        target *= 20
                     }
 
                     entity.components.set(

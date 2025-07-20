@@ -14,10 +14,10 @@ Initially:
 
 Subsequently (if time permits):
 
+- **Fear of Snake**: Explore a virtual forest with a snake to confront ophidiophobia.
 - **Fear of Heights**: Experience high-altitude situations to manage acrophobia.
 - **Fear of the Sea**: Dive into marine environments to overcome thalassophobia.
 - **Blood Draws**: Simulate a blood draw with haptic feedback equipment, like a cuff, to reduce hemophobia.
-- **Fear of Snakes in the Forest**: Explore a virtual forest with a snake to confront ophidiophobia.
 
 # Key Features
 
@@ -25,7 +25,6 @@ Subsequently (if time permits):
 - **Personalized Progression**: Adjust the level of exposure based on your comfort and progress.
 - **AI Assistance**: An intelligent avatar to guide you, provide relaxation techniques, and explain the theoretical principles of CBT and the best behaviors to adopt in various situations. The avatar also helps define the behavior of an entity (e.g., bee) and its reactions.
 - **Apple Vision Pro Compatibility**: Leverages the advanced features of the headset (mixed reality, hand tracking, spatialized sounds…) for an enriching experience.
-- **Authorized Assets**: Use of compliant assets to ensure the quality and ethics of the content.
 
 # Development Plan
 
@@ -50,7 +49,18 @@ To install this app on your device, follow these steps:
     - In "Settings" from the App set your OpenAI key.
 - Alternative: Download the source project from the main branch:
     - Then open the project with Xcode, hit build, and wait.
-    - Optional: You can set your OpenAI key either from the "Settings" in App or by adding your key into AppModel.swift.
+    - Optional: You can set your OpenAI key either from the "Settings" in App or by adding your key into AppState.swift.
+
+# Screenshots & Videos
+
+## Screenshots
+
+![1](./screens/1.png) ![2](./screens/2.png) ![3](./screens/3.png) ![4](./screens/4.png) ![5](./screens/5.png)  
+![6](./screens/6.png) ![7](./screens/7.png) ![8](./screens/8.png) ![9](./screens/9.png) ![10](./screens/10.png)
+
+## Demo Video
+
+[![Behavolve Demo](https://img.youtube.com/vi/_X_3iZp-NiE/0.jpg)](https://youtu.be/_X_3iZp-NiE)
 
 # Documentation
 

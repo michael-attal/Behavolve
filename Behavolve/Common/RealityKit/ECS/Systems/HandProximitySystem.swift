@@ -11,8 +11,13 @@ import RealityKit
 final class HandProximitySystem: @MainActor System {
     static var dependencies: [SystemDependency] { [.before(UserProximitySystem.self)] }
 
-    private static let entityWithHandProximityQuery = EntityQuery(where: .has(HandProximityComponent.self))
-    private static let handQuery = EntityQuery(where: .has(HandComponent.self))
+    private static let handQuery = EntityQuery(
+        where: .has(HandComponent.self)
+    )
+
+    private static let entityWithHandProximityQuery = EntityQuery(
+        where: .has(HandProximityComponent.self) && !.has(FleeStateComponent.self)
+    )
 
     required init(scene: RealityKit.Scene) {}
 
@@ -22,14 +27,6 @@ final class HandProximitySystem: @MainActor System {
         for entity in context.scene.performQuery(Self.entityWithHandProximityQuery) {
             guard let model = entity.findModelEntity(),
                   let cfg = entity.components[HandProximityComponent.self] else { continue }
-
-            // Already fleeing ? Just decrement timer.
-            if var flee = entity.components[FleeStateComponent.self] {
-                flee.timeRemaining -= context.deltaTime
-                if flee.timeRemaining <= 0 { entity.components.remove(FleeStateComponent.self) }
-                else { entity.components.set(flee) }
-                continue
-            }
 
             // Find the nearest hand.
             guard let nearest = hands.min(by: { a, b in
@@ -48,7 +45,7 @@ final class HandProximitySystem: @MainActor System {
 
                 if cfg.fleeDuration == .infinity {
                     // target *= Float(cfg.fleeDuration)
-                    target *= 10
+                    target *= 20
                 }
 
                 // Replace ongoing MoveTo if any.

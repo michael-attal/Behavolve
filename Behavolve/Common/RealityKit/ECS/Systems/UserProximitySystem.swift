@@ -9,7 +9,9 @@ import RealityKit
 
 @MainActor
 final class UserProximitySystem: System {
-    private static let entityWithUserProximityQuery = EntityQuery(where: .has(UserProximityComponent.self))
+    private static let entityWithUserProximityQuery = EntityQuery(
+        where: .has(UserProximityComponent.self) && !.has(FleeStateComponent.self)
+    )
 
     required init(scene: RealityKit.Scene) {}
 
@@ -20,14 +22,6 @@ final class UserProximitySystem: System {
         for entity in context.scene.performQuery(Self.entityWithUserProximityQuery) {
             guard let model = entity.findModelEntity(),
                   let cfg = entity.components[UserProximityComponent.self] else { continue }
-
-            let fleeState = entity.components[FleeStateComponent.self]
-
-            // Ignore if already fleeing for another reason.
-            if let fleeState = fleeState, fleeState.timeRemaining <= 0.0 {
-                entity.components.remove(FleeStateComponent.self)
-                continue
-            }
 
             let dist = simd_distance(model.position(relativeTo: nil), userPos)
             if dist < cfg.safeDistance {

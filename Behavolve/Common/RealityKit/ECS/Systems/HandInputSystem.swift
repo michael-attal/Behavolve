@@ -1,5 +1,5 @@
 //
-//  HandPoseCache.swift
+//  HandInputSystem.swift
 //  Behavolve
 //
 //  Created by Michaël ATTAL on 29/04/2025.
@@ -112,6 +112,8 @@ final class HandInputSystem: System {
 
             var comp = handEntity.components[HandComponent.self]!
             comp.handID = anchor.id
+            comp.isCurrentlyTracked = true
+            comp.trackedPosition = anchor.originFromAnchorTransform.columns.3.xyz
             handEntity.components.set(comp)
 
             handEntity.transform.matrix = anchor.originFromAnchorTransform
@@ -153,7 +155,9 @@ final class HandInputSystem: System {
                !visible.contains(id)
             {
                 var comp = e.components[HandComponent.self]!
-                comp.handID = nil // back to “free” state
+                comp.handID = nil
+                comp.isCurrentlyTracked = false
+                comp.trackedPosition = nil
                 e.components.set(comp)
 
                 HandPoseCache.shared.setFistClosed(false, for: id)

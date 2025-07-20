@@ -10,7 +10,7 @@ import simd
 
 /// Tracks smoothed head linear speed to detect abrupt user movement.
 struct CalmMotionComponent: Component, Sendable {
-    var maxHeadSpeed: Float = 2 // m/s
+    var maxHeadSpeed: Float = 1.2 // m/s
     var smoothing: Float = 0.9
 
     /// Last smoothed speed value.

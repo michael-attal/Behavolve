@@ -1,8 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Scenes\/Bee Scene.usda",
-    "Models\/Bees\/Bee.usda"
+    "Scenes\/Bee Scene.usda"
   ],
   "recentIdentifiers" : {
     "046D9718-DC7A-4E0E-AB9B-CAC26538CA1D" : [
@@ -931,6 +930,28 @@
       }
     ],
     "377C89A5-01EC-4978-9696-BEFC030DED81" : [
+      {
+        "date" : 774701837.64148,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.70710677,
+          0,
+          0,
+          0.70710677,
+          0.7071069,
+          0,
+          0.14522886,
+          1.2133014,
+          0.85611033,
+          1
+        ]
+      },
       {
         "date" : 772559831.028801,
         "title" : "Untitled",
@@ -4634,5 +4655,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Models\/Bees\/Bee.usda"
+  "selectedSceneRelativePath" : "Scenes\/Bee Scene.usda"
 }
