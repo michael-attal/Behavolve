@@ -55,8 +55,8 @@ To install this app on your device, follow these steps:
 
 ## Screenshots
 
-![1](./screens/1.png) ![2](./screens/2.png) ![3](./screens/3.png) ![4](./screens/4.png) ![5](./screens/5.png)  
-![6](./screens/6.png) ![7](./screens/7.png) ![8](./screens/8.png) ![9](./screens/9.png) ![10](./screens/10.png)
+![1](./Screens/1.png) ![2](./Screens/2.png) ![3](./Screens/3.png) ![4](./Screens/4.png) ![5](./Screens/5.png)  
+![6](./Screens/6.png) ![7](./Screens/7.png) ![8](./Screens/8.png) ![9](./Screens/9.png) ![10](./Screens/10.png)
 
 ## Demo Video
 
