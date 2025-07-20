@@ -391,7 +391,7 @@ struct ImmersiveBeeView: View {
         // ThumbUpGestureSystem.registerSystem()
 
         PalmOpenGestureComponent.registerComponent()
-        PalmOpenGestureSystem.registerSystem()
+        // PalmOpenGestureSystem.registerSystem()
 
         #endif
     }
