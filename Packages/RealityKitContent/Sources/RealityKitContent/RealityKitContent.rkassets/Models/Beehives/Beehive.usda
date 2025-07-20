@@ -1,0 +1,90 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Wooden_Beehive" (
+        active = true
+        references = @wooden_beehive.usdz@
+    )
+    {
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Meshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "Wooden_Beehive_wjfjabl_Low_fbx"
+                {
+                    over "RootNode"
+                    {
+                        over "world_root"
+                        {
+                            over "wjfjabl_LOD0_TIER3_000"
+                            {
+                                over "wjfjabl_LOD0_TIER3_000_MatID_1_0"
+                                {
+                                    over "wjfjabl_LOD0_TIER3_000_MatID_1_0"
+                                    {
+                                        def RealityKitComponent "GroundingShadow"
+                                        {
+                                            bool enableIBLShadow = 1
+                                            bool enableMeshShadow = 1
+                                            uniform token info:id = "RealityKit.GroundingShadow"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (90.24364, 101.626724, 98.99515)
+                float radius = 50.813362
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0.7624359, 50.052307, 0.30717087)
+                }
+            }
+        }
+    }
+}
+

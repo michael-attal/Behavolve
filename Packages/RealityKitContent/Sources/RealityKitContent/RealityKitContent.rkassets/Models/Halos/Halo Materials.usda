@@ -1,0 +1,287 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Halo_Material_1", "Halo_Sample", "Cube"]
+    def Material "Halo_Material_1"
+    {
+        bool inputs:ActivateTransparency = 0 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-30.336485, 210.66835)
+                    int stackingOrderInSubgraph = 318
+                }
+            }
+        )
+        color3f inputs:BaseColor = (0.999996, 1, 1) (
+            colorSpace = "srgb_texture"
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (545.0913, -279.06256)
+                }
+            }
+        )
+        color3f inputs:EmissiveColor = (0.016804177, 0.198351, 1) (
+            colorSpace = "srgb_texture"
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (310.21643, -278.255)
+                    int stackingOrderInSubgraph = 327
+                }
+            }
+        )
+        float inputs:EmissiveMultiplier = 30 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (103.85313, -285.83078)
+                    int stackingOrderInSubgraph = 338
+                }
+            }
+        )
+        float inputs:LowestPercentageEmissive = 0.1 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-193.58708, -71.86677)
+                    int stackingOrderInSubgraph = 372
+                }
+            }
+        )
+        float inputs:MinimumOpacity = 0.2 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (117.56764, 337.54254)
+                }
+            }
+        )
+        float inputs:SpeedEmissive = 2 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-180.83533, -136.58838)
+                    int stackingOrderInSubgraph = 339
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/Halo_Material_1/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/Halo_Material_1/GeometryModifier.outputs:out>
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (996.01715, -55.973766)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 174
+
+        def Shader "TextureCoordinates"
+        {
+            uniform token info:id = "ND_texcoord_vector2"
+            float2 outputs:out
+            float2 ui:nodegraph:node:pos = (-568.3647, 27.684772)
+            int ui:nodegraph:node:stackingOrder = 371
+        }
+
+        def Shader "Subtract"
+        {
+            uniform token info:id = "ND_subtract_vector2"
+            float2 inputs:in1.connect = </Root/Halo_Material_1/TextureCoordinates.outputs:out>
+            float2 inputs:in2 = (0.5, 0.5)
+            float2 outputs:out
+            float2 ui:nodegraph:node:pos = (-372.6289, 32.196373)
+            int ui:nodegraph:node:stackingOrder = 371
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in2", "inputs:in2"]
+        }
+
+        def Shader "Magnitude"
+        {
+            uniform token info:id = "ND_magnitude_vector2"
+            float2 inputs:in.connect = </Root/Halo_Material_1/Subtract.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-237.25, 29.184654)
+            int ui:nodegraph:node:stackingOrder = 374
+        }
+
+        def Shader "SmoothStep"
+        {
+            uniform token info:id = "ND_smoothstep_float"
+            float inputs:high = 0.5
+            float inputs:in.connect = </Root/Halo_Material_1/Magnitude.outputs:out>
+            float inputs:low = 0.2
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-63.07422, 85.962)
+            int ui:nodegraph:node:stackingOrder = 371
+        }
+
+        def Shader "Oneminus"
+        {
+            uniform token info:id = "ND_realitykit_oneminus_float"
+            float inputs:in.connect = </Root/Halo_Material_1/SmoothStep.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (59.816406, 77.265625)
+            int ui:nodegraph:node:stackingOrder = 155
+        }
+
+        def Shader "Time"
+        {
+            uniform token info:id = "ND_time_float"
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-185.59756, -199.88309)
+            int ui:nodegraph:node:stackingOrder = 311
+        }
+
+        def Shader "Sin"
+        {
+            uniform token info:id = "ND_sin_float"
+            float inputs:in.connect = </Root/Halo_Material_1/Multiply_3.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (166.49246, -145.84235)
+            int ui:nodegraph:node:stackingOrder = 349
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/Halo_Material_1/Max.outputs:out>
+            float inputs:in2.connect = </Root/Halo_Material_1/Oneminus.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (304.30078, -5.0078125)
+            int ui:nodegraph:node:stackingOrder = 323
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_color3FA"
+            color3f inputs:in1.connect = </Root/Halo_Material_1.inputs:EmissiveColor>
+            float inputs:in2.connect = </Root/Halo_Material_1/Multiply.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (398.29688, -56.210938)
+            int ui:nodegraph:node:stackingOrder = 117
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion
+            color3f inputs:baseColor = (0.999996, 1, 1) (
+                colorSpace = "srgb_texture"
+            )
+            color3f inputs:baseColor.connect = </Root/Halo_Material_1.inputs:BaseColor>
+            float inputs:clearcoat
+            float3 inputs:clearcoatNormal
+            float inputs:clearcoatRoughness
+            color3f inputs:emissiveColor.connect = </Root/Halo_Material_1/Multiply_1.outputs:out>
+            bool inputs:hasPremultipliedAlpha = 0
+            float inputs:metallic = 1
+            float3 inputs:normal
+            float inputs:opacity.connect = </Root/Halo_Material_1/Max_1.outputs:out>
+            float inputs:opacityThreshold
+            float inputs:roughness
+            float inputs:specular = 1
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (674.9004, 42.368107)
+            int ui:nodegraph:node:stackingOrder = 337
+        }
+
+        def Shader "MTLSelect"
+        {
+            uniform token info:id = "ND_MTL_select_float"
+            float inputs:a = 1
+            float inputs:a.connect = None
+            float inputs:b = 0
+            float inputs:b.connect = </Root/Halo_Material_1/Multiply.outputs:out>
+            bool inputs:c.connect = </Root/Halo_Material_1.inputs:ActivateTransparency>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (359.55765, 193.49753)
+            int ui:nodegraph:node:stackingOrder = 378
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:a", "outputs:out"]
+        }
+
+        def Shader "Multiply_1"
+        {
+            uniform token info:id = "ND_multiply_color3FA"
+            prepend color3f inputs:in1.connect = </Root/Halo_Material_1/Multiply_2.outputs:out>
+            float inputs:in2.connect = </Root/Halo_Material_1.inputs:EmissiveMultiplier>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (436.72772, 33.656647)
+            int ui:nodegraph:node:stackingOrder = 277
+        }
+
+        def Shader "Multiply_3"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/Halo_Material_1/Time.outputs:out>
+            float inputs:in2 = 3
+            float inputs:in2.connect = </Root/Halo_Material_1.inputs:SpeedEmissive>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (76.93432, -161.9812)
+            int ui:nodegraph:node:stackingOrder = 307
+        }
+
+        def Shader "GeometryModifier"
+        {
+            uniform token info:id = "ND_realitykit_geometrymodifier_2_0_vertexshader"
+            float3 inputs:bitangent
+            color4f inputs:color
+            float3 inputs:modelPositionOffset
+            float3 inputs:normal
+            float2 inputs:uv0
+            float2 inputs:uv1
+            float4 inputs:uv2
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (688.7497, 406.64954)
+            int ui:nodegraph:node:stackingOrder = 325
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:modelPositionOffset"]
+        }
+
+        def Shader "Max"
+        {
+            uniform token info:id = "ND_max_float"
+            float inputs:in1.connect = </Root/Halo_Material_1/Sin.outputs:out>
+            float inputs:in2 = 0.1
+            float inputs:in2.connect = </Root/Halo_Material_1.inputs:LowestPercentageEmissive>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (180.8403, -75.64079)
+            int ui:nodegraph:node:stackingOrder = 357
+        }
+
+        def Shader "Max_1"
+        {
+            uniform token info:id = "ND_max_float"
+            float inputs:in1.connect = </Root/Halo_Material_1/MTLSelect.outputs:out>
+            float inputs:in2.connect = </Root/Halo_Material_1.inputs:MinimumOpacity>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (348.72174, 335.36188)
+            int ui:nodegraph:node:stackingOrder = 383
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+    }
+
+    def Cylinder "Halo_Sample" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.1
+        rel material:binding = </Root/Halo_Material_1> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.5
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Cube "Cube" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Halo_Material_1> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 0.2
+    }
+}
+

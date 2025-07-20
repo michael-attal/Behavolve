@@ -1,0 +1,177 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Daffodil_flower_pot" (
+        active = true
+        prepend references = @Daffodil_flower_pot.usdz@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Daffodil"
+        {
+            reorder nameChildren = ["Nectar_spot_1", "Nectar_spot_2", "Nectar_spot_3", "Daffodil_geometry"]
+            def Xform "Nectar_spot_1" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                float3 xformOp:translate = (-7.911732, 9.185143, 8.72422)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_2" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (-1.904188e-8, -1.048352e-8, -4.9486218e-8)
+                }
+            )
+            {
+                float2 ui:nodegraph:node:pos = (40, 40)
+                int ui:nodegraph:node:stackingOrder = 2
+                quatf xformOp:orient = (0.99999994, -9.52094e-9, -5.2417595e-9, -2.4743107e-8)
+                float3 xformOp:translate = (31.755436, -8.456195, 8.68647)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_3" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (60, 60)
+                int ui:nodegraph:node:stackingOrder = 3
+                float3 xformOp:translate = (-1.3800428, -10.915952, 11.105)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_4" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (80, 80)
+                int ui:nodegraph:node:stackingOrder = 4
+                quatf xformOp:orient = (1, 1.1832861e-9, 5.9988152e-9, -4.9973465e-8)
+                float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+                float3 xformOp:translate = (-7.0870233, -32.4299, 7.2604384)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "Nectar_spot_5" (
+                active = true
+            )
+            {
+                float2 ui:nodegraph:node:pos = (100, 100)
+                int ui:nodegraph:node:stackingOrder = 5
+                quatf xformOp:orient = (1, 4.5468784e-9, 1.6558138e-10, -5.72956e-8)
+                float3 xformOp:scale = (0.9999998, 0.99999976, 0.99999976)
+                float3 xformOp:translate = (30.68885, -23.19857, 4.879482)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Daffodil_geometry"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.9, 0.9, 0.9)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def RealityKitComponent "GroundingShadow"
+                {
+                    bool enableIBLShadow = 1
+                    bool enableMeshShadow = 1
+                    bool enableReceiveIBLShadow = 0
+                    bool enableReceiveMeshShadow = 0
+                    uniform token info:id = "RealityKit.GroundingShadow"
+                }
+            }
+        }
+
+        over "Flower_pot"
+        {
+            quatf xformOp:orient = (0.7071067, -0.7071068, 0, 0)
+            float3 xformOp:scale = (80.98659, 80.98659, 80.98659)
+            float3 xformOp:translate = (30.447102, 204.49261, -37.36072)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "Flower_pot_geometry"
+            {
+                def RealityKitComponent "GroundingShadow"
+                {
+                    bool enableIBLShadow = 0
+                    bool enableMeshShadow = 0
+                    bool enableReceiveIBLShadow = 1
+                    bool enableReceiveMeshShadow = 1
+                    uniform token info:id = "RealityKit.GroundingShadow"
+                }
+            }
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (2.8060503, 2.8060994, 5.371233)
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                        float3 position = (5.9604645e-8, -5.9604645e-8, 0.054951906)
+                    }
+                }
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    float m_mass = 5
+
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+        }
+
+        over "Sun" (
+            active = false
+        )
+        {
+        }
+
+        over "Camera" (
+            active = false
+        )
+        {
+        }
+
+        over "Sun_001" (
+            active = false
+        )
+        {
+        }
+    }
+}
+

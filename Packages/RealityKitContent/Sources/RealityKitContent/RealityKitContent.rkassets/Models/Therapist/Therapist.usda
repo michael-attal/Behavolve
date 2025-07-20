@@ -1,0 +1,69 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Therapist_TCC" (
+        active = true
+        prepend references = @Therapist_TCC.usdz@
+    )
+    {
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "SkinnedMeshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "f85782bc985f4e62bb69fd252d027cfc_fbx"
+                {
+                    over "Object_2"
+                    {
+                        over "RootNode"
+                        {
+                            over "autorig_actor_Rigify"
+                            {
+                                over "Object_5"
+                                {
+                                    over "skin0"
+                                    {
+                                        def RealityKitComponent "GroundingShadow"
+                                        {
+                                            bool enableIBLShadow = 1
+                                            bool enableMeshShadow = 1
+                                            bool enableReceiveIBLShadow = 0
+                                            bool enableReceiveMeshShadow = 0
+                                            uniform token info:id = "RealityKit.GroundingShadow"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        over "Materials"
+        {
+            over "Material_001"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "pbr_shader"
+                {
+                    float inputs:roughness = 0.7
+                }
+            }
+        }
+    }
+}
+

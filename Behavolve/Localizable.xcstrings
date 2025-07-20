@@ -1,0 +1,143 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "**Therapist Lucie:**" : {
+
+    },
+    "**You said:**" : {
+
+    },
+    "API Configuration" : {
+
+    },
+    "Back" : {
+
+    },
+    "Continue the conversation" : {
+
+    },
+    "Conversation started" : {
+
+    },
+    "Error: %@" : {
+
+    },
+    "Exit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortir"
+          }
+        }
+      }
+    },
+    "Get your key at platform.openai.com" : {
+
+    },
+    "I'd like to know more" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'aimerais en savoir plus"
+          }
+        }
+      }
+    },
+    "I'm ready" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je suis prêt"
+          }
+        }
+      }
+    },
+    "I'm ready to start" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je suis prêt à commencer"
+          }
+        }
+      }
+    },
+    "Listening..." : {
+
+    },
+    "Lucie is speaking..." : {
+
+    },
+    "Missing OpenAI credentials" : {
+
+    },
+    "Not started" : {
+
+    },
+    "OK" : {
+
+    },
+    "OpenAI Token" : {
+
+    },
+    "Organization ID" : {
+
+    },
+    "Please configure both your OpenAI API Key and Organization ID in the app settings before starting a conversation." : {
+
+    },
+    "Post-session assessment" : {
+
+    },
+    "Pre-session assessment" : {
+
+    },
+    "Ready to start a conversation with Lucie, your cognitive behavioral therapist?" : {
+
+    },
+    "Save" : {
+
+    },
+    "Select your therapy" : {
+
+    },
+    "Selected scene" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scène sélectionné"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètre"
+          }
+        }
+      }
+    },
+    "Start" : {
+
+    },
+    "Start the conversation" : {
+
+    },
+    "Stop the conversation" : {
+
+    }
+  },
+  "version" : "1.0"
+}

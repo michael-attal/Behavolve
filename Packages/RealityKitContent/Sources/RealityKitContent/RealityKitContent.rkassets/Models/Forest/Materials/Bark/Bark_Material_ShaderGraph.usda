@@ -1,0 +1,105 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (476.0.0.508.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Material", "Bark_Material_NodeGraph_Instance"]
+    def Material "Material"
+    {
+        token outputs:mtlx:surface.connect = </Root/Material/nodegraph.outputs:PBRSurface_out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (450.9336, 73.75391)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 42
+
+        def NodeGraph "nodegraph"
+        {
+            prepend token outputs:PBRSurface_out.connect = </Root/Material/nodegraph/PBRSurface.outputs:out>
+            float2 ui:nodegraph:node:pos = (-54.47526, 83.623695)
+            int ui:nodegraph:node:stackingOrder = 1
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (816.09625, 167.8629)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 71
+
+            def Shader "PreviewSurface"
+            {
+                uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+                float inputs:clearcoat
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:diffuseColor
+                float inputs:ior = 1.45
+                float inputs:metallic
+                float3 inputs:normal
+                float inputs:opacity
+                float inputs:roughness = 0.83636
+                float2 ui:nodegraph:node:pos = (364.5, 615.5)
+                int ui:nodegraph:node:stackingOrder = 68
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["Advanced"]
+            }
+
+            def Shader "Image"
+            {
+                uniform token info:id = "ND_image_color3"
+                asset inputs:file = @../../Forest With Trees/textures/Bark.jpg@
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (-23.425236, 216.3085)
+                int ui:nodegraph:node:stackingOrder = 73
+            }
+
+            def Shader "PBRSurface"
+            {
+                uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+                float inputs:ambientOcclusion
+                color3f inputs:baseColor.connect = </Root/Material/nodegraph/Image.outputs:out>
+                float inputs:clearcoat
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:emissiveColor
+                float inputs:metallic
+                float3 inputs:normal.connect = None
+                float inputs:opacity
+                float inputs:opacityThreshold
+                float inputs:roughness = 0.83636
+                float inputs:specular = 0.28636
+                token outputs:out
+                float2 ui:nodegraph:node:pos = (378, 200.5)
+                int ui:nodegraph:node:stackingOrder = 68
+            }
+
+            def Shader "Image_1"
+            {
+                uniform token info:id = "ND_image_vector3"
+                asset inputs:file = @../../Forest With Trees/textures/Bark.jpg@
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-32.20485, 644.4931)
+                int ui:nodegraph:node:stackingOrder = 76
+            }
+        }
+    }
+
+    def "Bark_Material_NodeGraph_Instance" (
+        active = true
+        instanceable = true
+        references = </Root/Material/nodegraph>
+    )
+    {
+        float2 ui:nodegraph:node:pos = (-34.47526, 103.623695)
+        int ui:nodegraph:node:stackingOrder = 2
+    }
+
+    def Cube "Cube" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Material> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 0.2
+    }
+}
+

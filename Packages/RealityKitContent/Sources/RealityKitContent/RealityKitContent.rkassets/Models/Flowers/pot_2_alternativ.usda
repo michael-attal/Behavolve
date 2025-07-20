@@ -1,0 +1,129 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "pots_and_vase_with_flowers" (
+        active = true
+        prepend references = @pots_and_vase_with_flowers.usdz@
+    )
+    {
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Meshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "allflowersspot_obj_cleaner_materialmerger_gles"
+                {
+                    over "Object_17" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_18" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_19" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_20" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_14" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_16" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_13" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_11" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_10" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_9" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    over "Object_12" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+        }
+    }
+
+    def Cylinder "earth" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/pots_and_vase_with_flowers/Materials/groundpot> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (40, 2, 40)
+        float3 xformOp:translate = (-0.8426342, 7.2, -0.074296)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/earth/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+}
+
